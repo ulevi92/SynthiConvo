@@ -1,6 +1,7 @@
 import { Button, Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../store/reduxHooks";
 import { setModalType, setShowModal } from "../features/global/globalSlice";
+import AuthForm from "./form/AuthForm";
 
 const AuthModal = () => {
   const showModal = useAppSelector((state) => state.global.showModal);
@@ -26,7 +27,10 @@ const AuthModal = () => {
       <Modal.Header closeButton closeLabel='close'>
         <Modal.Title className='text-capitalize'>{modalType}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>dasds</Modal.Body>
+
+      <Modal.Body>
+        <AuthForm />
+      </Modal.Body>
 
       <Modal.Footer>
         <Button

@@ -2,7 +2,7 @@ type Status = "idle" | "fulfilled" | "error" | "pending";
 
 type InputTextType = string | null;
 
-type InputType = {
+export type InputType = {
   email: InputTextType;
   password: InputTextType;
   confirmPassword: InputTextType;
