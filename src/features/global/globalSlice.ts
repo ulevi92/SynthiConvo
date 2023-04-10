@@ -6,19 +6,16 @@ const globalSlice = createSlice({
   name: "global",
   initialState: initialState,
   reducers: {
-    setDarkMode({ darkMode }, { payload }: PayloadAction<boolean>) {
-      darkMode = payload;
+    setDarkMode(state, { payload }: PayloadAction<boolean>) {
+      state.darkMode = payload;
     },
 
-    setShowModal({ showModal }, { payload }: PayloadAction<boolean>) {
-      showModal = payload;
+    setShowModal(state, { payload }: PayloadAction<boolean>) {
+      state.showModal = payload;
     },
 
-    setModalType(
-      { modalType },
-      { payload }: PayloadAction<SetModalTypePayload>
-    ) {
-      modalType = payload;
+    setModalType(state, { payload }: PayloadAction<SetModalTypePayload>) {
+      state.modalType = payload;
     },
   },
 });
