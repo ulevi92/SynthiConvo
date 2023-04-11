@@ -13,13 +13,11 @@ const AuthForm = () => {
   const dispatch = useAppDispatch();
 
   const handleErrors = () => {
-    if (errors.email) {
-      return errors.email.type === "pattern" ? (
-        <FormText color='danger' message='please enter valid email' />
-      ) : errors.email.type === "required" ? (
-        <FormText color='danger' message='please enter email' />
-      ) : undefined;
-    }
+    if (errors.email && errors.email?.type === "required")
+      return <FormText color='danger' message='please enter email' />;
+
+    if (errors.email?.type === "pattern")
+      return <FormText color='danger' message='please enter valid email' />;
   };
 
   const {
@@ -51,7 +49,7 @@ const AuthForm = () => {
           </Form.Text>
         )}
 
-        {errors.email?.types && handleErrors()}
+        {handleErrors()}
       </Form.Group>
     </Form>
   );
