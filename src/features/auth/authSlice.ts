@@ -5,9 +5,16 @@ import {
   updatePassword,
   sendPasswordResetEmail,
   updateProfile,
+  onAuthStateChanged,
+  User,
 } from "firebase/auth";
 
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import {
+  PayloadAction,
+  createAction,
+  createAsyncThunk,
+  createSlice,
+} from "@reduxjs/toolkit";
 
 import { auth } from "../../firebase/firebase";
 import {
@@ -17,133 +24,86 @@ import {
   UpdateProfilePayload,
   initialState,
 } from "./authSlice.helper";
+import store from "../../store/store";
+
+export const fetchSignIn = createAsyncThunk(
+  "auth/fetchSignIn",
+  async ({ email, password }: SignInAndUpPayload) => {
+    const response = await signInWithEmailAndPassword(auth, email!, password!);
+    await sendEmailVerification(response.user);
+    return response.user;
+  }
+);
+
+export const fetchSignUp = createAsyncThunk(
+  "auth/fetchSignUp",
+  async ({ email, password }: SignInAndUpPayload) => {
+    const response = await createUserWithEmailAndPassword(
+      auth,
+      email!,
+      password!
+    );
+    return response.user;
+  }
+);
+
+//verifyEmail
+export const verifyEmail = async () => {
+  const user = auth.currentUser;
+
+  try {
+    user && sendEmailVerification(user);
+  } catch (error) {
+    const { message } = error as Error;
+
+    throw new Error(message);
+  }
+};
+
+export const authStateChange = createAction<User | null>("auth/authState");
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    signIn(state, action: PayloadAction<SignInAndUpPayload>) {
+  reducers: {},
+  extraReducers(builder) {
+    //signing in
+    builder.addCase(fetchSignIn.pending, (state) => {
       state.status = "pending";
+    });
+    builder.addCase(fetchSignIn.fulfilled, (state, action) => {
+      state.status = "fulfilled";
+      state.user = action.payload;
+    });
+    builder.addCase(fetchSignIn.rejected, (state, action) => {
+      state.status = "error";
+      state.errorMessage = action.error.message;
+    });
 
-      const email = action.payload.email!;
-      const password = action.payload.password!;
+    //check for auth
+    builder.addCase(authStateChange, (state, action) => {
+      state.status = "fulfilled";
+      state.user = action.payload;
+    });
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCreditional) => {
-          const { email, displayName, uid, emailVerified, providerId } =
-            userCreditional.user;
-
-          state.status = "fulfilled";
-          state.isAuth = true;
-          state.user = { email, displayName, uid, emailVerified, providerId };
-        })
-        .catch((error) => {
-          state.status = "error";
-          const { code, message } = error;
-          state.error = { code, message };
-        });
-    },
-
-    signUp(state, action: PayloadAction<SignInAndUpPayload>) {
-      state.status = "pending";
-
-      const email = action.payload.email!;
-      const password = action.payload.password!;
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCreditional) => {
-          const { email, displayName, uid, emailVerified, providerId } =
-            userCreditional.user;
-
-          state.status = "fulfilled";
-          state.isAuth = true;
-          state.user = { email, displayName, uid, emailVerified, providerId };
-        })
-        .catch((error) => {
-          state.status = "error";
-          const { code, message } = error;
-          state.error = { code, message };
-        });
-    },
-
-    verifyEmail(state) {
-      state.status = "pending";
-
-      const user = auth.currentUser;
-
-      user &&
-        sendEmailVerification(user)
-          .then(() => {
-            state.status = "fulfilled";
-          })
-          .catch((error) => {
-            state.status = "error";
-            const { code, message } = error;
-            state.error = { code, message };
-          });
-    },
-
-    changePassword(state, action: PayloadAction<ChangePasswordPayload>) {
-      state.status = "pending";
-
-      const password = action.payload.password!;
-      const user = auth.currentUser;
-
-      user &&
-        updatePassword(user, password)
-          .then(() => {
-            state.status = "fulfilled";
-          })
-          .catch((error) => {
-            state.status = "error";
-            const { code, message } = error;
-            state.error = { code, message };
-          });
-    },
-
-    resetPassword(state, action: PayloadAction<ResetPasswordPayload>) {
-      state.status = "pending";
-
-      const email = action.payload.email!;
-
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          state.status = "idle";
-        })
-        .catch((error) => {
-          state.status = "error";
-          const { code, message } = error;
-          state.error = { code, message };
-        });
-    },
-
-    updateProfileName(state, action: PayloadAction<UpdateProfilePayload>) {
-      state.status = "pending";
-
-      const user = auth.currentUser;
-      const displayName = action.payload;
-
-      user &&
-        updateProfile(user, { displayName })
-          .then(() => {
-            state.status = "fulfilled";
-          })
-          .catch((error) => {
-            state.status = "error";
-            const { code, message } = error;
-            state.error = { code, message };
-          });
-    },
+    //signing up and sending a verification email
+    builder
+      .addCase(fetchSignUp.pending, (state) => {
+        state.status = "pending";
+        state.emailVerificationMessage = "please verify your email";
+      })
+      .addCase(fetchSignUp.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.user = action.payload;
+      })
+      .addCase(fetchSignUp.rejected, (state, action) => {
+        state.errorMessage = action.error.message;
+      });
   },
 });
 
-export const {
-  signIn,
-  changePassword,
-  resetPassword,
-  signUp,
-  updateProfileName,
-  verifyEmail,
-} = authSlice.actions;
+auth.onAuthStateChanged((user) => {
+  store.dispatch(authStateChange(user));
+});
 
 export default authSlice.reducer;

@@ -5,13 +5,9 @@ type InputTextType = string | null;
 export type InputType = {
   email: InputTextType;
   password: InputTextType;
-  confirmPassword: InputTextType;
 };
 
-type CredentialError = {
-  code: InputTextType;
-  message: InputTextType;
-};
+type CredentialError = string | undefined;
 
 type EmailVerificationMessage = string | null;
 
@@ -37,9 +33,9 @@ export type AuthSliceState = {
   status: Status;
   isAuth: boolean;
   emailVerificationMessage: EmailVerificationMessage;
-  error: CredentialError;
+  errorMessage: CredentialError;
   input: InputType;
-  user: User;
+  user: User | null;
 };
 
 export const initialState: AuthSliceState = {
@@ -49,19 +45,8 @@ export const initialState: AuthSliceState = {
   input: {
     email: null,
     password: null,
-    confirmPassword: null,
   },
+  errorMessage: undefined,
 
-  error: {
-    code: null,
-    message: null,
-  },
-
-  user: {
-    email: null,
-    displayName: null,
-    uid: "",
-    emailVerified: false,
-    providerId: "",
-  },
+  user: null,
 };
