@@ -2,6 +2,8 @@ import { Button, Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../store/reduxHooks";
 import { setModalType, setShowModal } from "../../features/global/globalSlice";
 import AuthForm from "../form/AuthForm";
+import { Provider } from "react-redux";
+import formStore from "../../store/formStore";
 
 const AuthModal = () => {
   const showModal = useAppSelector((state) => state.global.showModal);
@@ -27,24 +29,25 @@ const AuthModal = () => {
       <Modal.Header closeButton closeLabel='close'>
         <Modal.Title className='text-capitalize'>{modalType}</Modal.Title>
       </Modal.Header>
+      <Provider store={formStore}>
+        <Modal.Body>
+          <AuthForm />
+        </Modal.Body>
 
-      <Modal.Body>
-        <AuthForm />
-      </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant='outline-secondary'
+            className='text-uppercase'
+            onClick={handleClose}
+          >
+            close
+          </Button>
 
-      <Modal.Footer>
-        <Button
-          variant='outline-secondary'
-          className='text-uppercase'
-          onClick={handleClose}
-        >
-          close
-        </Button>
-
-        <Button className='text-uppercase' variant='success' type='submit'>
-          {btnName}
-        </Button>
-      </Modal.Footer>
+          <Button className='text-uppercase' variant='success' type='submit'>
+            {btnName}
+          </Button>
+        </Modal.Footer>
+      </Provider>
     </Modal>
   );
 };
