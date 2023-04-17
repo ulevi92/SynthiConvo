@@ -31,20 +31,6 @@ const AuthModal = () => {
       <Modal.Body>
         <AuthForm />
       </Modal.Body>
-
-      <Modal.Footer>
-        <Button
-          variant='outline-secondary'
-          className='text-uppercase'
-          onClick={handleClose}
-        >
-          close
-        </Button>
-
-        <Button className='text-uppercase' variant='success' type='submit'>
-          {btnName}
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };

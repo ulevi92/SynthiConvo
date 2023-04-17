@@ -1,9 +1,10 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../store/reduxHooks";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
 import { InputType } from "../../features/auth/authSlice.helper";
 import FormText from "./FormText";
+import { setModalType, setShowModal } from "../../features/global/globalSlice";
 
 const AuthForm = () => {
   const modalType = useAppSelector((state) => state.global.modalType);
@@ -19,6 +20,13 @@ const AuthForm = () => {
     if (errors.email?.type === "pattern")
       return <FormText color='danger' message='please enter valid email' />;
   };
+
+  const handleClose = () => {
+    dispatch(setShowModal(false));
+    dispatch(setModalType(null));
+  };
+
+  const btnName = modalType === "login" ? modalType : modalType;
 
   const {
     register,
@@ -51,6 +59,18 @@ const AuthForm = () => {
 
         {handleErrors()}
       </Form.Group>
+
+      <Button
+        variant='outline-secondary'
+        className='text-uppercase'
+        onClick={handleClose}
+      >
+        close
+      </Button>
+
+      <Button className='text-uppercase' variant='success' type='submit'>
+        {btnName}
+      </Button>
     </Form>
   );
 };
