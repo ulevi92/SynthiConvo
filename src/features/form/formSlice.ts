@@ -1,12 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { initialState } from "./formSlice.helper";
+import { emailPattern, passwordPattern } from "../../components/regExpPatterns";
 
 const formSlice = createSlice({
   name: "form",
   initialState: initialState,
   reducers: {
     saveFormEmail(state, action: PayloadAction<string>) {
-      const isValidEmail = state.emailPatten.test(action.payload);
+      const isValidEmail = emailPattern.test(action.payload);
 
       return {
         ...state,
@@ -16,7 +17,7 @@ const formSlice = createSlice({
     },
 
     saveFormPassword(state, action: PayloadAction<string>) {
-      const isValidPassword = state.passwordPatten.test(action.payload);
+      const isValidPassword = passwordPattern.test(action.payload);
 
       return {
         ...state,
@@ -41,5 +42,8 @@ const formSlice = createSlice({
     },
   },
 });
+
+export const { saveFormEmail, saveFormPassword, saveFormConfirmPassword } =
+  formSlice.actions;
 
 export default formSlice.reducer;

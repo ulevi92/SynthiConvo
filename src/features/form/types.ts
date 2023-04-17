@@ -8,11 +8,9 @@ type PasswordPatten =
 
 export type InitialState = {
   email: string | null;
-  emailPatten: RegExp;
   emailError: EmailError;
 
   password: string | null;
-  passwordPatten: RegExp;
   passwordError: PasswordPatten;
 
   confirmPassword: string | null;
