@@ -5,28 +5,12 @@ import { Button, Form } from "react-bootstrap";
 import { InputType } from "../../features/auth/authSlice.helper";
 import FormText from "./FormText";
 import { setModalType, setShowModal } from "../../features/global/globalSlice";
+import { useCallback } from "react";
 
 const AuthForm = () => {
   const modalType = useAppSelector((state) => state.global.modalType);
 
-  const inputs = useAppSelector((state) => state.auth.input);
-
   const dispatch = useAppDispatch();
-
-  const handleErrors = () => {
-    if (errors.email && errors.email?.type === "required")
-      return <FormText color='danger' message='please enter email' />;
-
-    if (errors.email?.type === "pattern")
-      return <FormText color='danger' message='please enter valid email' />;
-  };
-
-  const handleClose = () => {
-    dispatch(setShowModal(false));
-    dispatch(setModalType(null));
-  };
-
-  const btnName = modalType === "login" ? modalType : modalType;
 
   const {
     register,
@@ -34,6 +18,21 @@ const AuthForm = () => {
     watch,
     formState: { errors },
   } = useForm<InputType>();
+
+  const handleErrors = useCallback(() => {
+    if (errors.email && errors.email?.type === "required")
+      return <FormText color='danger' message='please enter email' />;
+
+    if (errors.email?.type === "pattern")
+      return <FormText color='danger' message='please enter valid email' />;
+  }, [errors]);
+
+  const handleClose = () => {
+    dispatch(setShowModal(false));
+    dispatch(setModalType(null));
+  };
+
+  const btnName = modalType === "login" ? modalType : modalType;
 
   const onSubmit: SubmitHandler<InputType> = (data) => console.log(data);
 
