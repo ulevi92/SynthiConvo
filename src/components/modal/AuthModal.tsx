@@ -41,7 +41,7 @@ const AuthModal = () => {
           close
         </Button>
 
-        <Button className='text-uppercase' variant='success'>
+        <Button className='text-uppercase' variant='success' type='submit'>
           {btnName}
         </Button>
       </Modal.Footer>
