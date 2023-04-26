@@ -20,7 +20,6 @@ const AuthForm = () => {
 
   const {
     handleSubmit,
-    watch,
     control,
     formState: { errors },
   } = useForm<FormInputs>({

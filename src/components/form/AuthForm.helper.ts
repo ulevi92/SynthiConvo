@@ -1,10 +1,10 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useStore } from "react-redux";
 import { setModalType, setShowModal } from "../../features/global/globalSlice";
 import { SubmitHandler, useFormState } from "react-hook-form";
 import FormText from "./FormText";
 import { useMemo } from "react";
 import { fetchSignUp } from "../../features/auth/authSlice";
-import { useAppSelector } from "../../store/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../store/reduxHooks";
 import { fetchSignIn } from "../../features/auth/authSlice";
 
 export interface FormInputs {
@@ -13,16 +13,15 @@ export interface FormInputs {
   confirmPassword: string;
 }
 
-const dispatch = useDispatch();
-
-const modalType = useAppSelector((state) => state.global.modalType);
-
 export const handleClose = () => {
+  const dispatch = useAppDispatch();
+
   dispatch(setShowModal(false));
   dispatch(setModalType(null));
 };
 
-export const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+export const onSubmit: SubmitHandler<FormInputs> = (data) => {
+  const modalType = useAppSelector((state) => state.global.modalType);
   //handle passwords
   if (data.confirmPassword !== data.password) return;
 
@@ -31,19 +30,9 @@ export const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     password: data.password,
   };
 
-  // if (data.confirmPassword !== data.password) return;
+  if (modalType === "login") fetchSignIn(emailAndPassword);
 
-  if (modalType === "login") {
-    fetchSignIn(emailAndPassword);
-
-    return;
-  }
-
-  if (modalType === "sign up") {
-    fetchSignUp(emailAndPassword);
-
-    return;
-  }
+  if (modalType === "sign up") fetchSignUp(emailAndPassword);
 };
 
 //validate email
