@@ -29,11 +29,11 @@ const PublicPage = () => {
   return (
     <>
       <Container className='d-flex flex-grow-1 flex-column'>
-        <Row className='flex-grow-1'>
-          <Col>
+        <Row className='flex-grow-1 align-items-center flex-row'>
+          <Col className='d-flex justify-content-end'>
             <Button onClick={handleOpenModal}>login</Button>
           </Col>
-          <Col>
+          <Col className='d-flex justify-content-start'>
             <Button onClick={handleOpenModal}>sign up</Button>
           </Col>
         </Row>
