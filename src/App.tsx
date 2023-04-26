@@ -6,35 +6,13 @@ import PublicPage from "./pages/PublicPage";
 import AppNavbar from "./components/layouts/navbar/AppNavbar";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { IpRegistry } from "./features/user/types";
+import { useAppDispatch } from "./store/reduxHooks";
+import { setUser } from "./features/user/userSlice";
 
 const key = import.meta.env.VITE_IPREGISTRY_API_KEY;
 
-interface GetIpRegistry {
-  ip: string;
-  security: {
-    is_vpm: boolean;
-    is_anonymous: boolean;
-    is_proxy: boolean;
-    is_relay: boolean;
-    is_cloud_provider: boolean;
-    is_tor: boolean;
-    is_tor_exit: boolean;
-  };
-
-  location: {
-    country: {
-      code: string;
-      name: string;
-    };
-  };
-
-  user_agent: {
-    header: string;
-    name: string;
-  };
-}
-
-const getIpRegistry = (): Promise<GetIpRegistry> =>
+const getIpRegistry = (): Promise<IpRegistry> =>
   fetch(`https://api.ipregistry.co/?key=${key}`).then((res) => res.json());
 
 function App() {
@@ -42,6 +20,15 @@ function App() {
     ["getIpRegistry"],
     getIpRegistry
   );
+
+  if (data) {
+  }
+
+  const dispatch = useAppDispatch();
+
+  if (isSuccess) {
+    dispatch(setUser(data));
+  }
 
   return (
     <Routes>

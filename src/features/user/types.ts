@@ -20,7 +20,7 @@ type IpRegistryUserAgaent = {
   name: string;
 };
 
-interface IpRegistry {
+export type IpRegistry = {
   ip: string;
   security: IpRegistrySecurity;
 
@@ -29,7 +29,7 @@ interface IpRegistry {
   };
 
   user_agent: IpRegistryUserAgaent;
-}
+};
 export type InitialState = {
   userIp: IpRegistry | null;
 };
