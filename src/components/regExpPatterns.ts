@@ -1,4 +1,4 @@
 export const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
 export const passwordPattern =
-  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
+  /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()-_=+])[A-Za-z\d!@#$%^&*()-_=+]{8,}$/;
