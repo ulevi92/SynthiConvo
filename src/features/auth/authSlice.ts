@@ -30,7 +30,9 @@ export const fetchSignIn = createAsyncThunk(
   "auth/fetchSignIn",
   async ({ email, password }: SignInAndUpPayload) => {
     const response = await signInWithEmailAndPassword(auth, email!, password!);
-    await sendEmailVerification(response.user);
+    if (!response.user.emailVerified)
+      await sendEmailVerification(response.user);
+
     return response.user;
   }
 );
@@ -60,7 +62,11 @@ export const verifyEmail = async () => {
   }
 };
 
-export const authStateChange = createAction<User | null>("auth/authState");
+export const authStateChange = createAction<{
+  uid: string;
+  displayName: string | null;
+  email: string | null;
+} | null>("auth/authState");
 
 const authSlice = createSlice({
   name: "auth",
@@ -80,12 +86,6 @@ const authSlice = createSlice({
       state.errorMessage = action.error.message;
     });
 
-    //check for auth
-    builder.addCase(authStateChange, (state, action) => {
-      state.status = "fulfilled";
-      state.user = action.payload;
-    });
-
     //signing up and sending a verification email
     builder
       .addCase(fetchSignUp.pending, (state) => {
@@ -100,10 +100,6 @@ const authSlice = createSlice({
         state.errorMessage = action.error.message;
       });
   },
-});
-
-auth.onAuthStateChanged((user) => {
-  store.dispatch(authStateChange(user));
 });
 
 export default authSlice.reducer;

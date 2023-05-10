@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { fetchSignUp } from "../../features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../store/reduxHooks";
 import { fetchSignIn } from "../../features/auth/authSlice";
+import store from "../../store/store";
 
 export interface FormInputs {
   email: string;
@@ -20,19 +21,27 @@ export const handleClose = () => {
   dispatch(setModalType(null));
 };
 
-export const onSubmit: SubmitHandler<FormInputs> = (data) => {
-  const modalType = useAppSelector((state) => state.global.modalType);
-  //handle passwords
-  if (data.confirmPassword !== data.password) return;
+export const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+  const state = store.getState();
+
+  const dispatch = store.dispatch;
 
   const emailAndPassword = {
     email: data.email,
     password: data.password,
   };
 
-  if (modalType === "login") fetchSignIn(emailAndPassword);
+  //handle login and login errors
+  if (state.global.modalType === "login") {
+    dispatch(fetchSignIn(emailAndPassword));
+    dispatch(setShowModal(false));
+  }
 
-  if (modalType === "sign up") fetchSignUp(emailAndPassword);
+  //handle sign up and sign up errors
+  if (state.global.modalType === "sign up") {
+    dispatch(fetchSignUp(emailAndPassword));
+    dispatch(setShowModal(false));
+  }
 };
 
 //validate email
