@@ -4,4 +4,5 @@ export const initialState: InitialState = {
   darkMode: false,
   showModal: false,
   modalType: null,
+  loading: true,
 };

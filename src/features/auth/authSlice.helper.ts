@@ -11,16 +11,16 @@ type CredentialError = string | undefined;
 
 type EmailVerificationMessage = string | null;
 
-type User = {
-  email: string | null;
-  displayName: string | null;
-  uid: string;
-  emailVerified: boolean;
-  providerId: string;
+export type SignInAndUpArguments = {
+  [key in keyof Pick<InputType, "email" | "password">]: InputType[key];
 };
 
 export type SignInAndUpPayload = {
-  [key in keyof Pick<InputType, "email" | "password">]: InputType[key];
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
+  emailVerified: boolean;
 };
 
 export type ChangePasswordPayload = Pick<InputType, "password">;
@@ -35,7 +35,11 @@ export type AuthSliceState = {
   emailVerificationMessage: EmailVerificationMessage;
   errorMessage: CredentialError;
   input: InputType;
-  user: User | null;
+  userUid: string;
+  userDisplayName: string | null;
+  userImg: string | null;
+  userEmail: string | null;
+  userEmailVerified: boolean;
 };
 
 export const initialState: AuthSliceState = {
@@ -47,6 +51,9 @@ export const initialState: AuthSliceState = {
     password: null,
   },
   errorMessage: undefined,
-
-  user: null,
+  userUid: "",
+  userDisplayName: "",
+  userImg: "",
+  userEmail: "",
+  userEmailVerified: false,
 };
