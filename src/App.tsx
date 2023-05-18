@@ -3,17 +3,16 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicPage from "./pages/PublicPage";
-import AppNavbar from "./components/layouts/navbar/AppNavbar";
+
 import { useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { IpRegistry } from "./features/user/types";
 import { useAppDispatch, useAppSelector } from "./store/reduxHooks";
-import { setUser } from "./features/user/userSlice";
-import store from "./store/store";
+
 import { auth } from "./firebase/firebase";
 import { setAuth } from "./features/auth/authSlice";
 import PublicRoute from "./routes/PublicRoute";
-import { onAuthStateChanged } from "firebase/auth";
+
 import { setLoading } from "./features/global/globalSlice";
 
 const key = import.meta.env.VITE_IPREGISTRY_API_KEY;
@@ -61,7 +60,7 @@ function App() {
     };
   }, []);
 
-  if (loading || isInitialLoad.current) return null; // will replaced with a loader component
+  if (loading || isInitialLoad.current) return null; // will be replaced with a loader component
 
   return (
     <Routes>
