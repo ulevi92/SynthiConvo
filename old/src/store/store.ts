@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "../features/auth/authSlice";
-import globalReducer from "../features/global/globalSlice";
-import userReducer from "../features/user/userSlice";
+import authReducer from "../../../ai-chat/features/auth/authSlice";
+import globalReducer from "../../../ai-chat/features/global/globalSlice";
+import userReducer from "../../../ai-chat/features/user/userSlice";
 
 const store = configureStore({
   reducer: {

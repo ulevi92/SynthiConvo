@@ -16,7 +16,9 @@ import PublicRoute from "./routes/PublicRoute";
 import { onAuthStateChanged } from "firebase/auth";
 import { setLoading } from "./features/global/globalSlice";
 
-const key = import.meta.env.VITE_IPREGISTRY_API_KEY;
+// const key = import.meta.env.VITE_IPREGISTRY_API_KEY;
+
+const key = "";
 
 const getIpRegistry = (): Promise<IpRegistry> =>
   fetch(`https://api.ipregistry.co/?key=${key}`).then((res) => res.json());
