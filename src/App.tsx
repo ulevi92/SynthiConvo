@@ -15,10 +15,10 @@ import PublicRoute from "./routes/PublicRoute";
 
 import { setLoading } from "./features/global/globalSlice";
 
-const key = import.meta.env.VITE_IPREGISTRY_API_KEY;
+// const key = import.meta.env.VITE_IPREGISTRY_API_KEY;
 
-const getIpRegistry = (): Promise<IpRegistry> =>
-  fetch(`https://api.ipregistry.co/?key=${key}`).then((res) => res.json());
+// const getIpRegistry = (): Promise<IpRegistry> =>
+// fetch(`https://api.ipregistry.co/?key=${key}`).then((res) => res.json());
 
 function App() {
   const dispatch = useAppDispatch();
@@ -55,9 +55,7 @@ function App() {
       }
     });
 
-    return () => {
-      unsubscribe();
-    };
+    return unsubscribe;
   }, []);
 
   if (loading || isInitialLoad.current) return null; // will be replaced with a loader component
