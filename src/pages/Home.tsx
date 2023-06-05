@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { useAppDispatch } from "../store/reduxHooks";
 import { fetchSignOut } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import { Loader } from "../components/Loader";
 
 const Home = () => {
   const dispatch = useAppDispatch();

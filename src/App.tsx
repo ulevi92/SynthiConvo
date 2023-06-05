@@ -14,6 +14,7 @@ import { setAuth } from "./features/auth/authSlice";
 import PublicRoute from "./routes/PublicRoute";
 
 import { setLoading } from "./features/global/globalSlice";
+import { Loader } from "./components/Loader";
 
 // const key = import.meta.env.VITE_IPREGISTRY_API_KEY;
 
@@ -58,15 +59,15 @@ function App() {
     return unsubscribe;
   }, []);
 
-  if (loading || isInitialLoad.current) return null; // will be replaced with a loader component
+  if (loading || isInitialLoad.current) return <Loader />;
 
   return (
     <Routes>
-      <Route path='/home' element={<PrivateRoute />}>
+      <Route path='/' element={<PrivateRoute />}>
         <Route index element={<Home />} />
       </Route>
 
-      <Route path='/' element={<PublicRoute />}>
+      <Route path='/login' element={<PublicRoute />}>
         <Route index element={<PublicPage />} />
       </Route>
 

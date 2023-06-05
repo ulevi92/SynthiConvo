@@ -7,41 +7,42 @@ import { fetchSignUp } from "../../features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../store/reduxHooks";
 import { fetchSignIn } from "../../features/auth/authSlice";
 import store from "../../store/store";
-
-export interface FormInputs {
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+import { FormInputs } from "./types";
 
 export const handleClose = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = store.dispatch;
 
   dispatch(setShowModal(false));
   dispatch(setModalType(null));
 };
 
-export const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+export const onSubmit: SubmitHandler<FormInputs> = async ({
+  email,
+  password,
+  confirmPassword,
+}) => {
   const state = store.getState();
 
   const dispatch = store.dispatch;
 
   const emailAndPassword = {
-    email: data.email,
-    password: data.password,
+    email,
+    password,
   };
-
-  //handle login and login errors
-  if (state.global.modalType === "login") {
-    dispatch(fetchSignIn(emailAndPassword));
-    dispatch(setShowModal(false));
-  }
 
   //handle sign up and sign up errors
   if (state.global.modalType === "sign up") {
+    if (confirmPassword !== password) {
+      //handle password not match error
+    }
+
     dispatch(fetchSignUp(emailAndPassword));
     dispatch(setShowModal(false));
   }
+
+  //handle login and login errors
+  dispatch(fetchSignIn(emailAndPassword));
+  dispatch(setShowModal(false));
 };
 
 //validate email
