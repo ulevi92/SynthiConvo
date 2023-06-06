@@ -12,9 +12,10 @@ import { useMemo } from "react";
 interface Props {
   name: "email" | "password" | "confirmPassword";
   control: Control<FormInputs, any>;
+  password?: string;
 }
 
-export const FormController = ({ name, control }: Props) => {
+export const FormController = ({ name, control, password }: Props) => {
   const modalType = useAppSelector((state) => state.global.modalType);
 
   const pattern =
@@ -31,7 +32,15 @@ export const FormController = ({ name, control }: Props) => {
       <Controller
         name={name}
         control={control}
-        rules={{ required: true, pattern: pattern }}
+        rules={
+          name === "confirmPassword"
+            ? {
+                required: "Confirm password is required",
+                validate: (value) =>
+                  value === password || "Passwords do not match.",
+              }
+            : { required: true, pattern: pattern }
+        }
         render={({ field }) => (
           <Form.Group>
             <Form.Label>{name}</Form.Label>

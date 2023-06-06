@@ -50,4 +50,4 @@ export const emailValidation = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 //validate password, at least 8 chars, 1 upper, 1 lower, 1 number, 1 symbol
 export const passwordValidation =
-  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^\w\d\s:])([^\s]){8,}$/;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-+_!@#$%^&*.,?])[A-Za-z\d\-+_!@#$%^&*.,?]{8,}$/;
