@@ -1,7 +1,7 @@
 import { useDispatch, useStore } from "react-redux";
 import { setModalType, setShowModal } from "../../features/global/globalSlice";
 import { SubmitHandler, useFormState } from "react-hook-form";
-import FormText from "./FormText";
+import FormErrorText from "./FormErrorText";
 import { useMemo } from "react";
 import { fetchSignUp } from "../../features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../store/reduxHooks";

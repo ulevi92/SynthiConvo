@@ -2,12 +2,13 @@ import { useForm } from "react-hook-form";
 import { useAppSelector } from "../../store/reduxHooks";
 import { Button, Form } from "react-bootstrap";
 
-import FormText from "./FormText";
+import FormErrorText from "./FormErrorText";
 import { useMemo } from "react";
 import { handleClose, onSubmit } from "./AuthForm.helper";
 import { FormController } from "./FormController";
 import { FormInputs } from "./types";
 import { FormButton } from "./FormButton";
+import { FormErrors } from "./FormErrors";
 
 const AuthForm = () => {
   const modalType = useAppSelector((state) => state.global.modalType);
@@ -37,6 +38,8 @@ const AuthForm = () => {
       {modalType === "sign up" && (
         <FormController name='confirmPassword' control={control} />
       )}
+
+      <br />
 
       {/* exit button */}
       <FormButton btnTask='close' handleButton={handleClose} />

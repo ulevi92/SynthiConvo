@@ -4,9 +4,10 @@ import { Form } from "react-bootstrap";
 
 import type { Control } from "react-hook-form";
 import type { FormInputs } from "./types";
-import { FormErrors } from "./FormErrors";
+
 import store from "../../store/store";
 import { useAppSelector } from "../../store/reduxHooks";
+import { useMemo } from "react";
 
 interface Props {
   name: "email" | "password" | "confirmPassword";
@@ -25,19 +26,22 @@ export const FormController = ({ name, control }: Props) => {
 
   const inputType = name === "email" ? "email" : "password";
 
-  return (
-    <Controller
-      name={name}
-      control={control}
-      rules={{ required: true, pattern: pattern }}
-      render={({ field }) => (
-        <Form.Group>
-          <Form.Label>{name}</Form.Label>
-          <Form.Control type={inputType} {...field} />
-
-          <FormErrors />
-        </Form.Group>
-      )}
-    />
+  const context = useMemo(
+    () => (
+      <Controller
+        name={name}
+        control={control}
+        rules={{ required: true, pattern: pattern }}
+        render={({ field }) => (
+          <Form.Group>
+            <Form.Label>{name}</Form.Label>
+            <Form.Control type={inputType} {...field} />
+          </Form.Group>
+        )}
+      />
+    ),
+    []
   );
+
+  return context;
 };

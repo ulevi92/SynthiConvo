@@ -1,19 +1,27 @@
-import { useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { FieldErrors } from "react-hook-form";
 import { FormInputs } from "./types";
-import FormText from "./FormText";
+import FormErrorText from "./FormErrorText";
 
-export const FormErrors = () => {
-  const {
-    formState: { errors },
-  } = useForm<FormInputs>();
+interface Props {
+  errors: FieldErrors<FormInputs>;
+  inputType: "email" | "password" | "confirmPassword";
+}
 
-  const context = useMemo(() => {
-    if (errors.email?.type === "pattern")
-      return <FormText message='Not Valid Email' color='danger' />;
+export const FormErrors = ({ errors, inputType }: Props) => {
+  //handle errors before submiting
 
-    return <></>;
-  }, []);
+  if (errors.email?.type === "pattern")
+    return <FormErrorText message='email error: not a valid email' />;
 
-  return context;
+  return (
+    <>
+      {errors.email?.type === "pattern" && (
+        <FormErrorText message='Email error: not a valid email' />
+      )}
+
+      {errors.password?.type === "pattern" && (
+        <FormErrorText message='Password error: password must contain at least 8 characters with: 1 uppercase, 1 lowercase, 1 symbol, and a number' />
+      )}
+    </>
+  );
 };
