@@ -27,6 +27,8 @@ export const FormController = ({ name, control, password }: Props) => {
 
   const inputType = name === "email" ? "email" : "password";
 
+  const formLabel = name === "confirmPassword" ? "confirm password" : name;
+
   const context = useMemo(
     () => (
       <Controller
@@ -43,7 +45,7 @@ export const FormController = ({ name, control, password }: Props) => {
         }
         render={({ field }) => (
           <Form.Group>
-            <Form.Label>{name}</Form.Label>
+            <Form.Label className='text-capitalize'>{formLabel}</Form.Label>
             <Form.Control type={inputType} {...field} />
           </Form.Group>
         )}
