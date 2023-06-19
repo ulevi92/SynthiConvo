@@ -9,9 +9,25 @@ import { FormController } from "./FormController";
 import { FormInputs } from "./types";
 import { FormButton } from "./FormButton";
 import { FormErrors } from "./FormErrors";
+import { useMemo } from "react";
 
 const AuthForm = () => {
   const modalType = useAppSelector((state) => state.global.modalType);
+  const rejectedMessage = useAppSelector((state) => state.auth.errorMessage);
+
+  const renderRejecteedMessage = useMemo(() => {
+    if (!!rejectedMessage) {
+      const userAlreadySignedUp = rejectedMessage.match("email-already-in-use");
+
+      return userAlreadySignedUp ? (
+        <FormErrorText message="you're is already exists" />
+      ) : (
+        <></>
+      );
+    }
+
+    return <></>;
+  }, [rejectedMessage]);
 
   const {
     handleSubmit,
@@ -63,6 +79,9 @@ const AuthForm = () => {
 
       {/* submit button */}
       <FormButton btnTask='submit' handleButton={handleSubmit(onSubmit)} />
+
+      <br />
+      {renderRejecteedMessage}
     </Form>
   );
 };

@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import PrivateRoute from "./routes/PrivateRoute";
+
 import PublicPage from "./pages/PublicPage";
 
 import { useEffect, useRef } from "react";
@@ -11,10 +11,11 @@ import { useAppDispatch, useAppSelector } from "./store/reduxHooks";
 
 import { auth } from "./firebase/firebase";
 import { setAuth } from "./features/auth/authSlice";
-import PublicRoute from "./routes/PublicRoute";
 
 import { setLoading } from "./features/global/globalSlice";
 import { Loader } from "./components/Loader";
+import PrivateRoute from "./routes/PrivateRoute";
+import PublicRoute from "./routes/PublicRoute";
 
 // const key = import.meta.env.VITE_IPREGISTRY_API_KEY;
 

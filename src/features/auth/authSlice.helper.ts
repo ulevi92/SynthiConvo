@@ -52,8 +52,8 @@ export const initialState: AuthSliceState = {
   },
   errorMessage: undefined,
   userUid: "",
-  userDisplayName: "",
-  userImg: "",
-  userEmail: "",
+  userDisplayName: null,
+  userImg: null,
+  userEmail: null,
   userEmailVerified: false,
 };
