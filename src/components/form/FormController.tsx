@@ -37,9 +37,9 @@ export const FormController = ({ name, control, password }: Props) => {
         rules={
           name === "confirmPassword"
             ? {
-                required: "Confirm password is required",
-                validate: (value) =>
-                  value === password || "Passwords do not match.",
+                validate: (value, formInput) => {
+                  return value === formInput.password;
+                },
               }
             : { required: true, pattern: pattern }
         }
