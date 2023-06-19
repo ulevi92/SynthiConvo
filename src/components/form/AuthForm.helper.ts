@@ -32,17 +32,11 @@ export const onSubmit: SubmitHandler<FormInputs> = async ({
 
   //handle sign up and sign up errors
   if (state.global.modalType === "sign up") {
-    if (confirmPassword !== password) {
-      //handle password not match error
-    }
-
     dispatch(fetchSignUp(emailAndPassword));
-    dispatch(setShowModal(false));
   }
 
   //handle login and login errors
   dispatch(fetchSignIn(emailAndPassword));
-  dispatch(setShowModal(false));
 };
 
 //validate email
