@@ -1,6 +1,22 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { initialState } from "./globalSlice.helper";
-import { SetModalTypePayload } from "./types";
+
+type ModalType = "login" | "sign up" | null;
+
+type InitialState = {
+  darkMode: boolean;
+  showModal: boolean;
+  modalType: ModalType;
+  loading: boolean;
+};
+
+const initialState: InitialState = {
+  darkMode: false,
+  showModal: false,
+  modalType: null,
+  loading: true,
+};
+
+type SetModalTypePayload = ModalType;
 
 const globalSlice = createSlice({
   name: "global",

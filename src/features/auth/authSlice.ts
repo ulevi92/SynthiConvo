@@ -9,11 +9,43 @@ import {
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { auth } from "../../firebase/firebase";
-import {
+import type {
+  CredentialError,
+  EmailVerificationMessage,
+  InputType,
   SignInAndUpArguments,
   SignInAndUpPayload,
-  initialState,
+  Status,
 } from "./authSlice.helper";
+
+export type AuthSliceState = {
+  status: Status;
+  isAuth: boolean;
+  emailVerificationMessage: EmailVerificationMessage;
+  errorMessage: CredentialError;
+  input: InputType;
+  userUid: string;
+  userDisplayName: string | null;
+  userImg: string | null;
+  userEmail: string | null;
+  userEmailVerified: boolean;
+};
+
+const initialState: AuthSliceState = {
+  status: "idle",
+  isAuth: false,
+  emailVerificationMessage: null,
+  input: {
+    email: null,
+    password: null,
+  },
+  errorMessage: undefined,
+  userUid: "",
+  userDisplayName: null,
+  userImg: null,
+  userEmail: null,
+  userEmailVerified: false,
+};
 
 export const fetchSignIn = createAsyncThunk(
   "auth/fetchSignIn",
