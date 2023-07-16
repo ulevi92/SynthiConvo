@@ -37,7 +37,7 @@ const globalSlice = createSlice({
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
-    setGlobalReset() {
+    cleanGlobalCache() {
       return { ...initialState, loading: false };
     },
   },
@@ -48,6 +48,6 @@ export const {
   setModalType,
   setShowModal,
   setLoading,
-  setGlobalReset,
+  cleanGlobalCache,
 } = globalSlice.actions;
 export default globalSlice.reducer;
