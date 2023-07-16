@@ -9,7 +9,7 @@ export const Loader = ({ children }: PropsWithChildren) => {
   const content = useMemo(() => {
     if (loading)
       return (
-        <Container fluid className='h-100 opacity'>
+        <Container fluid className={`loader-container`}>
           <Row className='align-items-center h-100 z-3'>
             <Col className='d-flex justify-content-center'>
               <div className='dot dot-1'></div>

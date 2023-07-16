@@ -10,8 +10,11 @@ import { FormInputs } from "./types";
 import { FormButton } from "./FormButton";
 import { FormErrors } from "./FormErrors";
 import { useCallback, useMemo } from "react";
-import { fetchSignIn, fetchSignUp } from "../../redux/features/auth/authSlice";
-import { setGlobalReset } from "../../redux/features/global/globalSlice";
+import {
+  fetchResetPassword,
+  fetchSignIn,
+  fetchSignUp,
+} from "../../redux/features/auth/authSlice";
 
 const AuthForm = () => {
   const modalType = useAppSelector((state) => state.global.modalType);
@@ -67,21 +70,14 @@ const AuthForm = () => {
   const passwordMatches = watchedConfirmPassword === watchedPassword;
 
   const onSubmit: SubmitHandler<FormInputs> = useCallback(
-    ({ email, password }) => {
+    async ({ email, password }) => {
       const credentials = { email, password };
 
-      if (!rejectedMessage) {
-        modalType === "login" && dispatch(fetchSignIn(credentials));
-        modalType === "sign up" && dispatch(fetchSignUp(credentials));
-      }
-
-      if (rejectedMessage) {
-        modalType === "login" && dispatch(fetchSignIn(credentials));
-
-        modalType === "sign up" && dispatch(fetchSignUp(credentials));
-      }
+      modalType === "login" && dispatch(fetchSignIn(credentials));
+      modalType === "sign up" && dispatch(fetchSignUp(credentials));
+      modalType === "passwordReminder" && dispatch(fetchResetPassword(email));
     },
-    [rejectedMessage]
+    []
   );
 
   return (
