@@ -13,7 +13,7 @@ import { auth } from "./firebase/firebase";
 import { setAuth } from "./redux/features/auth/authSlice";
 
 import { setLoading } from "./redux/features/global/globalSlice";
-import { Loader } from "./components/Loader";
+import { Loader } from "./components/loader/Loader";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 
