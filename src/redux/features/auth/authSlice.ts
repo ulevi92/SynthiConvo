@@ -8,7 +8,7 @@ import {
 
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { auth } from "../../firebase/firebase";
+import { auth } from "../../../firebase/firebase";
 import type {
   CredentialError,
   EmailVerificationMessage,

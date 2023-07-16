@@ -1,7 +1,10 @@
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 
-import { useAppDispatch, useAppSelector } from "../store/reduxHooks";
-import { setModalType, setShowModal } from "../features/global/globalSlice";
+import { useAppDispatch, useAppSelector } from "../redux/reduxHooks";
+import {
+  setModalType,
+  setShowModal,
+} from "../redux/features/global/globalSlice";
 import AuthModal from "../components/modal/AuthModal";
 
 const PublicPage = () => {

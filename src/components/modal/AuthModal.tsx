@@ -1,6 +1,9 @@
 import { Button, Modal } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "../../store/reduxHooks";
-import { setModalType, setShowModal } from "../../features/global/globalSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
+import {
+  setModalType,
+  setShowModal,
+} from "../../redux/features/global/globalSlice";
 import AuthForm from "../form/AuthForm";
 import { Provider } from "react-redux";
 

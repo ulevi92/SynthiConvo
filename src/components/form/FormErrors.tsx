@@ -2,7 +2,7 @@ import { FieldErrors } from "react-hook-form";
 import { FormInputs } from "./types";
 import FormErrorText from "./FormErrorText";
 import { useMemo } from "react";
-import { useAppSelector } from "../../store/reduxHooks";
+import { useAppSelector } from "../../redux/reduxHooks";
 
 interface Props {
   errors: FieldErrors<FormInputs>;

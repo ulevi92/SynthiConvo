@@ -7,12 +7,12 @@ import PublicPage from "./pages/PublicPage";
 import { useEffect, useRef } from "react";
 // import { useQuery } from "@tanstack/react-query";
 // import { IpRegistry } from "./features/user/types";
-import { useAppDispatch, useAppSelector } from "./store/reduxHooks";
+import { useAppDispatch, useAppSelector } from "./redux/reduxHooks";
 
 import { auth } from "./firebase/firebase";
-import { setAuth } from "./features/auth/authSlice";
+import { setAuth } from "./redux/features/auth/authSlice";
 
-import { setLoading } from "./features/global/globalSlice";
+import { setLoading } from "./redux/features/global/globalSlice";
 import { Loader } from "./components/Loader";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";

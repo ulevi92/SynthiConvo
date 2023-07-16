@@ -1,12 +1,15 @@
 import { useDispatch, useStore } from "react-redux";
-import { setModalType, setShowModal } from "../../features/global/globalSlice";
+import {
+  setModalType,
+  setShowModal,
+} from "../../redux/features/global/globalSlice";
 import { SubmitHandler, useFormState } from "react-hook-form";
 import FormErrorText from "./FormErrorText";
 import { useMemo } from "react";
-import { fetchSignUp } from "../../features/auth/authSlice";
-import { useAppDispatch, useAppSelector } from "../../store/reduxHooks";
-import { fetchSignIn } from "../../features/auth/authSlice";
-import store from "../../store/store";
+import { fetchSignUp } from "../../redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
+import { fetchSignIn } from "../../redux/features/auth/authSlice";
+import store from "../../redux/store";
 import { FormInputs } from "./types";
 
 export const handleClose = () => {

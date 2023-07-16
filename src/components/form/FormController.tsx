@@ -5,8 +5,8 @@ import { Form } from "react-bootstrap";
 import type { Control } from "react-hook-form";
 import type { FormInputs } from "./types";
 
-import store from "../../store/store";
-import { useAppSelector } from "../../store/reduxHooks";
+import store from "../../redux/store";
+import { useAppSelector } from "../../redux/reduxHooks";
 import { useMemo } from "react";
 
 interface Props {

@@ -1,6 +1,6 @@
 // AuthForm.tsx
 import { useForm } from "react-hook-form";
-import { useAppSelector } from "../../store/reduxHooks";
+import { useAppSelector } from "../../redux/reduxHooks";
 import { Button, Form } from "react-bootstrap";
 
 import FormErrorText from "./FormErrorText";
@@ -14,20 +14,32 @@ import { useMemo } from "react";
 const AuthForm = () => {
   const modalType = useAppSelector((state) => state.global.modalType);
   const rejectedMessage = useAppSelector((state) => state.auth.errorMessage);
+  // const isFormRejected = useAppSelector((state) => state.auth.status);
 
-  const renderRejecteedMessage = useMemo(() => {
+  const renderRejectedMessage = () => {
     if (!!rejectedMessage) {
       const userAlreadySignedUp = rejectedMessage.match("email-already-in-use");
-
-      return userAlreadySignedUp ? (
-        <FormErrorText message="you're is already exists" />
-      ) : (
-        <></>
+      const wrongPassword = rejectedMessage.match("wrong-password");
+      const userNotFound = rejectedMessage.match("user-not-found");
+      const networkRequestFailed = rejectedMessage.match(
+        "network-request-failed"
       );
+
+      if (userAlreadySignedUp) {
+        return <FormErrorText message='your email is already exists' />;
+      }
+
+      if (wrongPassword || userNotFound) {
+        return <FormErrorText message='wrong input data' />;
+      }
+
+      if (networkRequestFailed) {
+        return <FormErrorText message='check your internet connection' />;
+      }
     }
 
     return <></>;
-  }, [rejectedMessage]);
+  };
 
   const {
     handleSubmit,
@@ -53,7 +65,9 @@ const AuthForm = () => {
       <FormController name='email' control={control} />
 
       {/* password */}
-      <FormController name='password' control={control} />
+      {modalType === "login" && (
+        <FormController name='password' control={control} />
+      )}
 
       {/* confirm password */}
       {modalType === "sign up" && (
@@ -81,7 +95,7 @@ const AuthForm = () => {
       <FormButton btnTask='submit' handleButton={handleSubmit(onSubmit)} />
 
       <br />
-      {renderRejecteedMessage}
+      {renderRejectedMessage()}
     </Form>
   );
 };
