@@ -184,9 +184,8 @@ const authSlice = createSlice({
       .addCase(fetchSignOut.pending, (state) => {
         state.status = "pending";
       })
-      .addCase(fetchSignOut.fulfilled, (state) => {
-        state.status = "fulfilled";
-        state.isAuth = false;
+      .addCase(fetchSignOut.fulfilled, () => {
+        return { ...initialState, status: "fulfilled" };
       })
       .addCase(fetchSignOut.rejected, (state, action) => {
         state.errorMessage = action.error.message;

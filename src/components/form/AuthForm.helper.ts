@@ -1,5 +1,6 @@
 import { useDispatch, useStore } from "react-redux";
 import {
+  setLoading,
   setModalType,
   setShowModal,
 } from "../../redux/features/global/globalSlice";
@@ -32,6 +33,8 @@ export const onSubmit: SubmitHandler<FormInputs> = async ({
     email,
     password,
   };
+
+  dispatch(setLoading(true));
 
   //handle sign up and sign up errors
   if (state.global.modalType === "sign up") {

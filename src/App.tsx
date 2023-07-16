@@ -60,7 +60,7 @@ function App() {
     return unsubscribe;
   }, []);
 
-  if (loading || isInitialLoad.current) return <Loader />;
+  if (loading && isInitialLoad.current) return <Loader />;
 
   return (
     <Routes>
