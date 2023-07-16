@@ -4,34 +4,51 @@ import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import { Form } from "react-bootstrap";
 
 import FormErrorText from "./FormErrorText";
-import { handleClose } from "./AuthForm.helper";
+import { handleClose, onSubmit } from "./AuthForm.helper";
 import { FormController } from "./FormController";
 import { FormInputs } from "./types";
 import { FormButton } from "./FormButton";
 import { FormErrors } from "./FormErrors";
-import { useCallback, useMemo } from "react";
+import {
+  ModalType,
+  setModalType,
+} from "../../redux/features/global/globalSlice";
 import {
   fetchResetPassword,
   fetchSignIn,
   fetchSignUp,
 } from "../../redux/features/auth/authSlice";
+import { useCallback } from "react";
 
 const AuthForm = () => {
   const modalType = useAppSelector((state) => state.global.modalType);
-  const rejectedMessage = useAppSelector((state) => state.auth.errorMessage);
-
-  // const isFormRejected = useAppSelector((state) => state.auth.status);
+  const { errorMessage, status } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
+  const {
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+  const watchedPassword = watch("password");
+  const watchedConfirmPassword = watch("confirmPassword");
+
+  const passwordMatches = watchedConfirmPassword === watchedPassword;
+
   const renderRejectedMessage = () => {
-    if (!!rejectedMessage) {
-      const userAlreadySignedUp = rejectedMessage.match("email-already-in-use");
-      const wrongPassword = rejectedMessage.match("wrong-password");
-      const userNotFound = rejectedMessage.match("user-not-found");
-      const networkRequestFailed = rejectedMessage.match(
-        "network-request-failed"
-      );
-      const tooManyRequests = rejectedMessage.match("too-many-requests");
+    if (!!errorMessage) {
+      const userAlreadySignedUp = errorMessage.match("email-already-in-use");
+      const wrongPassword = errorMessage.match("wrong-password");
+      const userNotFound = errorMessage.match("user-not-found");
+      const networkRequestFailed = errorMessage.match("network-request-failed");
+      const tooManyRequests = errorMessage.match("too-many-requests");
 
       if (userAlreadySignedUp)
         return <FormErrorText message='your email is already exists' />;
@@ -51,31 +68,85 @@ const AuthForm = () => {
     return <></>;
   };
 
-  const {
-    handleSubmit,
-    control,
-    watch,
-    formState: { errors },
-  } = useForm<FormInputs>({
-    defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
+  const renderFormClientHelper = () => {
+    if (modalType === "login")
+      return (
+        <>
+          {status === "error" && <br />}
+          <FormErrorText
+            color='primary'
+            modalType={"sign up"}
+            className='add-pointer-cursor fw-bolder'
+            message="don't have an account? sign up now"
+          />
 
-  const watchedPassword = watch("password");
-  const watchedConfirmPassword = watch("confirmPassword");
+          <br />
+          <FormErrorText
+            color='primary'
+            modalType={"passwordReminder"}
+            className='add-pointer-cursor fw-bolder'
+            message='forgot your password?'
+          />
+        </>
+      );
 
-  const passwordMatches = watchedConfirmPassword === watchedPassword;
+    if (modalType === "sign up")
+      return (
+        <>
+          {status === "error" && <br />}
+          <FormErrorText
+            color='primary'
+            modalType={"login"}
+            className='add-pointer-cursor fw-bolder'
+            message='login to your account'
+          />
 
-  const onSubmit: SubmitHandler<FormInputs> = ({ email, password }) => {
-    const credentials = { email, password };
+          <br />
+          <FormErrorText
+            color='primary'
+            modalType={"passwordReminder"}
+            className='add-pointer-cursor fw-bolder'
+            message='forgot your password?'
+          />
+        </>
+      );
 
-    modalType === "login" && dispatch(fetchSignIn(credentials));
-    modalType === "sign up" && dispatch(fetchSignUp(credentials));
-    modalType === "passwordReminder" && dispatch(fetchResetPassword(email));
+    return (
+      <>
+        {status === "error" && <br />}
+        <FormErrorText
+          color='primary'
+          modalType={"sign up"}
+          className='add-pointer-cursor fw-bolder'
+          message="don't have an account? sign up now"
+        />
+        <br />
+        <FormErrorText
+          color='primary'
+          modalType={"login"}
+          className='add-pointer-cursor fw-bolder'
+          message='login to your account?'
+        />
+      </>
+    );
   };
+
+  const onSubmit: SubmitHandler<FormInputs> = useCallback(
+    ({ email, password }) => {
+      const credentials = { email, password };
+
+      if (modalType === "passwordReminder") {
+        dispatch(fetchResetPassword(email));
+      }
+
+      if (modalType === "sign up") {
+        dispatch(fetchSignUp(credentials));
+      }
+
+      dispatch(fetchSignIn(credentials));
+    },
+    [modalType]
+  );
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -105,6 +176,8 @@ const AuthForm = () => {
       />
 
       {renderRejectedMessage()}
+
+      {renderFormClientHelper()}
       <br />
 
       {/* exit button */}

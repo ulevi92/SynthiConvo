@@ -25,9 +25,15 @@ export const handleClose = () => {
 export const onSubmit: SubmitHandler<FormInputs> = ({ email, password }) => {
   const credentials = { email, password };
 
-  modalType === "login" && dispatch(fetchSignIn(credentials));
-  modalType === "sign up" && dispatch(fetchSignUp(credentials));
-  modalType === "passwordReminder" && dispatch(fetchResetPassword(email));
+  if (modalType === "passwordReminder") {
+    dispatch(fetchResetPassword(email));
+  }
+
+  if (modalType === "sign up") {
+    dispatch(fetchSignUp(credentials));
+  }
+
+  dispatch(fetchSignIn(credentials));
 };
 
 //validate email
