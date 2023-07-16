@@ -1,41 +1,33 @@
 import {
+  cleanGlobalCache,
   setModalType,
   setShowModal,
 } from "../../redux/features/global/globalSlice";
 import { SubmitHandler } from "react-hook-form";
 
-import { fetchSignUp } from "../../redux/features/auth/authSlice";
+import {
+  cleanAuthCache,
+  fetchResetPassword,
+  fetchSignUp,
+} from "../../redux/features/auth/authSlice";
 
 import { fetchSignIn } from "../../redux/features/auth/authSlice";
 import store from "../../redux/store";
 import { FormInputs } from "./types";
+const dispatch = store.dispatch;
+const modalType = store.getState().global.modalType;
 
 export const handleClose = () => {
-  const dispatch = store.dispatch;
-
-  dispatch(setShowModal(false));
-  dispatch(setModalType(null));
+  dispatch(cleanGlobalCache());
+  dispatch(cleanAuthCache());
 };
 
-export const onSubmit: SubmitHandler<FormInputs> = async ({
-  email,
-  password,
-}) => {
-  const state = store.getState();
-  const dispatch = store.dispatch;
+export const onSubmit: SubmitHandler<FormInputs> = ({ email, password }) => {
+  const credentials = { email, password };
 
-  const emailAndPassword = {
-    email,
-    password,
-  };
-
-  //handle sign up and sign up errors
-  if (state.global.modalType === "sign up") {
-    dispatch(fetchSignUp(emailAndPassword));
-  }
-
-  //handle login and login errors
-  await dispatch(fetchSignIn(emailAndPassword));
+  modalType === "login" && dispatch(fetchSignIn(credentials));
+  modalType === "sign up" && dispatch(fetchSignUp(credentials));
+  modalType === "passwordReminder" && dispatch(fetchResetPassword(email));
 };
 
 //validate email

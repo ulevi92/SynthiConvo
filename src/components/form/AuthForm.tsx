@@ -1,7 +1,7 @@
 // AuthForm.tsx
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 import FormErrorText from "./FormErrorText";
 import { handleClose } from "./AuthForm.helper";
@@ -69,16 +69,13 @@ const AuthForm = () => {
 
   const passwordMatches = watchedConfirmPassword === watchedPassword;
 
-  const onSubmit: SubmitHandler<FormInputs> = useCallback(
-    async ({ email, password }) => {
-      const credentials = { email, password };
+  const onSubmit: SubmitHandler<FormInputs> = ({ email, password }) => {
+    const credentials = { email, password };
 
-      modalType === "login" && dispatch(fetchSignIn(credentials));
-      modalType === "sign up" && dispatch(fetchSignUp(credentials));
-      modalType === "passwordReminder" && dispatch(fetchResetPassword(email));
-    },
-    []
-  );
+    modalType === "login" && dispatch(fetchSignIn(credentials));
+    modalType === "sign up" && dispatch(fetchSignUp(credentials));
+    modalType === "passwordReminder" && dispatch(fetchResetPassword(email));
+  };
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -107,6 +104,7 @@ const AuthForm = () => {
         passwordMatches={passwordMatches}
       />
 
+      {renderRejectedMessage()}
       <br />
 
       {/* exit button */}
@@ -114,9 +112,6 @@ const AuthForm = () => {
 
       {/* submit button */}
       <FormButton btnTask='submit' handleButton={handleSubmit(onSubmit)} />
-
-      <br />
-      {renderRejectedMessage()}
     </Form>
   );
 };
