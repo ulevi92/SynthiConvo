@@ -5,8 +5,8 @@ import NotFound from "./pages/NotFound";
 import PublicPage from "./pages/PublicPage";
 
 import { useEffect, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { IpRegistry } from "./features/user/types";
+// import { useQuery } from "@tanstack/react-query";
+// import { IpRegistry } from "./features/user/types";
 import { useAppDispatch, useAppSelector } from "./store/reduxHooks";
 
 import { auth } from "./firebase/firebase";
