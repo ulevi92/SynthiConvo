@@ -132,6 +132,10 @@ const authSlice = createSlice({
         state.userUid = uid;
       }
     },
+
+    cleanAuthCache(state) {
+      return { ...state, errorMessage: undefined, status: "idle" };
+    },
   },
   extraReducers(builder) {
     //signing in
@@ -211,5 +215,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setAuth } = authSlice.actions;
+export const { setAuth, cleanAuthCache } = authSlice.actions;
 export default authSlice.reducer;
