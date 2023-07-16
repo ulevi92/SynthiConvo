@@ -4,7 +4,7 @@ import NotFound from "./pages/NotFound";
 
 import PublicPage from "./pages/PublicPage";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 // import { useQuery } from "@tanstack/react-query";
 // import { IpRegistry } from "./features/user/types";
 import { useAppDispatch, useAppSelector } from "./redux/reduxHooks";
@@ -60,20 +60,20 @@ function App() {
     return unsubscribe;
   }, []);
 
-  if (loading || isInitialLoad.current) return <Loader />;
-
   return (
-    <Routes>
-      <Route path='/' element={<PrivateRoute />}>
-        <Route index element={<Home />} />
-      </Route>
+    <Loader>
+      <Routes>
+        <Route path='/' element={<PrivateRoute />}>
+          <Route index element={<Home />} />
+        </Route>
 
-      <Route path='/login' element={<PublicRoute />}>
-        <Route index element={<PublicPage />} />
-      </Route>
+        <Route path='/login' element={<PublicRoute />}>
+          <Route index element={<PublicPage />} />
+        </Route>
 
-      <Route path='/*' element={<NotFound />} />
-    </Routes>
+        <Route path='/*' element={<NotFound />} />
+      </Routes>
+    </Loader>
   );
 }
 
