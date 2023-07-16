@@ -1,14 +1,11 @@
-import { useDispatch, useStore } from "react-redux";
 import {
-  setLoading,
   setModalType,
   setShowModal,
 } from "../../redux/features/global/globalSlice";
-import { SubmitHandler, useFormState } from "react-hook-form";
-import FormErrorText from "./FormErrorText";
-import { useMemo } from "react";
+import { SubmitHandler } from "react-hook-form";
+
 import { fetchSignUp } from "../../redux/features/auth/authSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
+
 import { fetchSignIn } from "../../redux/features/auth/authSlice";
 import store from "../../redux/store";
 import { FormInputs } from "./types";
@@ -23,10 +20,8 @@ export const handleClose = () => {
 export const onSubmit: SubmitHandler<FormInputs> = async ({
   email,
   password,
-  confirmPassword,
 }) => {
   const state = store.getState();
-
   const dispatch = store.dispatch;
 
   const emailAndPassword = {
@@ -34,15 +29,13 @@ export const onSubmit: SubmitHandler<FormInputs> = async ({
     password,
   };
 
-  dispatch(setLoading(true));
-
   //handle sign up and sign up errors
   if (state.global.modalType === "sign up") {
     dispatch(fetchSignUp(emailAndPassword));
   }
 
   //handle login and login errors
-  dispatch(fetchSignIn(emailAndPassword));
+  await dispatch(fetchSignIn(emailAndPassword));
 };
 
 //validate email

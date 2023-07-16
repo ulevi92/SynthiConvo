@@ -25,7 +25,6 @@ import PublicRoute from "./routes/PublicRoute";
 function App() {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector((state) => state.auth.isAuth);
-  const loading = useAppSelector((state) => state.global.loading);
   const isInitialLoad = useRef(true); // Track initial load
 
   // const { data, isLoading, isError, isSuccess } = useQuery(

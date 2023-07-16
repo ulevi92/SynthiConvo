@@ -1,20 +1,24 @@
 // AuthForm.tsx
-import { useForm } from "react-hook-form";
-import { useAppSelector } from "../../redux/reduxHooks";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import { Button, Form } from "react-bootstrap";
 
 import FormErrorText from "./FormErrorText";
-import { handleClose, onSubmit } from "./AuthForm.helper";
+import { handleClose } from "./AuthForm.helper";
 import { FormController } from "./FormController";
 import { FormInputs } from "./types";
 import { FormButton } from "./FormButton";
 import { FormErrors } from "./FormErrors";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
+import { fetchSignIn, fetchSignUp } from "../../redux/features/auth/authSlice";
+import { setGlobalReset } from "../../redux/features/global/globalSlice";
 
 const AuthForm = () => {
   const modalType = useAppSelector((state) => state.global.modalType);
   const rejectedMessage = useAppSelector((state) => state.auth.errorMessage);
+
   // const isFormRejected = useAppSelector((state) => state.auth.status);
+  const dispatch = useAppDispatch();
 
   const renderRejectedMessage = () => {
     if (!!rejectedMessage) {
@@ -24,18 +28,21 @@ const AuthForm = () => {
       const networkRequestFailed = rejectedMessage.match(
         "network-request-failed"
       );
+      const tooManyRequests = rejectedMessage.match("too-many-requests");
 
-      if (userAlreadySignedUp) {
+      if (userAlreadySignedUp)
         return <FormErrorText message='your email is already exists' />;
-      }
 
-      if (wrongPassword || userNotFound) {
+      if (wrongPassword || userNotFound)
         return <FormErrorText message='wrong input data' />;
-      }
 
-      if (networkRequestFailed) {
+      if (networkRequestFailed)
         return <FormErrorText message='check your internet connection' />;
-      }
+
+      if (tooManyRequests)
+        return (
+          <FormErrorText message='too many requests, please try again later' />
+        );
     }
 
     return <></>;
@@ -59,15 +66,33 @@ const AuthForm = () => {
 
   const passwordMatches = watchedConfirmPassword === watchedPassword;
 
+  const onSubmit: SubmitHandler<FormInputs> = useCallback(
+    ({ email, password }) => {
+      const credentials = { email, password };
+
+      if (!rejectedMessage) {
+        modalType === "login" && dispatch(fetchSignIn(credentials));
+        modalType === "sign up" && dispatch(fetchSignUp(credentials));
+      }
+
+      if (rejectedMessage) {
+        modalType === "login" && dispatch(fetchSignIn(credentials));
+
+        modalType === "sign up" && dispatch(fetchSignUp(credentials));
+      }
+    },
+    [rejectedMessage]
+  );
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       {/* email */}
       <FormController name='email' control={control} />
 
       {/* password */}
-      {modalType === "login" && (
+      {modalType === "login" || modalType === "sign up" ? (
         <FormController name='password' control={control} />
-      )}
+      ) : null}
 
       {/* confirm password */}
       {modalType === "sign up" && (

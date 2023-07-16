@@ -3,7 +3,7 @@ import {
   signInWithEmailAndPassword,
   sendEmailVerification,
   signOut,
-  User,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
@@ -66,6 +66,11 @@ export const fetchSignIn = createAsyncThunk(
 
     return user;
   }
+);
+
+export const fetchResetPassword = createAsyncThunk(
+  "auth/fetchResetPassword",
+  async (email: string) => await sendPasswordResetEmail(auth, email)
 );
 
 export const fetchSignUp = createAsyncThunk(
@@ -188,6 +193,19 @@ const authSlice = createSlice({
         return { ...initialState, status: "fulfilled" };
       })
       .addCase(fetchSignOut.rejected, (state, action) => {
+        state.errorMessage = action.error.message;
+      });
+
+    //reset password
+    builder
+      .addCase(fetchResetPassword.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(fetchResetPassword.fulfilled, (state) => {
+        state.status = "fulfilled";
+      })
+      .addCase(fetchResetPassword.rejected, (state, action) => {
+        state.status = "error";
         state.errorMessage = action.error.message;
       });
   },
