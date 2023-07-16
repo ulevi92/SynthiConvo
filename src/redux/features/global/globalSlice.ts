@@ -37,9 +37,12 @@ const globalSlice = createSlice({
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
+    setReset(state) {
+      state = initialState;
+    },
   },
 });
 
-export const { setDarkMode, setModalType, setShowModal, setLoading } =
+export const { setDarkMode, setModalType, setShowModal, setLoading, setReset } =
   globalSlice.actions;
 export default globalSlice.reducer;
