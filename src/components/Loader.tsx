@@ -2,5 +2,5 @@ import { PropsWithChildren } from "react";
 import "../styles/loader.scss";
 
 export const Loader = ({ children }: PropsWithChildren) => {
-  return <></>;
+  return <div className='loader'>{children}</div>;
 };
