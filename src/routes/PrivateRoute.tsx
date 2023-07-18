@@ -1,17 +1,17 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../redux/reduxHooks";
-import { useLayoutEffect } from "react";
-import { clearAuthErrors } from "../redux/features/auth/authSlice";
+import { useEffect } from "react";
 import { clearModal } from "../redux/features/global/globalSlice";
 
 const PrivateRoute = () => {
   const isAuth = useAppSelector((state) => state.auth.isAuth);
+  const showModal = useAppSelector((state) => state.global.showModal);
   const dispatch = useAppDispatch();
 
-  useLayoutEffect(() => {
-    isAuth && dispatch(clearModal());
-  }, [isAuth]);
+  useEffect(() => {
+    if (showModal && isAuth) dispatch(clearModal());
+  }, [isAuth, showModal]);
 
   return isAuth ? <Outlet /> : <Navigate to='/login' />;
 };

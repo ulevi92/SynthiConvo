@@ -8,7 +8,6 @@ type AuthNavLinks = {
 };
 
 export const authNavLinks: AuthNavLinks[] = [
-  { path: "/home", title: "home" },
+  { path: "/", title: "home" },
   { path: "/about", title: "about" },
-  { path: "/", title: "welcome page" },
 ];

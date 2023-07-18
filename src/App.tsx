@@ -1,10 +1,10 @@
-import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
+import Home from "./pages/home/Home";
 import NotFound from "./pages/NotFound";
 
 import PublicPage from "./pages/PublicPage";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 // import { useQuery } from "@tanstack/react-query";
 // import { IpRegistry } from "./features/user/types";
 import { useAppDispatch, useAppSelector } from "./redux/reduxHooks";
@@ -25,7 +25,16 @@ import PublicRoute from "./routes/PublicRoute";
 function App() {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector((state) => state.auth.isAuth);
+  const darkMode = useAppSelector((state) => state.global.darkMode);
   const isInitialLoad = useRef(true); // Track initial load
+  const isInitialAuthStateChange = useRef(true);
+
+  const domRef = document.getElementById("html-theme")!;
+
+  useLayoutEffect(() => {
+    if (darkMode) domRef.setAttribute("data-bs-theme", "dark");
+    if (!darkMode) domRef.setAttribute("data-bs-theme", "light");
+  }, [darkMode]);
 
   // const { data, isLoading, isError, isSuccess } = useQuery(
   //   ["getIpRegistry"],
@@ -45,8 +54,13 @@ function App() {
       const isAuthenticated = user !== null;
 
       // Update auth state
-      if (isAuthenticated !== isAuth) {
+      if (isAuthenticated !== isAuth && !isInitialAuthStateChange.current) {
         dispatch(setAuth(isAuthenticated));
+      }
+
+      // Check if it's the initial auth state change
+      if (isInitialAuthStateChange.current) {
+        isInitialAuthStateChange.current = false;
       }
 
       // Check if it's the initial load
@@ -57,7 +71,7 @@ function App() {
     });
 
     return unsubscribe;
-  }, []);
+  }, [dispatch, isAuth]);
 
   return (
     <Loader>
