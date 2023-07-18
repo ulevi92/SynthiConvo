@@ -70,44 +70,51 @@ const AuthForm = () => {
   );
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      {/* email */}
-      <FormController name='email' control={control} />
+    <Container className='p-0'>
+      <Row className='flex-column'>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          {/* email */}
+          <FormController name='email' control={control} />
 
-      {/* password */}
-      {(modalType === "login" || modalType === "sign up") && (
-        <FormController name='password' control={control} />
-      )}
+          <Col>
+            <FormErrors errors={errors} inputType='email' />
+          </Col>
 
-      {/* confirm password */}
-      {modalType === "sign up" && (
-        <FormController name='confirmPassword' control={control} />
-      )}
+          {/* password */}
+          {(modalType === "login" || modalType === "sign up") && (
+            <FormController name='password' control={control} />
+          )}
+          <Col>
+            <FormErrors errors={errors} inputType='password' />
+          </Col>
 
-      <FormErrors errors={errors} inputType='email' />
-      <FormErrors errors={errors} inputType='password' />
-      <FormErrors
-        errors={errors}
-        inputType='confirmPassword'
-        passwordMatches={passwordMatches}
-      />
+          {/* confirm password */}
+          {modalType === "sign up" && (
+            <FormController name='confirmPassword' control={control} />
+          )}
 
-      <Container className='p-0'>
-        <Row className='flex-column'>
+          <Col>
+            <FormErrors
+              errors={errors}
+              inputType='confirmPassword'
+              passwordMatches={passwordMatches}
+            />
+          </Col>
+
           <Col>
             <RejectedErrors />
           </Col>
-        </Row>
-      </Container>
 
-      <AuthFormNavigation linkType='login' />
+          <AuthFormNavigation linkType='login' />
 
-      {/* exit button */}
-      <FormButton btnTask='close' handleButton={handleClose} />
+          {/* exit button */}
+          <FormButton btnTask='close' handleButton={handleClose} />
 
-      {/* submit button */}
-      <FormButton btnTask='submit' handleButton={handleSubmit(onSubmit)} />
-    </Form>
+          {/* submit button */}
+          <FormButton btnTask='submit' handleButton={handleSubmit(onSubmit)} />
+        </Form>
+      </Row>
+    </Container>
   );
 };
 
