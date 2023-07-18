@@ -1,0 +1,47 @@
+$timerDuration: 1000ms;
+$circleSize: 100px;
+$circleBorderWidth: 6px;
+$circleBorderColor: #ccc;
+$circleBackground: #f1f1f1;
+$counterFontSize: 24px;
+$counterColor: #333;
+
+.rounded-timer {
+  position: relative;
+  width: $circleSize;
+  height: $circleSize;
+  border-radius: 50%;
+  border: $circleBorderWidth solid $circleBorderColor;
+  background-color: $circleBackground;
+  overflow: hidden;
+
+  .email-verification-timer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: $counterFontSize;
+    color: $counterColor;
+    z-index: 1;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: $circleBorderWidth solid transparent;
+    border-top-color: $circleBorderColor;
+    z-index: 2;
+    animation: timerAnimation $timerDuration linear infinite;
+  }
+}
+
+@keyframes timerAnimation {
+  to {
+    transform: rotate(360deg);
+  }
+}

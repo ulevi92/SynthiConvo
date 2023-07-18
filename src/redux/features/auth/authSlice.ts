@@ -19,7 +19,7 @@ import type {
 } from "./authSlice.helper";
 
 export type AuthSliceState = {
-  status: Status;
+  requestStatus: Status;
   isAuth: boolean;
   emailVerificationMessage: EmailVerificationMessage;
   errorMessage: CredentialError;
@@ -32,7 +32,7 @@ export type AuthSliceState = {
 };
 
 const initialState: AuthSliceState = {
-  status: "idle",
+  requestStatus: "idle",
   isAuth: false,
   emailVerificationMessage: null,
   input: {
@@ -112,6 +112,17 @@ export const verifyEmail = async () => {
   }
 };
 
+export const fetchEmailVerification = createAsyncThunk(
+  "auth/fetchEmailVerification",
+  async () => {
+    const user = auth.currentUser;
+
+    const response = user && sendEmailVerification(user);
+
+    return response;
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -132,19 +143,19 @@ const authSlice = createSlice({
     },
 
     clearAuthErrors(state) {
-      return { ...state, errorMessage: undefined, status: "idle" };
+      return { ...state, errorMessage: undefined, requestStatus: "idle" };
     },
   },
   extraReducers(builder) {
     //signing in
     builder
       .addCase(fetchSignIn.pending, (state) => {
-        state.status = "pending";
+        state.requestStatus = "pending";
       })
       .addCase(
         fetchSignIn.fulfilled,
         (state, action: PayloadAction<SignInAndUpPayload>) => {
-          state.status = "fulfilled";
+          state.requestStatus = "fulfilled";
           state.isAuth = true;
 
           const { uid, email, displayName, photoURL, emailVerified } =
@@ -157,20 +168,20 @@ const authSlice = createSlice({
         }
       )
       .addCase(fetchSignIn.rejected, (state, action) => {
-        state.status = "error";
+        state.requestStatus = "error";
         state.errorMessage = action.error.message;
       });
 
     //signing up and sending a verification email
     builder
       .addCase(fetchSignUp.pending, (state) => {
-        state.status = "pending";
+        state.requestStatus = "pending";
         state.emailVerificationMessage = "please verify your email";
       })
       .addCase(
         fetchSignUp.fulfilled,
         (state, action: PayloadAction<SignInAndUpPayload>) => {
-          state.status = "fulfilled";
+          state.requestStatus = "fulfilled";
           state.isAuth = true;
 
           const { uid, email, displayName, photoURL, emailVerified } =
@@ -189,10 +200,10 @@ const authSlice = createSlice({
     //signing out
     builder
       .addCase(fetchSignOut.pending, (state) => {
-        state.status = "pending";
+        state.requestStatus = "pending";
       })
       .addCase(fetchSignOut.fulfilled, () => {
-        return { ...initialState, status: "fulfilled" };
+        return { ...initialState, requestStatus: "fulfilled" };
       })
       .addCase(fetchSignOut.rejected, (state, action) => {
         state.errorMessage = action.error.message;
@@ -201,13 +212,26 @@ const authSlice = createSlice({
     //reset password
     builder
       .addCase(fetchResetPassword.pending, (state) => {
-        state.status = "pending";
+        state.requestStatus = "pending";
       })
       .addCase(fetchResetPassword.fulfilled, (state) => {
-        state.status = "fulfilled";
+        state.requestStatus = "fulfilled";
       })
       .addCase(fetchResetPassword.rejected, (state, action) => {
-        state.status = "error";
+        state.requestStatus = "error";
+        state.errorMessage = action.error.message;
+      });
+
+    //send a email verification manually
+    builder
+      .addCase(fetchEmailVerification.pending, (state) => {
+        state.requestStatus = "pending";
+      })
+      .addCase(fetchEmailVerification.fulfilled, (state) => {
+        state.requestStatus = "fulfilled";
+      })
+      .addCase(fetchEmailVerification.rejected, (state, action) => {
+        state.requestStatus = "error";
         state.errorMessage = action.error.message;
       });
   },

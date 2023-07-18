@@ -25,7 +25,7 @@ const AuthForm = () => {
   } = useAppSelector((state) => ({
     modalType: state.global.modalType,
     errorMessage: state.auth.errorMessage,
-    status: state.auth.status,
+    status: state.auth.requestStatus,
   }));
 
   const dispatch = useAppDispatch();

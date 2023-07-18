@@ -6,6 +6,9 @@
 //import BS
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
+//import other styles
+@import "./timer";
+
 html,
 body,
 #root {
