@@ -66,7 +66,7 @@ const NotVerifiedError = () => {
 
   return (
     <Container fluid className='h-100'>
-      <Row className='h-100 w-100 align-content-center'>
+      <Row className='h-100 align-content-center'>
         <Col className='d-flex justify-content-center'>
           <Card>
             <Card.Body className='d-flex flex-column'>

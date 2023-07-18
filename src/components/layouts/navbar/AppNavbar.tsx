@@ -18,7 +18,7 @@ const AppNavbar = () => {
         to={path}
         className={({ isActive, isPending }) => {
           const defaultStyle =
-            "text-capitalize  text-white mx-1 px-1 d-flex align-self-center text-decoration-none";
+            "text-capitalize  text-white flex-wrap align-content-center mx-md-1 px-1 d-flex text-decoration-none mb-1 mb-md-0";
 
           return isPending
             ? `${defaultStyle}`
@@ -39,40 +39,45 @@ const AppNavbar = () => {
     <Navbar
       bg={`${darkMode ? "secondary" : "primary"}`}
       variant='dark'
-      expand='lg'
+      expand='md'
     >
-      <Container>
+      <Container className='px-2'>
         <Navbar.Brand href='/' className='text-capitalize'>
           chat with <span className='text-uppercase'>ai</span>
         </Navbar.Brand>
+
+        <Navbar.Toggle aria-controls='navbar-collapse' />
+
+        <Navbar.Collapse id='navbar-collapse'>
+          <Nav className='flex-grow-1'>
+            <div className='d-flex flex-column flex-md-row flex-grow-1'>
+              {RenderLinks()}
+
+              <div className='d-flex flex-column flex-md-row flex-grow-1 align-items-start justify-content-md-end align-items-md-center'>
+                <NavLink
+                  to='/'
+                  className='d-flex justify-content-start mb-1 mb-md-0'
+                >
+                  <Button
+                    className={signoutClass}
+                    onClick={() => dispatch(fetchSignOut())}
+                    variant={darkMode ? "outline-light" : "outline-warning"}
+                  >
+                    signout
+                  </Button>
+                </NavLink>
+
+                <Icon
+                  color={`${!darkMode ? "rgba(255,165,0,1" : ""}`}
+                  iconName={`${!darkMode ? "SunFill" : "MoonFill"}`}
+                  size='25'
+                  onClick={() => dispatch(setDarkMode(!darkMode))}
+                />
+              </div>
+            </div>
+          </Nav>
+        </Navbar.Collapse>
       </Container>
-
-      <Navbar.Toggle aria-controls='navbar-collapse' />
-
-      <Navbar.Collapse id='navbar-collapse'>
-        <Nav className='me-auto'>
-          <>
-            {RenderLinks()}
-
-            <NavLink to='/' className={signoutClass}>
-              <Button
-                className={signoutClass}
-                onClick={() => dispatch(fetchSignOut())}
-                variant={darkMode ? "outline-light" : "outline-warning"}
-              >
-                signout
-              </Button>
-            </NavLink>
-
-            <Icon
-              color={`${!darkMode ? "rgba(255,165,0,1" : ""}`}
-              iconName={`${!darkMode ? "SunFill" : "MoonFill"}`}
-              size='20'
-              onClick={() => dispatch(setDarkMode(!darkMode))}
-            />
-          </>
-        </Nav>
-      </Navbar.Collapse>
     </Navbar>
   );
 };

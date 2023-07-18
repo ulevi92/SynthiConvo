@@ -8,7 +8,7 @@ interface Props extends icons.IconProps {
 const Icon = ({ iconName, className, ...props }: Props) => {
   const BootstrapIcon = icons[iconName];
 
-  const defaultClassName = "add-pointer-cursor d-flex align-self-center mx-2";
+  const defaultClassName = "add-pointer-cursor mx-2";
 
   return <BootstrapIcon className={defaultClassName} {...props} />;
 };
