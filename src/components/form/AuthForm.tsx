@@ -92,7 +92,13 @@ const AuthForm = () => {
         passwordMatches={passwordMatches}
       />
 
-      <RejectedErrors />
+      <Container className='p-0'>
+        <Row className='flex-column'>
+          <Col>
+            <RejectedErrors />
+          </Col>
+        </Row>
+      </Container>
 
       <AuthFormNavigation linkType='login' />
 
