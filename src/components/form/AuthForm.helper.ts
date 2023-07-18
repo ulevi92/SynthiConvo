@@ -22,22 +22,6 @@ export const handleClose = () => {
   dispatch(cleanAuthCache());
 };
 
-// export const onSubmit: SubmitHandler<FormInputs> = ({ email, password }) => {
-//   const credentials = { email, password };
-
-//   if (modalType === "passwordReminder") {
-//     dispatch(fetchResetPassword(email));
-//     return;
-//   }
-
-//   if (modalType === "sign up") {
-//     dispatch(fetchSignUp(credentials));
-//     return;
-//   }
-
-//   dispatch(fetchSignIn(credentials));
-// };
-
 //validate email
 export const emailValidation = /^(?!.*[\s@,]$)[^\s@]+@[^\s@]+\.[^\s@]+$/i;
 

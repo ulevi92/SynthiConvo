@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import { Form } from "react-bootstrap";
 
 import FormErrorText from "./FormErrorText";
-import { handleClose, onSubmit } from "./AuthForm.helper";
+import { handleClose } from "./AuthForm.helper";
 import { FormController } from "./FormController";
 import { FormInputs } from "./types";
 import { FormButton } from "./FormButton";
