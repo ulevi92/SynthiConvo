@@ -5,17 +5,16 @@ import { Form } from "react-bootstrap";
 import type { Control } from "react-hook-form";
 import type { FormInputs } from "./types";
 
-import store from "../../redux/store";
 import { useAppSelector } from "../../redux/reduxHooks";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
+import { ModalType } from "../../redux/features/global/globalSlice";
 
 interface Props {
   name: "email" | "password" | "confirmPassword";
   control: Control<FormInputs, any>;
-  password?: string;
 }
 
-export const FormController = ({ name, control, password }: Props) => {
+const FormController = ({ name, control }: Props) => {
   const modalType = useAppSelector((state) => state.global.modalType);
 
   const pattern =
@@ -56,3 +55,5 @@ export const FormController = ({ name, control, password }: Props) => {
 
   return context;
 };
+
+export default memo(FormController);
