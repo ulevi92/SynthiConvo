@@ -51,8 +51,6 @@ export const fetchSignIn = createAsyncThunk(
   "auth/fetchSignIn",
   async ({ email, password }: SignInAndUpArguments) => {
     const response = await signInWithEmailAndPassword(auth, email!, password!);
-    if (!response.user.emailVerified)
-      await sendEmailVerification(response.user);
 
     const { displayName, emailVerified, photoURL, uid } = response.user;
 

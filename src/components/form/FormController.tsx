@@ -28,7 +28,7 @@ const FormController = ({ name, control }: Props) => {
 
   const formLabel = name === "confirmPassword" ? "confirm password" : name;
 
-  const context = useMemo(
+  return useMemo(
     () => (
       <Controller
         name={name}
@@ -50,10 +50,8 @@ const FormController = ({ name, control }: Props) => {
         )}
       />
     ),
-    []
+    [name, control, pattern, inputType, formLabel]
   );
-
-  return context;
 };
 
 export default memo(FormController);
