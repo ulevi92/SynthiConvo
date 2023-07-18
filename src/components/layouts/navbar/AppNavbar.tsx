@@ -36,7 +36,11 @@ const AppNavbar = () => {
     : "d-none";
 
   return (
-    <Navbar bg='primary' variant='dark' expand='lg'>
+    <Navbar
+      bg={`${darkMode ? "secondary" : "primary"}`}
+      variant='dark'
+      expand='lg'
+    >
       <Container>
         <Navbar.Brand href='/' className='text-capitalize'>
           chat with <span className='text-uppercase'>ai</span>
@@ -54,6 +58,7 @@ const AppNavbar = () => {
               <Button
                 className={signoutClass}
                 onClick={() => dispatch(fetchSignOut())}
+                variant={darkMode ? "outline-light" : "outline-warning"}
               >
                 signout
               </Button>
