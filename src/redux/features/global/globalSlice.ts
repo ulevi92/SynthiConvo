@@ -10,7 +10,14 @@ type InitialState = {
 };
 
 const initialState: InitialState = {
-  darkMode: false,
+  darkMode: !localStorage.getItem("dark-mode")
+    ? false
+    : localStorage.getItem("dark-mode") === "dark"
+    ? true
+    : localStorage.getItem("dark-mode") === "light"
+    ? false
+    : false,
+
   showModal: false,
   modalType: null,
   loading: true,

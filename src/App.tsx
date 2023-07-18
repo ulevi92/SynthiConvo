@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "./redux/reduxHooks";
 import { auth } from "./firebase/firebase";
 import { setAuth } from "./redux/features/auth/authSlice";
 
-import { setLoading } from "./redux/features/global/globalSlice";
+import { setDarkMode, setLoading } from "./redux/features/global/globalSlice";
 import { Loader } from "./components/loader/Loader";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
@@ -32,6 +32,21 @@ function App() {
   const domRef = document.getElementById("html-theme")!;
 
   useLayoutEffect(() => {
+    const localStorageDarkModeKey = localStorage.getItem("dark-mode");
+    const darkModeStorageValue = darkMode ? "dark" : "light";
+
+    // if (localStorageDarkModeKey)
+    //   dispatch(setDarkMode(localStorageDarkModeKey === "dark" ? true : false));
+
+    if (!localStorageDarkModeKey)
+      localStorage.setItem("dark-mode", darkModeStorageValue);
+
+    if (
+      localStorageDarkModeKey &&
+      localStorageDarkModeKey !== darkModeStorageValue
+    )
+      localStorage.setItem("dark-mode", darkModeStorageValue);
+
     if (darkMode) domRef.setAttribute("data-bs-theme", "dark");
     if (!darkMode) domRef.setAttribute("data-bs-theme", "light");
   }, [darkMode]);
