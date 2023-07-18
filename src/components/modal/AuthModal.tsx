@@ -21,6 +21,7 @@ const AuthModal = () => {
 
   return (
     <Modal
+      centered
       show={showModal}
       onHide={handleClose}
       backdrop='static'

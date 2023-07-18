@@ -40,8 +40,6 @@ export const FormErrors = ({ errors, inputType, passwordMatches }: Props) => {
             }
           />
         )}
-
-      <br />
     </>
   );
 };
