@@ -1,12 +1,12 @@
 import {
-  cleanGlobalCache,
+  clearModal,
   setModalType,
   setShowModal,
 } from "../../redux/features/global/globalSlice";
 import { SubmitHandler } from "react-hook-form";
 
 import {
-  cleanAuthCache,
+  clearAuthErrors,
   fetchResetPassword,
   fetchSignUp,
 } from "../../redux/features/auth/authSlice";
@@ -18,8 +18,8 @@ const dispatch = store.dispatch;
 const modalType = store.getState().global.modalType;
 
 export const handleClose = () => {
-  dispatch(cleanGlobalCache());
-  dispatch(cleanAuthCache());
+  dispatch(clearModal());
+  dispatch(clearAuthErrors());
 };
 
 //validate email

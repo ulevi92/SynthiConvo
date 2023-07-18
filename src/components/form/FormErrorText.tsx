@@ -4,7 +4,7 @@ import {
   setModalType,
 } from "../../redux/features/global/globalSlice";
 import { useAppDispatch } from "../../redux/reduxHooks";
-import { cleanAuthCache } from "../../redux/features/auth/authSlice";
+import { clearAuthErrors } from "../../redux/features/auth/authSlice";
 
 interface Props {
   message: string;
@@ -24,7 +24,7 @@ const FormErrorText = ({
   const changeModalType = () => {
     if (modalType) {
       dispatch(setModalType(modalType!));
-      dispatch(cleanAuthCache());
+      dispatch(clearAuthErrors());
     }
   };
 

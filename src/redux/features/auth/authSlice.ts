@@ -133,7 +133,7 @@ const authSlice = createSlice({
       }
     },
 
-    cleanAuthCache(state) {
+    clearAuthErrors(state) {
       return { ...state, errorMessage: undefined, status: "idle" };
     },
   },
@@ -215,5 +215,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setAuth, cleanAuthCache } = authSlice.actions;
+export const { setAuth, clearAuthErrors } = authSlice.actions;
 export default authSlice.reducer;

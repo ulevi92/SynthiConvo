@@ -5,7 +5,7 @@ import {
   ModalType,
   setModalType,
 } from "../../redux/features/global/globalSlice";
-import { cleanAuthCache } from "../../redux/features/auth/authSlice";
+import { clearAuthErrors } from "../../redux/features/auth/authSlice";
 
 type NavMessage =
   | "login to your account"
@@ -21,7 +21,7 @@ const AuthFormNavigation = ({ linkType }: AuthFormNavigationProps) => {
 
   const changeModalType = (changeTo: ModalType) => {
     dispatch(setModalType(changeTo));
-    dispatch(cleanAuthCache());
+    dispatch(clearAuthErrors());
   };
 
   const className =

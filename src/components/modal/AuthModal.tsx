@@ -1,7 +1,7 @@
 import { Button, Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import {
-  cleanGlobalCache,
+  clearModal,
   setModalType,
   setShowModal,
 } from "../../redux/features/global/globalSlice";
@@ -16,7 +16,7 @@ const AuthModal = () => {
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
-    dispatch(cleanGlobalCache());
+    dispatch(clearModal());
   };
 
   return (
