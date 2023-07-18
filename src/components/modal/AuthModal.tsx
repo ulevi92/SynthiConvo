@@ -1,6 +1,7 @@
 import { Button, Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import {
+  cleanGlobalCache,
   setModalType,
   setShowModal,
 } from "../../redux/features/global/globalSlice";
@@ -15,18 +16,15 @@ const AuthModal = () => {
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
-    dispatch(setShowModal(false));
-    dispatch(setModalType(null));
+    dispatch(cleanGlobalCache());
   };
-
-  const btnName = modalType === "login" ? modalType : modalType;
 
   return (
     <Modal
       show={showModal}
       onHide={handleClose}
       backdrop='static'
-      keyboard={false}
+      keyboard={true}
     >
       <Modal.Header closeButton closeLabel='close'>
         <Modal.Title className='text-capitalize'>{modalType}</Modal.Title>

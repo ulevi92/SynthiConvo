@@ -18,7 +18,7 @@ import {
   fetchSignIn,
   fetchSignUp,
 } from "../../redux/features/auth/authSlice";
-import { useCallback } from "react";
+import { useCallback, useLayoutEffect } from "react";
 
 const AuthForm = () => {
   const modalType = useAppSelector((state) => state.global.modalType);
@@ -137,13 +137,20 @@ const AuthForm = () => {
 
       if (modalType === "passwordReminder") {
         dispatch(fetchResetPassword(email));
+        return;
       }
 
       if (modalType === "sign up") {
         dispatch(fetchSignUp(credentials));
+        return;
       }
 
-      dispatch(fetchSignIn(credentials));
+      if (modalType === "login") {
+        dispatch(fetchSignIn(credentials));
+        return;
+      }
+
+      return;
     },
     [modalType]
   );
