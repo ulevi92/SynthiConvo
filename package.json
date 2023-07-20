@@ -1,14 +1,14 @@
 {
   "name": "chat-with-ai",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "ionic:build": "npm run build",
-    "ionic:serve": "npm run dev"
+    "vite:build": "npm run build",
+    "vite:serve": "npm run dev"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
