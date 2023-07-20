@@ -26,7 +26,6 @@ function App() {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector((state) => state.auth.isAuth);
   const darkMode = useAppSelector((state) => state.global.darkMode);
-  const isInitialLoad = useRef(true); // Track initial load
   const isInitialAuthStateChange = useRef(true);
 
   const domRef = document.getElementById("html-theme")!;
@@ -76,11 +75,6 @@ function App() {
       // Check if it's the initial auth state change
       if (isInitialAuthStateChange.current) {
         isInitialAuthStateChange.current = false;
-      }
-
-      // Check if it's the initial load
-      if (isInitialLoad.current) {
-        isInitialLoad.current = false;
         dispatch(setLoading(false)); // Set loading to false after initial load
       }
     });
