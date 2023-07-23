@@ -80,7 +80,7 @@ function App() {
     });
 
     return unsubscribe;
-  }, [dispatch, isAuth]);
+  }, [auth, dispatch, isAuth]);
 
   return (
     <Loader>
