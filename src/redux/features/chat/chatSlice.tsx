@@ -9,8 +9,8 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  userLog: [],
-  botLog: [],
+  userLog: ["user1", "user2"],
+  botLog: ["bot1", "bot2"],
   userQuestion: null,
   botAnswer: null,
   questionAsked: false,
