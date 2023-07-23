@@ -67,8 +67,10 @@ function App() {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       const isAuthenticated = user !== null;
 
+      console.log(isAuthenticated);
+
       // Update auth state
-      if (isAuthenticated !== isAuth && !isInitialAuthStateChange.current) {
+      if (isAuthenticated && !isInitialAuthStateChange.current) {
         dispatch(setAuth(isAuthenticated));
       }
 
@@ -80,7 +82,7 @@ function App() {
     });
 
     return unsubscribe;
-  }, [auth, dispatch, isAuth]);
+  }, [dispatch]);
 
   return (
     <Loader>
