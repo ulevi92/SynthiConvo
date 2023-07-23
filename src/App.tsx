@@ -71,13 +71,15 @@ function App() {
 
       // Update auth state
       if (isAuthenticated && isInitialAuthStateChange.current) {
-        dispatch(setAuth(isAuthenticated));
+        isInitialAuthStateChange.current = false;
 
-        // Check if it's the initial auth state change
-        if (isInitialAuthStateChange.current) {
-          isInitialAuthStateChange.current = false;
-          dispatch(setLoading(false)); // Set loading to false after initial load
-        }
+        dispatch(setAuth(isAuthenticated));
+        dispatch(setLoading(false));
+      }
+
+      if (isInitialAuthStateChange.current) {
+        isInitialAuthStateChange.current = false;
+        dispatch(setLoading(false)); // Set loading to false after initial load
       }
     });
 
