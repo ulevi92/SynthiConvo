@@ -3,21 +3,17 @@ $chat-card-light: #1251af;
 $chat-card-dark: #435268;
 
 .chat-user-light {
-  background-color: $chat-card-light;
-  opacity: 0.85;
+  background-color: rgba($color: $chat-card-light, $alpha: 0.95);
 }
 
 .chat-bot-light {
-  background-color: $chat-card-light;
-  opacity: 0.8;
+  background-color: rgba($color: $chat-card-light, $alpha: 0.8);
 }
 
 .chat-user-dark {
-  background-color: $chat-card-dark;
-  opacity: 1;
+  background-color: rgba($color: $chat-card-dark, $alpha: 1);
 }
 
 .chat-bot-dark {
-  background-color: $chat-card-dark;
-  opacity: 0.75;
+  background-color: rgba($color: $chat-card-dark, $alpha: 0.75);
 }
