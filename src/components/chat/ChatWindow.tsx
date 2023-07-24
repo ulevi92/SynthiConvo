@@ -5,16 +5,10 @@ const ChatWindow = () => {
   const gridColClassName = "p-0";
 
   return (
-    <Container fluid className='h-100'>
-      <Row className='h-100 flex-grow-1 flex-column justify-content-between'>
+    <Container className='h-75 px-5'>
+      <Row className='h-100 flex-grow-1 flex-column justify-content-between overflow-auto'>
         <Col className={gridColClassName}>
           <ChatLog />
-        </Col>
-
-        <Col className={gridColClassName}>
-          <Form className='d-flex h-100 align-items-end'>
-            <Form.Control />
-          </Form>
         </Col>
       </Row>
     </Container>

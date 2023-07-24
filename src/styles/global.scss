@@ -8,6 +8,7 @@
 
 //import other styles
 @import "./timer";
+@import "./chat-card";
 
 html,
 body,
@@ -18,8 +19,8 @@ body,
 #root {
   display: flex;
   flex-direction: column;
-}
 
-.add-pointer-cursor {
-  cursor: pointer;
+  .add-pointer-cursor {
+    cursor: pointer;
+  }
 }
