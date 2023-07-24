@@ -1,7 +1,7 @@
 import { memo, useMemo } from "react";
 import { useAppSelector } from "../../redux/reduxHooks";
 
-const ChatScreen = () => {
+const ChatLog = () => {
   const { botLog, userLog } = useAppSelector((state) => state.chat);
 
   return useMemo(() => {
@@ -15,4 +15,4 @@ const ChatScreen = () => {
   }, [botLog, userLog]);
 };
 
-export default memo(ChatScreen);
+export default memo(ChatLog);

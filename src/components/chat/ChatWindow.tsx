@@ -1,5 +1,5 @@
 import { Col, Container, Form, Row } from "react-bootstrap";
-import ChatScreen from "./ChatScreen";
+import ChatLog from "./ChatLog";
 
 const ChatWindow = () => {
   const gridColClassName = "p-0";
@@ -8,7 +8,7 @@ const ChatWindow = () => {
     <Container fluid className='h-100'>
       <Row className='h-100 flex-grow-1 flex-column justify-content-between'>
         <Col className={gridColClassName}>
-          <ChatScreen />
+          <ChatLog />
         </Col>
 
         <Col className={gridColClassName}>
