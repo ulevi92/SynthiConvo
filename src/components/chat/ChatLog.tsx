@@ -1,21 +1,29 @@
 import { memo, useMemo } from "react";
 import { useAppSelector } from "../../redux/reduxHooks";
-import LogScreen from "./LogScreem";
+import LogScreen from "./LogScreen";
 
 const ChatLog = () => {
-  const { botLog, userLog } = useAppSelector((state) => state.chat);
+  const { log } = useAppSelector((state) => state.chat);
 
   return useMemo(() => {
-    // Combine user and bot logs, interleaving user messages first
-    const log = userLog.flatMap((userMsg, index) => [
-      <LogScreen key={`user_${index}`}>{userMsg}</LogScreen>,
-      <LogScreen bot key={`bot_${index}`}>
-        {botLog[index]}
-      </LogScreen>, // Assumes botLog has the same length as userLog
-    ]);
+    const renderLog = log.user.flatMap(({ msg, id }) => {
+      const botAnswer = log.bot.find((botMsg) => botMsg.id === id);
+      if (botAnswer) {
+        // Render both user question and bot answer
+        return [
+          <LogScreen key={`user_${id}`}>{msg}</LogScreen>,
+          <LogScreen bot key={`bot_${id}`}>
+            {botAnswer.msg}
+          </LogScreen>,
+        ];
+      }
 
-    return <>{log}</>; // Wrap the array of JSX elements with a <div>
-  }, [botLog, userLog]);
+      // Render only user question
+      return <LogScreen key={`user_${id}`}>{msg}</LogScreen>;
+    });
+
+    return <>{renderLog}</>;
+  }, [log]);
 };
 
 export default memo(ChatLog);

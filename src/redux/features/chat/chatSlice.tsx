@@ -1,16 +1,26 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+type LogObject = { msg: string; id: number };
+
+type Log = {
+  user: LogObject[];
+  bot: LogObject[];
+};
+
 interface InitialState {
-  userLog: string[];
-  botLog: string[];
+  log: Log;
+
   userQuestion: string | null;
   botAnswer: string | null;
   questionAsked: boolean;
 }
 
 const initialState: InitialState = {
-  userLog: ["user1", "user2"],
-  botLog: ["bot1", "bot2"],
+  log: {
+    user: [],
+    bot: [],
+  },
+
   userQuestion: null,
   botAnswer: null,
   questionAsked: false,
@@ -20,11 +30,24 @@ const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    addBotAnswer(state, action: PayloadAction<string>) {
-      state.botLog = [...state.botLog, action.payload];
+    addBotAnswer(state, action: PayloadAction<LogObject>) {
+      const newBotMsg: LogObject = {
+        msg: action.payload.msg,
+        id: action.payload.id,
+      };
+
+      state.log.bot = [...state.log.bot, newBotMsg];
     },
-    addUserQuestion(state, action: PayloadAction<string>) {
-      state.userLog = [...state.userLog, action.payload];
+
+    addUserQuestion(state, action: PayloadAction<LogObject>) {
+      const newUserMsg: LogObject = {
+        msg: action.payload.msg,
+        id: action.payload.id,
+      };
+
+      state.log.user = [...state.log.user, newUserMsg];
+      state.userQuestion = action.payload.msg;
+      state.questionAsked = true;
     },
   },
   // extraReducers: {},

@@ -12,8 +12,6 @@ interface Props {
 type BtnType = "submit" | "button" | "reset" | undefined;
 
 export const FormButton = ({ btnTask, handleButton }: Props) => {
-  const { handleSubmit } = useForm<FormInputs>();
-
   const varient = btnTask === "close" ? "outline-secondary" : "success";
   const classname =
     btnTask === "close" ? "text-uppercase mt-4" : "text-uppercase mx-2 mt-4";
