@@ -71,6 +71,8 @@ const userSlice = createSlice({
         vpn: is_vpn,
       };
 
+      localStorage.setItem("userIp", JSON.stringify({ ip, type, security }));
+
       return {
         ...state,
         requestStatus: "fulfilled",
