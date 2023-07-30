@@ -67,8 +67,6 @@ function App() {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       const isAuthenticated = user !== null;
 
-      console.log(isAuthenticated);
-
       // Update auth state
       if (isAuthenticated && isInitialAuthStateChange.current) {
         isInitialAuthStateChange.current = false;
