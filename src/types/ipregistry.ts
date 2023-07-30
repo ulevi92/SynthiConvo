@@ -17,3 +17,21 @@ export type GetIpRegistry = {
 };
 
 export type IpRegistrySecurityKey = keyof GetIpRegistry["security"];
+
+export type UserIp = {
+  ip: string | null;
+  type: "IPv4" | "IPv6" | null;
+  security?: {
+    abuser: boolean;
+    attacker: boolean;
+    bogon: boolean;
+    cloudProvider: boolean;
+    proxy: boolean;
+    relay: boolean;
+    tor: boolean;
+    torExit: boolean;
+    vpn: boolean;
+    anonymous: boolean;
+    threat: boolean;
+  };
+};
