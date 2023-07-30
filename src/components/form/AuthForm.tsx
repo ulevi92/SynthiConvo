@@ -12,20 +12,14 @@ import {
   fetchSignUp,
 } from "../../redux/features/auth/authSlice";
 import RejectedErrors from "./RejectedErrors";
-import FormErrorText from "./FormErrorText";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { handleClose } from "./AuthForm.helper";
 import AuthFormNavigation from "./AuthFormNavigation";
+import { fetchUserIp } from "../../redux/features/user/userSlice";
 
 const AuthForm = () => {
-  const {
-    modalType,
-    errorMessage,
-    status: formStatus,
-  } = useAppSelector((state) => ({
+  const { modalType } = useAppSelector((state) => ({
     modalType: state.global.modalType,
-    errorMessage: state.auth.errorMessage,
-    status: state.auth.requestStatus,
   }));
 
   const dispatch = useAppDispatch();
@@ -48,21 +42,21 @@ const AuthForm = () => {
   const passwordMatches = watchedConfirmPassword === watchedPassword;
 
   const onSubmit: SubmitHandler<FormInputs> = useCallback(
-    ({ email, password }) => {
+    async ({ email, password }) => {
       const credentials = { email, password };
 
       if (modalType === "passwordReminder") {
-        dispatch(fetchResetPassword(email));
+        await dispatch(fetchResetPassword(email));
         return;
       }
 
       if (modalType === "sign up") {
-        dispatch(fetchSignUp(credentials));
+        await dispatch(fetchSignUp(credentials));
         return;
       }
 
       if (modalType === "login") {
-        dispatch(fetchSignIn(credentials));
+        await dispatch(fetchSignIn(credentials));
         return;
       }
     },

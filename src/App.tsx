@@ -16,6 +16,7 @@ import { setDarkMode, setLoading } from "./redux/features/global/globalSlice";
 import { Loader } from "./components/loader/Loader";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
+import { fetchUserIp } from "./redux/features/user/userSlice";
 
 // const key = import.meta.env.VITE_IPREGISTRY_API_KEY;
 

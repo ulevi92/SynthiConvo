@@ -3,27 +3,29 @@ import { GetIpRegistry, UserIp } from "../../../types/ipregistry";
 
 type InitialState = {
   requestStatus: "idle" | "rejected" | "fulfilled" | "pending";
-  user: UserIp;
+  ipInfo: UserIp;
+  credit: number;
 };
 
 type userSecurity = UserIp["security"];
 
 const initialState: InitialState = {
   requestStatus: "idle",
-  user: {
-    ip: "",
+  ipInfo: {
+    ip: null,
     type: null,
   },
+  credit: 1000,
 };
 
 const key = import.meta.env.VITE_IP_REGISTRY_API_KEY;
 
 export const fetchUserIp = createAsyncThunk("user", async () => {
-  const response: Promise<GetIpRegistry> = (
-    await fetch(`https://api.ipregistry.co/key=${key}`)
+  const data: Promise<GetIpRegistry> = (
+    await fetch(`https://api.ipregistry.co/?key=${key}`)
   ).json();
 
-  return response;
+  return data;
 });
 
 const userSlice = createSlice({
@@ -72,7 +74,7 @@ const userSlice = createSlice({
       return {
         ...state,
         requestStatus: "fulfilled",
-        user: { ip, type, security },
+        ipInfo: { ip, type, security },
       };
     });
 
