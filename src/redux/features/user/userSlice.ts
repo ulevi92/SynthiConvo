@@ -16,20 +16,10 @@ const initialState: InitialState = {
 
 const key = import.meta.env.VITE_IP_REGISTRY_API_KEY;
 
-export const fetchUserIp = createAsyncThunk("user", async () => {
-  const data: Promise<GetIpRegistry> = (
-    await fetch(`https://api.ipregistry.co/?key=${key}`)
-  ).json();
-
-  return data;
-});
-
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    
-    
     setUserIp(state, action: PayloadAction<GetIpRegistry>) {
       const { ip, security, type } = action.payload;
       const {

@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/reduxHooks";
 import { useEffect, useRef } from "react";
 import { clearModal, setLoading } from "../redux/features/global/globalSlice";
-import { fetchUserIp, setUserIp } from "../redux/features/user/userSlice";
+import { setUserIp } from "../redux/features/user/userSlice";
 import { GetIpRegistry } from "../types/ipregistry";
 import { getClientIp } from "../api/fetchIpRegistry";
 import { useQuery } from "@tanstack/react-query";
