@@ -1,9 +1,7 @@
 import type { ChatLog } from "./chat";
 
-type FireStoreDbUserInfo = {
-  displayName: string;
-  emailVerified: boolean;
-  ip: string;
+export type FirestoreUserDb = {
+  user: FirestoreUser;
 };
 
 type FirestoreDbChatLog = {
@@ -11,7 +9,10 @@ type FirestoreDbChatLog = {
   botLog: ChatLog[];
 };
 
-type UserInfo = {
+type FirestoreUser = {
+  id: string;
+  credit: number;
+
   ipInfo: {
     ip: string;
     security: {
@@ -27,13 +28,12 @@ type UserInfo = {
       isAnonymous: boolean;
       isThreat: boolean;
     };
+    oldIps: string[];
   };
+
   userInfo: {
-    displayName: string | null;
-    imgUrl: string | null;
+    displayName?: string;
+    imgUrl?: string;
+    email: string;
   };
 };
-
-type FirestoreUser = {};
-
-interface FirestoreDB {}
