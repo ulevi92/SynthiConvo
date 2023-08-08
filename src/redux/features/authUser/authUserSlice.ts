@@ -39,6 +39,8 @@ type InitialState = {
       type: "IPv4" | "IPv6" | null;
     };
   };
+
+  userNotAllowed: boolean;
 };
 
 const initialState: InitialState = {
@@ -60,6 +62,8 @@ const initialState: InitialState = {
       type: null,
     },
   },
+
+  userNotAllowed: false,
 };
 
 export const fetchSignIn = createAsyncThunk(
@@ -197,6 +201,23 @@ const authUserSlice = createSlice({
           user: { displayName, email, emailVerified, photoURL, uid },
           clientIp: { ip: currentIp, security, type },
         } = action.payload;
+        if (
+          security.is_abuser ||
+          security.is_anonymous ||
+          security.is_attacker ||
+          security.is_bogon ||
+          security.is_cloud_provider ||
+          security.is_proxy ||
+          security.is_relay ||
+          security.is_threat ||
+          security.is_tor ||
+          security.is_tor_exit ||
+          security.is_vpn
+        )
+          state.userNotAllowed = true;
+
+        if (!localStorage.getItem("userIp"))
+          localStorage.setItem("userIp", JSON.stringify(currentIp));
 
         state.auth.requestStatus = "fulfilled";
         state.auth.isAuth = true;
@@ -209,6 +230,7 @@ const authUserSlice = createSlice({
         state.user.ipInfo.currentIp = currentIp;
         state.user.ipInfo.type = type;
       })
+
       .addCase(fetchSignIn.rejected, (state, action) => {
         state.auth.requestStatus = "error";
         state.auth.errorMessage = action.error.message;
@@ -226,6 +248,9 @@ const authUserSlice = createSlice({
           clientIp: { ip: currentIp, security, type },
         } = action.payload;
 
+        if (!localStorage.getItem("userIp"))
+          localStorage.setItem("userIp", JSON.stringify(currentIp));
+
         state.auth.isAuth = true;
         state.auth.requestStatus = "fulfilled";
 
@@ -237,6 +262,21 @@ const authUserSlice = createSlice({
         state.user.userId = uid;
         state.user.ipInfo.currentIp = currentIp;
         state.user.ipInfo.type = type;
+
+        if (
+          security.is_abuser ||
+          security.is_anonymous ||
+          security.is_attacker ||
+          security.is_bogon ||
+          security.is_cloud_provider ||
+          security.is_proxy ||
+          security.is_relay ||
+          security.is_threat ||
+          security.is_tor ||
+          security.is_tor_exit ||
+          security.is_vpn
+        )
+          state.userNotAllowed = true;
       })
 
       .addCase(fetchSignUp.rejected, (state, action) => {

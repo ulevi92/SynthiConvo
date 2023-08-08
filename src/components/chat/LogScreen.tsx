@@ -8,9 +8,11 @@ interface Props extends PropsWithChildren {
 
 const LogScreen = ({ children, bot }: Props) => {
   const { darkMode } = useAppSelector((state) => state.global);
-  const { userDisplayName, userImg, userUid } = useAppSelector(
-    (state) => state.auth
-  );
+  const { displayName, userImg, userId } = useAppSelector((state) => ({
+    displayName: state.authUser.user.displayName,
+    userImg: state.authUser.user.imgSrc,
+    userId: state.authUser.user.userId,
+  }));
 
   const img =
     "https://pixabay.com/get/g03f27d66d3e1299819bcf85f246c032850b3073578fdfec722184b25c79578a1f09f9a2502a66490a4ff4ffc5d485679_640.jpg";
@@ -22,7 +24,7 @@ const LogScreen = ({ children, bot }: Props) => {
     const defaultImage = !bot ? userImg || img : botImage;
 
     const defaultDisplayName = !bot
-      ? userDisplayName || `user-${userUid.slice(0, 5)}`
+      ? displayName || `user-${userId!.slice(0, 5)}`
       : "AI bot";
 
     const cardClassName =
@@ -59,7 +61,7 @@ const LogScreen = ({ children, bot }: Props) => {
         <Card.Body>{children}</Card.Body>
       </Card>
     );
-  }, [bot, userDisplayName, userImg, userUid, darkMode]);
+  }, [bot, displayName, userImg, userId, darkMode]);
 };
 
 export default memo(LogScreen);
