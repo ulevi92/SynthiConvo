@@ -9,7 +9,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "./redux/reduxHooks";
 
 import { auth } from "./firebase/firebase";
-import { setAuth } from "./redux/features/auth/authSlice";
+import { setAuth } from "./redux/features/authUser/authUserSlice";
 
 import { Loader } from "./components/loader/Loader";
 import PrivateRoute from "./routes/PrivateRoute";

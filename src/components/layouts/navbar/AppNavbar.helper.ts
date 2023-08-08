@@ -1,6 +1,6 @@
 import store from "../../../redux/store";
 
-export const isAuth = store.getState().auth.isAuth;
+export const isAuth = store.getState().authUser.auth.isAuth;
 
 type AuthNavLinks = {
   path: string;

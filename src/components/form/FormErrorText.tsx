@@ -4,7 +4,7 @@ import {
   setModalType,
 } from "../../redux/features/global/globalSlice";
 import { useAppDispatch } from "../../redux/reduxHooks";
-import { clearAuthErrors } from "../../redux/features/auth/authSlice";
+import { clearAuthErrors } from "../../redux/features/authUser/authUserSlice";
 
 interface Props {
   message: string;

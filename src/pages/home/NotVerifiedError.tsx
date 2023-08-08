@@ -3,15 +3,18 @@ import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import {
   clearAuthErrors,
   fetchEmailVerification,
-} from "../../redux/features/auth/authSlice";
+} from "../../redux/features/authUser/authUserSlice";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Timer from "./Timer";
 
 const NotVerifiedError = () => {
   const dispatch = useAppDispatch();
-  const { userEmail } = useAppSelector((state) => state.auth);
-  const { darkMode } = useAppSelector((state) => state.global);
-  const requestStatus = useAppSelector((state) => state.auth.requestStatus);
+
+  const { email, darkMode, requestStatus } = useAppSelector((state) => ({
+    email: state.authUser.user.email,
+    darkMode: state.global.darkMode,
+    requestStatus: state.authUser.auth.requestStatus,
+  }));
 
   const startTimer = useRef<boolean>(false);
 
@@ -83,7 +86,7 @@ const NotVerifiedError = () => {
               <Card.Text className={defaultCardTextStyle}>
                 if you haven't received a verification email you can send it
                 again - a verification email will be sent to -
-                <span className={defaultSpanStyle}>{userEmail}</span>
+                <span className={defaultSpanStyle}>{email}</span>
               </Card.Text>
 
               <Card.Text

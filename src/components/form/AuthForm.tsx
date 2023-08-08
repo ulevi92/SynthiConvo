@@ -10,12 +10,15 @@ import {
   fetchResetPassword,
   fetchSignIn,
   fetchSignUp,
-} from "../../redux/features/auth/authSlice";
+} from "../../redux/features/authUser/authUserSlice";
 import RejectedErrors from "./RejectedErrors";
 import { useCallback, useEffect } from "react";
 import { handleClose } from "./AuthForm.helper";
 import AuthFormNavigation from "./AuthFormNavigation";
-import { fetchUserIp } from "../../redux/features/user/userSlice";
+import { useQuery } from "@tanstack/react-query";
+import { getClientIp } from "../../api/fetchIpRegistry";
+
+import { GetIpRegistry } from "../../types/ipregistry";
 
 const AuthForm = () => {
   const { modalType } = useAppSelector((state) => ({
@@ -52,6 +55,7 @@ const AuthForm = () => {
 
       if (modalType === "sign up") {
         await dispatch(fetchSignUp(credentials));
+
         return;
       }
 

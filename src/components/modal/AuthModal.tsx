@@ -7,7 +7,7 @@ import {
 } from "../../redux/features/global/globalSlice";
 import AuthForm from "../form/AuthForm";
 import { Provider } from "react-redux";
-import { clearAuthErrors } from "../../redux/features/auth/authSlice";
+import { clearAuthErrors } from "../../redux/features/authUser/authUserSlice";
 
 const AuthModal = () => {
   const showModal = useAppSelector((state) => state.global.showModal);

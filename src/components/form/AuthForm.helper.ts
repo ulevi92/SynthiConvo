@@ -9,9 +9,9 @@ import {
   clearAuthErrors,
   fetchResetPassword,
   fetchSignUp,
-} from "../../redux/features/auth/authSlice";
+} from "../../redux/features/authUser/authUserSlice";
 
-import { fetchSignIn } from "../../redux/features/auth/authSlice";
+import { fetchSignIn } from "../../redux/features/authUser/authUserSlice";
 import store from "../../redux/store";
 import { FormInputs } from "./types";
 const dispatch = store.dispatch;

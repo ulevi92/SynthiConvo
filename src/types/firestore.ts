@@ -15,7 +15,7 @@ type FirestoreUser = {
 
   ipInfo: {
     ip: string;
-    security: {
+    security?: {
       isAbuser: boolean;
       isAttacker: boolean;
       isBogon: boolean;
@@ -28,7 +28,6 @@ type FirestoreUser = {
       isAnonymous: boolean;
       isThreat: boolean;
     };
-    oldIps: string[];
   };
 
   userInfo: {

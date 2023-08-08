@@ -9,7 +9,9 @@ interface Props {
 }
 
 const Timer = ({ emailSent, onClick, timer }: Props) => {
-  const requestStatus = useAppSelector((state) => state.auth.requestStatus);
+  const requestStatus = useAppSelector(
+    (state) => state.authUser.auth.requestStatus
+  );
 
   return useMemo(() => {
     if (emailSent) {

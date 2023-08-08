@@ -4,10 +4,12 @@ import { authNavLinks, isAuth } from "./AppNavbar.helper";
 import { useAppDispatch, useAppSelector } from "../../../redux/reduxHooks";
 import Icon from "../../Icon";
 import { setDarkMode } from "../../../redux/features/global/globalSlice";
-import { fetchSignOut } from "../../../redux/features/auth/authSlice";
+import { fetchSignOut } from "../../../redux/features/authUser/authUserSlice";
 
 const AppNavbar = () => {
-  const isUserAuthenticated = useAppSelector((state) => state.auth.isAuth);
+  const isUserAuthenticated = useAppSelector(
+    (state) => state.authUser.auth.isAuth
+  );
   const darkMode = useAppSelector((state) => state.global.darkMode);
   const dispatch = useAppDispatch();
 
