@@ -16,7 +16,6 @@ import type {
   Status,
 } from "./authUserSlice.helper";
 import { GetIpRegistry } from "../../../types/ipregistry";
-import { getClientIp } from "../../../api/fetchIpRegistry";
 
 const key = import.meta.env.VITE_IP_REGISTRY_API_KEY;
 
@@ -178,6 +177,14 @@ const authUserSlice = createSlice({
         auth: { ...state.auth, errorMessage: undefined, requestStatus: "idle" },
       };
     },
+
+    setUserIp(state, action: PayloadAction<string>) {
+      state.user.ipInfo.currentIp = action.payload;
+    },
+
+    setUserCredit(state, action: PayloadAction<number>) {
+      state.user.credit = action.payload;
+    },
   },
   extraReducers(builder) {
     //signing in
@@ -276,5 +283,6 @@ const authUserSlice = createSlice({
   },
 });
 
-export const { setAuth, clearAuthErrors } = authUserSlice.actions;
+export const { setAuth, clearAuthErrors, setUserCredit, setUserIp } =
+  authUserSlice.actions;
 export default authUserSlice.reducer;
