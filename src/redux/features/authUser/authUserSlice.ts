@@ -8,7 +8,7 @@ import {
 
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { auth } from "../../../firebase/firebase";
+import { auth, db } from "../../../firebase/firebase";
 import type {
   CredentialError,
   SignInAndUpArguments,
@@ -16,6 +16,7 @@ import type {
   Status,
 } from "./authUserSlice.helper";
 import { GetIpRegistry } from "../../../types/ipregistry";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 const key = import.meta.env.VITE_IP_REGISTRY_API_KEY;
 
@@ -122,6 +123,21 @@ export const fetchSignUp = createAsyncThunk(
       photoURL,
       uid,
     };
+
+    const firestorePayload = {
+      credit: 1000,
+      uid,
+      displayName: "User_" + uid.slice(0, 6),
+      email,
+      emailVerified,
+      photoURL,
+      ipInfo: {
+        currentIp: clientIp.ip,
+        oldIps: [clientIp.ip],
+      },
+    };
+
+    await setDoc(doc(db, "users", uid), firestorePayload);
 
     return { user, clientIp };
   }
