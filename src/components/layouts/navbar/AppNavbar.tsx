@@ -70,7 +70,7 @@ const AppNavbar = () => {
                 </NavLink>
 
                 <Icon
-                  color={`${!darkMode ? "rgba(255,165,0,1" : ""}`}
+                  color={`${!darkMode ? "#FFFF99" : "#FFFFE0"}`}
                   iconName={`${!darkMode ? "SunFill" : "MoonFill"}`}
                   size='25'
                   onClick={() => dispatch(setDarkMode(!darkMode))}
