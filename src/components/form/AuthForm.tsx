@@ -5,8 +5,8 @@ import FormController from "./FormController";
 import { FormInputs } from "./types";
 import { FormButton } from "./FormButton";
 import { FormErrors } from "./FormErrors";
-import { setModalType } from "../../redux/features/global/globalSlice";
 import {
+  fetchClientIp,
   fetchResetPassword,
   fetchSignIn,
   fetchSignUp,
@@ -15,10 +15,7 @@ import RejectedErrors from "./RejectedErrors";
 import { useCallback, useEffect } from "react";
 import { handleClose } from "./AuthForm.helper";
 import AuthFormNavigation from "./AuthFormNavigation";
-import { useQuery } from "@tanstack/react-query";
-import { getClientIp } from "../../api/fetchIpRegistry";
-
-import { GetIpRegistry } from "../../types/ipregistry";
+import { setLoading } from "../../redux/features/global/globalSlice";
 
 const AuthForm = () => {
   const { modalType } = useAppSelector((state) => ({
@@ -53,16 +50,9 @@ const AuthForm = () => {
         return;
       }
 
-      if (modalType === "sign up") {
-        await dispatch(fetchSignUp(credentials));
-
-        return;
-      }
-
-      if (modalType === "login") {
-        await dispatch(fetchSignIn(credentials));
-        return;
-      }
+      await dispatch(fetchSignIn(credentials));
+      await dispatch(fetchClientIp());
+      dispatch(setLoading(true));
     },
     [modalType, dispatch]
   );

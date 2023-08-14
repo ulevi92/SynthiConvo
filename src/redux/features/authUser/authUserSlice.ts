@@ -106,13 +106,13 @@ export const fetchResetPassword = createAsyncThunk(
 export const fetchSignUp = createAsyncThunk(
   "auth/fetchSignUp",
   async ({ email, password }: SignInAndUpArguments) => {
-    const userResponse = await createUserWithEmailAndPassword(
+    const response = await createUserWithEmailAndPassword(
       auth,
       email!,
       password!
     );
 
-    const { displayName, emailVerified, photoURL, uid } = userResponse.user;
+    const { displayName, emailVerified, photoURL, uid } = response.user;
 
     const user = {
       displayName,
@@ -121,17 +121,6 @@ export const fetchSignUp = createAsyncThunk(
       photoURL,
       uid,
     };
-
-    const firestorePayload = {
-      credit: 1000,
-      uid,
-      displayName: "User_" + uid.slice(0, 6),
-      email,
-      emailVerified,
-      photoURL,
-    };
-
-    await setDoc(doc(db, "users", uid), firestorePayload);
 
     return { user };
   }
