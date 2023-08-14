@@ -41,14 +41,15 @@ type InitialState = {
     };
   };
 
+  requestStatus: Status;
   userNotAllowed: boolean;
 };
 
 const initialState: InitialState = {
   auth: {
+    requestStatus: "idle",
     errorMessage: undefined,
     isAuth: false,
-    requestStatus: "idle",
   },
 
   user: {
@@ -64,8 +65,19 @@ const initialState: InitialState = {
     },
   },
 
+  requestStatus: "idle",
   userNotAllowed: false,
 };
+
+export const fetchClientIp = createAsyncThunk(
+  "auth/fetchClientIp",
+  async () => {
+    const response = await fetch(`https://api.ipregistry.co/?key=${key}`);
+    const data: GetIpRegistry = await response.json();
+
+    return data;
+  }
+);
 
 export const fetchSignIn = createAsyncThunk(
   "auth/fetchSignIn",
@@ -73,12 +85,6 @@ export const fetchSignIn = createAsyncThunk(
     const response = await signInWithEmailAndPassword(auth, email!, password!);
 
     const { displayName, emailVerified, photoURL, uid } = response.user;
-
-    const clientIp: GetIpRegistry = await fetch(
-      `https://api.ipregistry.co/?key=${key}`
-    )
-      .then((res) => res.json())
-      .then((data) => data);
 
     const user: SignInAndUpPayload = {
       displayName,
@@ -88,7 +94,7 @@ export const fetchSignIn = createAsyncThunk(
       uid,
     };
 
-    return { user, clientIp };
+    return { user };
   }
 );
 
@@ -105,14 +111,6 @@ export const fetchSignUp = createAsyncThunk(
       email!,
       password!
     );
-
-    const clientIp = await fetch(`https://api.ipregistry.co/?key=${key}`)
-      .then((res) => res.json())
-      .then((data) => {
-        const returnData: GetIpRegistry = data;
-
-        return returnData;
-      });
 
     const { displayName, emailVerified, photoURL, uid } = userResponse.user;
 
@@ -131,15 +129,11 @@ export const fetchSignUp = createAsyncThunk(
       email,
       emailVerified,
       photoURL,
-      ipInfo: {
-        currentIp: clientIp.ip,
-        oldIps: [clientIp.ip],
-      },
     };
 
     await setDoc(doc(db, "users", uid), firestorePayload);
 
-    return { user, clientIp };
+    return { user };
   }
 );
 
@@ -215,25 +209,7 @@ const authUserSlice = createSlice({
       .addCase(fetchSignIn.fulfilled, (state, action) => {
         const {
           user: { displayName, email, emailVerified, photoURL, uid },
-          clientIp: { ip: currentIp, security, type },
         } = action.payload;
-        if (
-          security.is_abuser ||
-          security.is_anonymous ||
-          security.is_attacker ||
-          security.is_bogon ||
-          security.is_cloud_provider ||
-          security.is_proxy ||
-          security.is_relay ||
-          security.is_threat ||
-          security.is_tor ||
-          security.is_tor_exit ||
-          security.is_vpn
-        )
-          state.userNotAllowed = true;
-
-        if (!localStorage.getItem("userIp"))
-          localStorage.setItem("userIp", JSON.stringify(currentIp));
 
         state.auth.requestStatus = "fulfilled";
         state.auth.isAuth = true;
@@ -243,8 +219,6 @@ const authUserSlice = createSlice({
         state.user.emailVerified = emailVerified;
         state.user.imgSrc = photoURL;
         state.user.userId = uid;
-        state.user.ipInfo.currentIp = currentIp;
-        state.user.ipInfo.type = type;
       })
 
       .addCase(fetchSignIn.rejected, (state, action) => {
@@ -261,11 +235,7 @@ const authUserSlice = createSlice({
       .addCase(fetchSignUp.fulfilled, (state, action) => {
         const {
           user: { displayName, email, emailVerified, photoURL, uid },
-          clientIp: { ip: currentIp, security, type },
         } = action.payload;
-
-        if (!localStorage.getItem("userIp"))
-          localStorage.setItem("userIp", JSON.stringify(currentIp));
 
         state.auth.isAuth = true;
         state.auth.requestStatus = "fulfilled";
@@ -276,23 +246,6 @@ const authUserSlice = createSlice({
         state.user.emailVerified = emailVerified;
         state.user.imgSrc = photoURL;
         state.user.userId = uid;
-        state.user.ipInfo.currentIp = currentIp;
-        state.user.ipInfo.type = type;
-
-        if (
-          security.is_abuser ||
-          security.is_anonymous ||
-          security.is_attacker ||
-          security.is_bogon ||
-          security.is_cloud_provider ||
-          security.is_proxy ||
-          security.is_relay ||
-          security.is_threat ||
-          security.is_tor ||
-          security.is_tor_exit ||
-          security.is_vpn
-        )
-          state.userNotAllowed = true;
       })
 
       .addCase(fetchSignUp.rejected, (state, action) => {
@@ -335,6 +288,41 @@ const authUserSlice = createSlice({
       .addCase(fetchEmailVerification.rejected, (state, action) => {
         state.auth.requestStatus = "error";
         state.auth.errorMessage = action.error.message;
+      });
+
+    //get client ip information
+    builder
+      .addCase(fetchClientIp.pending, (state) => {
+        state.requestStatus = "pending";
+      })
+      .addCase(fetchClientIp.fulfilled, (state, action) => {
+        state.requestStatus = "fulfilled";
+
+        const { ip: currentIp, security, type } = action.payload;
+
+        //checking user is not - abuser / vpn / attacker etc...
+        if (
+          security.is_abuser ||
+          security.is_anonymous ||
+          security.is_attacker ||
+          security.is_bogon ||
+          security.is_cloud_provider ||
+          security.is_proxy ||
+          security.is_relay ||
+          security.is_threat ||
+          security.is_tor ||
+          security.is_tor_exit ||
+          security.is_vpn
+        )
+          return { ...state, userNotAllowed: true };
+
+        if (!localStorage.getItem("userIp"))
+          localStorage.setItem("userIp", JSON.stringify(currentIp));
+
+        state.user.ipInfo = { currentIp, type };
+      })
+      .addCase(fetchClientIp.rejected, (state) => {
+        state.requestStatus = "error";
       });
   },
 });
