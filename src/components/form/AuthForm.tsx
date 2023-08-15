@@ -6,7 +6,6 @@ import { FormInputs } from "./types";
 import { FormButton } from "./FormButton";
 import { FormErrors } from "./FormErrors";
 import {
-  fetchClientIp,
   fetchResetPassword,
   fetchSignIn,
   fetchSignUp,
@@ -51,7 +50,6 @@ const AuthForm = () => {
       }
 
       await dispatch(fetchSignIn(credentials));
-      await dispatch(fetchClientIp());
       dispatch(setLoading(true));
     },
     [modalType, dispatch]
