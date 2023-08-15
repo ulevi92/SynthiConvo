@@ -16,7 +16,16 @@ import type {
   Status,
 } from "./authUserSlice.helper";
 import { GetIpRegistry } from "../../../types/ipregistry";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import {
+  DocumentSnapshot,
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
+import { FirestoreUserDb } from "../../../types/firestore";
 
 const key = import.meta.env.VITE_IP_REGISTRY_API_KEY;
 
@@ -69,61 +78,108 @@ const initialState: InitialState = {
   userNotAllowed: false,
 };
 
-export const fetchClientIp = createAsyncThunk(
-  "auth/fetchClientIp",
-  async () => {
-    const response = await fetch(`https://api.ipregistry.co/?key=${key}`);
-    const data: GetIpRegistry = await response.json();
-
-    return data;
-  }
-);
-
 export const fetchSignIn = createAsyncThunk(
   "auth/fetchSignIn",
   async ({ email, password }: SignInAndUpArguments) => {
-    const response = await signInWithEmailAndPassword(auth, email!, password!);
+    //fetch firebase
+    const userCreditials = await signInWithEmailAndPassword(
+      auth,
+      email!,
+      password!
+    );
 
-    const { displayName, emailVerified, photoURL, uid } = response.user;
+    //fetch to get client ip
+    const clientIp: GetIpRegistry = await fetch(
+      `https://api.ipregistry.co/?key=${key}`
+    )
+      .then((res) => res.json())
+      .then((data) => data);
+
+    const { uid } = userCreditials.user;
+
+    //get data from firestore
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
+
+    const firestoreUser = docSnap.data() as FirestoreUserDb;
+
+    //post user new ip if it's not === to stored ip
+    if (firestoreUser.user.ipInfo.ip !== clientIp.ip) {
+      //creating a new payload for the current ip, and saving it
+      const newIpPayload: FirestoreUserDb = {
+        user: {
+          ...firestoreUser.user,
+          ipInfo: {
+            ip: clientIp.ip,
+            previewsLoggedIps: [
+              ...firestoreUser.user.ipInfo.previewsLoggedIps,
+              clientIp.ip,
+            ],
+          },
+        },
+      };
+
+      await updateDoc(docRef, newIpPayload);
+    }
+
+    const { credit, displayName, emailVerified } = firestoreUser.user;
 
     const user: SignInAndUpPayload = {
+      credit,
       displayName,
       email,
       emailVerified,
-      photoURL,
       uid,
     };
 
-    return { user };
+    return { user, clientIp };
+  }
+);
+
+export const fetchSignUp = createAsyncThunk(
+  "auth/fetchSignUp",
+  async ({ email, password }: SignInAndUpArguments) => {
+    const userCreditials = await createUserWithEmailAndPassword(
+      auth,
+      email!,
+      password!
+    );
+
+    const clientIp: GetIpRegistry = await fetch(
+      `https://api.ipregistry.co/?key=${key}`
+    )
+      .then((res) => res.json())
+      .then((data) => data);
+
+    const { emailVerified, uid } = userCreditials.user;
+
+    const { ip } = clientIp;
+
+    const user = userCreditials.user;
+
+    const firestorePayload: FirestoreUserDb = {
+      user: {
+        id: uid,
+        credit: 1000,
+        emailVerified: false,
+        email,
+        displayName: "user_" + uid.slice(0, 4),
+        ipInfo: {
+          ip,
+          previewsLoggedIps: [...[], ip],
+        },
+      },
+    };
+
+    await setDoc(doc(db, "users", uid), firestorePayload);
+
+    return { user, clientIp };
   }
 );
 
 export const fetchResetPassword = createAsyncThunk(
   "auth/fetchResetPassword",
   async (email: string) => await sendPasswordResetEmail(auth, email)
-);
-
-export const fetchSignUp = createAsyncThunk(
-  "auth/fetchSignUp",
-  async ({ email, password }: SignInAndUpArguments) => {
-    const response = await createUserWithEmailAndPassword(
-      auth,
-      email!,
-      password!
-    );
-
-    const { displayName, emailVerified, photoURL, uid } = response.user;
-
-    const user = {
-      displayName,
-      email,
-      emailVerified,
-      photoURL,
-      uid,
-    };
-
-    return { user };
-  }
 );
 
 export const fetchSignOut = createAsyncThunk(
@@ -155,6 +211,7 @@ export const fetchEmailVerification = createAsyncThunk(
   }
 );
 
+//creating redux slice
 const authUserSlice = createSlice({
   name: "auth",
   initialState,
@@ -197,16 +254,18 @@ const authUserSlice = createSlice({
       })
       .addCase(fetchSignIn.fulfilled, (state, action) => {
         const {
-          user: { displayName, email, emailVerified, photoURL, uid },
+          user: { displayName, email, emailVerified, uid, credit },
+          clientIp: { security },
         } = action.payload;
 
         state.auth.requestStatus = "fulfilled";
         state.auth.isAuth = true;
 
+        state.user.credit = credit;
         state.user.displayName = displayName;
         state.user.email = email;
         state.user.emailVerified = emailVerified;
-        state.user.imgSrc = photoURL;
+
         state.user.userId = uid;
       })
 
@@ -223,8 +282,25 @@ const authUserSlice = createSlice({
 
       .addCase(fetchSignUp.fulfilled, (state, action) => {
         const {
-          user: { displayName, email, emailVerified, photoURL, uid },
+          user: { displayName, email, emailVerified, uid },
+          clientIp: { security },
         } = action.payload;
+
+        //checking user is not - abuser / vpn / attacker etc...
+        if (
+          security.is_abuser ||
+          security.is_anonymous ||
+          security.is_attacker ||
+          security.is_bogon ||
+          security.is_cloud_provider ||
+          security.is_proxy ||
+          security.is_relay ||
+          security.is_threat ||
+          security.is_tor ||
+          security.is_tor_exit ||
+          security.is_vpn
+        )
+          return { ...state, userNotAllowed: true };
 
         state.auth.isAuth = true;
         state.auth.requestStatus = "fulfilled";
@@ -233,7 +309,6 @@ const authUserSlice = createSlice({
         state.user.email = email;
         state.user.displayName = displayName;
         state.user.emailVerified = emailVerified;
-        state.user.imgSrc = photoURL;
         state.user.userId = uid;
       })
 
@@ -277,41 +352,6 @@ const authUserSlice = createSlice({
       .addCase(fetchEmailVerification.rejected, (state, action) => {
         state.auth.requestStatus = "error";
         state.auth.errorMessage = action.error.message;
-      });
-
-    //get client ip information
-    builder
-      .addCase(fetchClientIp.pending, (state) => {
-        state.requestStatus = "pending";
-      })
-      .addCase(fetchClientIp.fulfilled, (state, action) => {
-        state.requestStatus = "fulfilled";
-
-        const { ip: currentIp, security, type } = action.payload;
-
-        //checking user is not - abuser / vpn / attacker etc...
-        if (
-          security.is_abuser ||
-          security.is_anonymous ||
-          security.is_attacker ||
-          security.is_bogon ||
-          security.is_cloud_provider ||
-          security.is_proxy ||
-          security.is_relay ||
-          security.is_threat ||
-          security.is_tor ||
-          security.is_tor_exit ||
-          security.is_vpn
-        )
-          return { ...state, userNotAllowed: true };
-
-        if (!localStorage.getItem("userIp"))
-          localStorage.setItem("userIp", JSON.stringify(currentIp));
-
-        state.user.ipInfo = { currentIp, type };
-      })
-      .addCase(fetchClientIp.rejected, (state) => {
-        state.requestStatus = "error";
       });
   },
 });

@@ -1,6 +1,6 @@
 export type Status = "idle" | "fulfilled" | "error" | "pending";
 
-type InputTextType = string | null;
+type InputTextType = string;
 
 export type InputType = {
   email: InputTextType;
@@ -16,10 +16,10 @@ export type SignInAndUpArguments = {
 };
 
 export type SignInAndUpPayload = {
+  credit: number;
   uid: string;
   email: string | null;
   displayName: string | null;
-  photoURL: string | null;
   emailVerified: boolean;
 };
 

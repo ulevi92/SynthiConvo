@@ -12,27 +12,11 @@ type FirestoreDbChatLog = {
 type FirestoreUser = {
   id: string;
   credit: number;
-
+  email: string;
+  displayName: string;
+  emailVerified: boolean;
   ipInfo: {
-    ip: string;
-    security?: {
-      isAbuser: boolean;
-      isAttacker: boolean;
-      isBogon: boolean;
-      isCloudProvider: boolean;
-      isProxy: boolean;
-      isTor: boolean;
-      isRelay: boolean;
-      isTorExit: boolean;
-      isVPN: boolean;
-      isAnonymous: boolean;
-      isThreat: boolean;
-    };
-  };
-
-  userInfo: {
-    displayName?: string;
-    imgUrl?: string;
-    email: string;
+    ip: string | null;
+    previewsLoggedIps: string[];
   };
 };
