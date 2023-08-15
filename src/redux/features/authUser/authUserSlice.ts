@@ -34,20 +34,15 @@ type InitialState = {
     requestStatus: Status;
     isAuth: boolean;
     errorMessage: CredentialError;
+    authLoading: boolean;
   };
 
   user: {
-    credit: number;
+    credit: number | null;
     userId: string | null;
     displayName: string | null;
-    imgSrc: string | null;
     email: string | null;
     emailVerified: boolean;
-
-    ipInfo: {
-      currentIp: string | null;
-      type: "IPv4" | "IPv6" | null;
-    };
   };
 
   requestStatus: Status;
@@ -59,19 +54,15 @@ const initialState: InitialState = {
     requestStatus: "idle",
     errorMessage: undefined,
     isAuth: false,
+    authLoading: false,
   },
 
   user: {
-    credit: 1000,
+    credit: null,
     displayName: null,
     email: null,
     emailVerified: false,
-    imgSrc: null,
     userId: null,
-    ipInfo: {
-      currentIp: null,
-      type: null,
-    },
   },
 
   requestStatus: "idle",
@@ -104,7 +95,11 @@ export const fetchSignIn = createAsyncThunk(
     const firestoreUser = docSnap.data() as FirestoreUserDb;
 
     //post user new ip if it's not === to stored ip
-    if (firestoreUser.user.ipInfo.ip !== clientIp.ip) {
+    if (
+      !firestoreUser.user.ipInfo.previewsLoggedIps.find(
+        (ip) => ip === firestoreUser.user.ipInfo.ip
+      )
+    ) {
       //creating a new payload for the current ip, and saving it
       const newIpPayload: FirestoreUserDb = {
         user: {
@@ -151,7 +146,7 @@ export const fetchSignUp = createAsyncThunk(
       .then((res) => res.json())
       .then((data) => data);
 
-    const { emailVerified, uid } = userCreditials.user;
+    const { uid } = userCreditials.user;
 
     const { ip } = clientIp;
 
@@ -226,7 +221,6 @@ const authUserSlice = createSlice({
         state.user.displayName = displayName;
         state.user.email = email;
         state.user.emailVerified = emailVerified;
-        state.user.imgSrc = photoURL;
         state.user.userId = uid;
       }
     },
@@ -235,17 +229,19 @@ const authUserSlice = createSlice({
       return {
         ...state,
         auth: { ...state.auth, errorMessage: undefined, requestStatus: "idle" },
+        requestStatus: "idle",
       };
     },
 
-    setUserIp(state, action: PayloadAction<string>) {
-      state.user.ipInfo.currentIp = action.payload;
-    },
-
-    setUserCredit(state, action: PayloadAction<number>) {
+    updateUserCredit(state, action: PayloadAction<number>) {
       state.user.credit = action.payload;
     },
+
+    setAuthLoading(state, action: PayloadAction<boolean>) {
+      state.auth.authLoading = action.payload;
+    },
   },
+
   extraReducers(builder) {
     //signing in
     builder
@@ -310,6 +306,7 @@ const authUserSlice = createSlice({
         state.user.displayName = displayName;
         state.user.emailVerified = emailVerified;
         state.user.userId = uid;
+        state.user.credit = 1000;
       })
 
       .addCase(fetchSignUp.rejected, (state, action) => {
@@ -356,6 +353,6 @@ const authUserSlice = createSlice({
   },
 });
 
-export const { setAuth, clearAuthErrors, setUserCredit, setUserIp } =
+export const { setAuth, clearAuthErrors, updateUserCredit, setAuthLoading } =
   authUserSlice.actions;
 export default authUserSlice.reducer;

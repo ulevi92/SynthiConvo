@@ -9,6 +9,7 @@ import {
   fetchResetPassword,
   fetchSignIn,
   fetchSignUp,
+  setAuthLoading,
 } from "../../redux/features/authUser/authUserSlice";
 import RejectedErrors from "./RejectedErrors";
 import { useCallback, useEffect } from "react";
@@ -42,6 +43,8 @@ const AuthForm = () => {
 
   const onSubmit: SubmitHandler<FormInputs> = useCallback(
     async ({ email, password }) => {
+      dispatch(setAuthLoading(true));
+
       const credentials = { email, password };
 
       if (modalType === "passwordReminder") {
@@ -49,7 +52,17 @@ const AuthForm = () => {
         return;
       }
 
-      await dispatch(fetchSignIn(credentials));
+      if (modalType === "sign up") {
+        await dispatch(fetchSignUp(credentials));
+        return;
+      }
+
+      if (modalType === "login") {
+        await dispatch(fetchSignIn(credentials));
+        return;
+      }
+
+      dispatch(setAuthLoading(false));
       dispatch(setLoading(true));
     },
     [modalType, dispatch]
