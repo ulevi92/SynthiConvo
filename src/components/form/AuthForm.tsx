@@ -18,10 +18,7 @@ import AuthFormNavigation from "./AuthFormNavigation";
 import { setLoading } from "../../redux/features/global/globalSlice";
 
 const AuthForm = () => {
-  const { modalType } = useAppSelector((state) => ({
-    modalType: state.global.modalType,
-  }));
-
+  const modalType = useAppSelector((state) => state.global.modalType);
   const dispatch = useAppDispatch();
 
   const {

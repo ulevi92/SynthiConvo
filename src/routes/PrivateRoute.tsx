@@ -17,7 +17,6 @@ const PrivateRoute = () => {
   const didMounted = useRef<boolean>(false);
 
   useLayoutEffect(() => {
-    const firestorePayload = user;
     const postToFireStore = async () => {};
 
     if (modalType === "sign up") {

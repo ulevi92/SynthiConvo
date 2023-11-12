@@ -6,22 +6,17 @@ import { useAppSelector } from "../../redux/reduxHooks";
 export const Loader = ({ children }: PropsWithChildren) => {
   const loading = useAppSelector((state) => state.global.loading);
 
-  const content = useMemo(() => {
-    if (loading)
-      return (
-        <Container fluid className={`loader-container`}>
-          <Row className='align-items-center h-100 z-3'>
-            <Col className='d-flex justify-content-center'>
-              <div className='dot dot-1'></div>
-              <div className='dot dot-2'></div>
-              <div className='dot dot-3'></div>
-            </Col>
-          </Row>
-        </Container>
-      );
+  if (!loading) return <>{children}</>;
 
-    return <>{children}</>;
-  }, [loading]);
-
-  return content;
+  return (
+    <Container fluid className={`loader-container`}>
+      <Row className='align-items-center h-100 z-3'>
+        <Col className='d-flex justify-content-center'>
+          <div className='dot dot-1'></div>
+          <div className='dot dot-2'></div>
+          <div className='dot dot-3'></div>
+        </Col>
+      </Row>
+    </Container>
+  );
 };

@@ -1,10 +1,12 @@
-import type { ChatLog } from "./chat";
+import type { ChatLog } from "./openAI";
+
+export type RequestStatus = "" | "" | "" | "";
 
 export type FirestoreUserDb = {
   user: FirestoreUser;
 };
 
-type FirestoreDbChatLog = {
+export type FirestoreDbChatLog = {
   userLog: ChatLog[];
   botLog: ChatLog[];
 };

@@ -8,9 +8,8 @@ interface Props extends PropsWithChildren {
 
 const LogScreen = ({ children, bot }: Props) => {
   const { darkMode } = useAppSelector((state) => state.global);
-  const { displayName, userImg, userId, email } = useAppSelector((state) => ({
+  const { displayName, userId, email } = useAppSelector((state) => ({
     displayName: state.authUser.user.displayName,
-    userImg: state.authUser.user.imgSrc,
     userId: state.authUser.user.userId,
     email: state.authUser.user.email,
   }));
@@ -46,7 +45,7 @@ const LogScreen = ({ children, bot }: Props) => {
         <Card.Body>{children}</Card.Body>
       </Card>
     );
-  }, [bot, displayName, userImg, userId, darkMode]);
+  }, [bot, displayName, userId, darkMode]);
 };
 
 export default memo(LogScreen);
