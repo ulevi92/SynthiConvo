@@ -88,11 +88,20 @@ const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    addUserQuestion(state, action: PayloadAction<ChatChoices>) {
+    addUserQuestion(state, action: PayloadAction<ChatMessage>) {
       //injecting user question to the state
 
-      state.log.user = [...state.log.user, action.payload];
-      state.userLastQuestion = action.payload.message.content;
+      const newUserBlock: ChatChoices = {
+        finishReason: "stop",
+        index: state.log.user.length,
+        message: {
+          role: "user",
+          content: action.payload.content,
+        },
+      };
+
+      state.log.user = [...state.log.user, newUserBlock];
+      state.userLastQuestion = action.payload.content;
       state.questionAsked = true;
     },
   },
