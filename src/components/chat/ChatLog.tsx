@@ -6,20 +6,20 @@ const ChatLog = () => {
   const { log } = useAppSelector((state) => state.chat);
 
   return useMemo(() => {
-    const renderLog = log.user.flatMap(({ msg, id }) => {
-      const botAnswer = log.bot.find((botMsg) => botMsg.id === id);
+    const renderLog = log.user.flatMap(({ index, message }) => {
+      const botAnswer = log.bot.find((botMsg) => botMsg.index === index);
       if (botAnswer) {
         // Render both user question and bot answer
         return [
-          <LogScreen key={`user_${id}`}>{msg}</LogScreen>,
-          <LogScreen bot key={`bot_${id}`}>
-            {botAnswer.msg}
+          <LogScreen key={`user_${index}`}>{message.content}</LogScreen>,
+          <LogScreen bot key={`bot_${index}`}>
+            {botAnswer.message.content}
           </LogScreen>,
         ];
       }
 
       // Render only user question
-      return <LogScreen key={`user_${id}`}>{msg}</LogScreen>;
+      return <LogScreen key={`user_${index}`}>{message.content}</LogScreen>;
     });
 
     return <>{renderLog}</>;

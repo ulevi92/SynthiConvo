@@ -1,13 +1,13 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../../firebase/firebase";
-import { ChatLog, ChatMessage } from "../../../types/openAI";
+import { ChatChoices, ChatLog, ChatMessage } from "../../../types/openAI";
 
 import OpenAI from "openai";
 import { ChatCompletion } from "openai/resources";
 
 type Log = {
-  user: ChatMessage[];
+  user: ChatChoices[];
   bot: ChatCompletion.Choice[];
 };
 
@@ -88,10 +88,11 @@ const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    addUserQuestion(state, action: PayloadAction<ChatMessage>) {
+    addUserQuestion(state, action: PayloadAction<ChatChoices>) {
       //injecting user question to the state
+
       state.log.user = [...state.log.user, action.payload];
-      state.userLastQuestion = action.payload.content;
+      state.userLastQuestion = action.payload.message.content;
       state.questionAsked = true;
     },
   },
