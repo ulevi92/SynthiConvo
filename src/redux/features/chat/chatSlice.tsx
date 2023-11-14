@@ -4,11 +4,17 @@ import { auth, db } from "../../../firebase/firebase";
 import { ChatChoices, ChatLog, ChatMessage } from "../../../types/openAI";
 
 import OpenAI from "openai";
-import { ChatCompletion } from "openai/resources";
+import { ChatCompletion, ChatCompletionMessageParam } from "openai/resources";
+import { RootState } from "../../store";
 
 type Log = {
   user: ChatChoices[];
   bot: ChatCompletion.Choice[];
+};
+
+type History = {
+  content: string | null;
+  role: "function" | "user" | "system" | "assistant";
 };
 
 interface InitialState {
@@ -17,6 +23,8 @@ interface InitialState {
   userLastQuestion: string | null;
   questionAsked: boolean;
   isLoading: boolean;
+  history: History[];
+  botIndex: number | null;
 
   creditUsed: number;
   totalCredit: number;
@@ -30,13 +38,16 @@ export const openAiRequest = new OpenAI({
 
 export const askBot = createAsyncThunk(
   "askingBot",
-  async (content: string | null) => {
+  async (userContent: string | null, { getState }) => {
+    const {
+      chat: { history },
+    } = getState() as RootState;
+
     const response = await openAiRequest.chat.completions.create({
       model: "gpt-3.5-turbo",
-      messages: [{ content, role: "user" }],
+      messages: [...history, { content: userContent, role: "user" }],
+      max_tokens: 25,
     });
-
-    const a = response.choices;
 
     return response;
   }
@@ -51,6 +62,8 @@ const initialState: InitialState = {
   userLastQuestion: null,
   questionAsked: false,
   isLoading: false,
+  history: [],
+  botIndex: null,
 
   creditUsed: 0,
   totalCredit: 1000,
@@ -100,6 +113,8 @@ const chatSlice = createSlice({
         },
       };
 
+      state.history = [...state.history, newUserBlock.message];
+
       state.log.user = [...state.log.user, newUserBlock];
       state.userLastQuestion = action.payload.content;
       state.questionAsked = true;
@@ -121,20 +136,38 @@ const chatSlice = createSlice({
         state.requestStatus = "rejected";
       });
 
+    builder.addCase(askBot.pending, (state) => {
+      state.questionAsked = true;
+      state.isLoading = true;
+    });
     builder
-      .addCase(askBot.pending, (state) => {
-        state.questionAsked = true;
-        state.isLoading = true;
-      })
       .addCase(askBot.fulfilled, (state, action) => {
         const { choices, usage } = action.payload;
 
+        const newBotIndex = (state.botIndex ?? -1) + 1;
+
         state.isLoading = false;
         state.questionAsked = false;
-        state.creditUsed = state.creditUsed + usage?.total_tokens!;
-        state.totalCredit = state.totalCredit - usage?.total_tokens!;
+        state.creditUsed += usage?.total_tokens || 0;
+        state.totalCredit -= usage?.total_tokens || 0;
 
-        state.log.bot = [...state.log.bot, ...choices];
+        state.log.bot = [
+          ...state.log.bot,
+          {
+            finish_reason: choices[0].finish_reason,
+            index: newBotIndex,
+            message: choices[0].message,
+          },
+        ];
+
+        state.history = [
+          ...state.history,
+          {
+            content: choices[0].message.content,
+            role: choices[0].message.role,
+          },
+        ];
+        state.botIndex = newBotIndex;
       })
       .addCase(askBot.rejected, (state) => {
         state.isLoading = false;

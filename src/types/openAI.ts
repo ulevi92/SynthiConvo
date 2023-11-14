@@ -9,7 +9,7 @@ type FinishReason = "stop" | "length" | "content_filter" | "function_call";
 
 export type ChatMessage = {
   content: string | null;
-  role: "system" | "user" | "assistent" | "function";
+  role: "function" | "system" | "user" | "assistant";
 };
 
 type Usage = {
