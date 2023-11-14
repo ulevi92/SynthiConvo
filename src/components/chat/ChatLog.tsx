@@ -8,19 +8,10 @@ const ChatLog = () => {
   return useMemo(() => {
     return (
       <>
-        {history.map(({ role, content }) => (
-          <>
-            <LogScreen
-              bot={role === "assistant"}
-              key={
-                role === "user"
-                  ? `user_${log.user.length}`
-                  : `bot_${log.bot.length}`
-              }
-            >
-              {content}
-            </LogScreen>
-          </>
+        {history.map(({ role, content }, index) => (
+          <LogScreen bot={role === "assistant"} key={index}>
+            {content}
+          </LogScreen>
         ))}
       </>
     );
