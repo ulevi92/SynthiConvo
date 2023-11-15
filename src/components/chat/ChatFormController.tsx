@@ -2,15 +2,15 @@ import { Form } from "react-bootstrap";
 import { Controller } from "react-hook-form";
 import type { Control } from "react-hook-form";
 
-import { ChatValue } from "./ChatSubmitForm";
+import { ChatValue } from "./ChatForm";
 import { useAppSelector } from "../../redux/reduxHooks";
 
 interface Props {
   control: Control<ChatValue, any>;
 }
 
-const ChatController = ({ control }: Props) => {
-  const { questionAsked } = useAppSelector((state) => state.chat);
+const ChatFormController = ({ control }: Props) => {
+  const { questionAsked, totalCredit } = useAppSelector((state) => state.chat);
 
   const placeholder = questionAsked
     ? "Please wait until the AI finishes answering"
@@ -22,7 +22,7 @@ const ChatController = ({ control }: Props) => {
       control={control}
       render={({ field }) => (
         <Form.Control
-          disabled={questionAsked}
+          disabled={questionAsked || totalCredit === 0}
           placeholder={placeholder}
           {...field}
           size='lg'
@@ -32,4 +32,4 @@ const ChatController = ({ control }: Props) => {
   );
 };
 
-export default ChatController;
+export default ChatFormController;

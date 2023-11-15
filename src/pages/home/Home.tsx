@@ -16,7 +16,7 @@ const Home = () => {
   }));
 
   useEffect(() => {
-    if (!didMount.current) {
+    if (!didMount.current && localStorage.getItem("chat")) {
       dispatch(addOldHistory(JSON.parse(localStorage.getItem("chat")!)));
 
       didMount.current = true;

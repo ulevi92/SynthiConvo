@@ -1,6 +1,6 @@
 import { Col, Container, Form, Row } from "react-bootstrap";
 import ChatLog from "./ChatLog";
-import ChatSubmitForm from "./ChatSubmitForm";
+import ChatForm from "./ChatForm";
 
 const ChatWindow = () => {
   const gridColClassName = "p-0";
@@ -15,7 +15,7 @@ const ChatWindow = () => {
         </Row>
       </Container>
 
-      <ChatSubmitForm />
+      <ChatForm />
     </div>
   );
 };
