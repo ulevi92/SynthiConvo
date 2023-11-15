@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { useAppSelector } from "../../redux/reduxHooks";
 import LogScreen from "./LogScreen";
 

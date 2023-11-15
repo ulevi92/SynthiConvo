@@ -12,18 +12,12 @@ type Log = {
   bot: ChatCompletion.Choice[];
 };
 
-type History = {
-  content: string | null;
-  role: "function" | "user" | "system" | "assistant";
-};
-
 interface InitialState {
   log: Log;
   requestStatus: "idle" | "pending" | "fulfilled" | "rejected";
-  userLastQuestion: string | null;
   questionAsked: boolean;
   isLoading: boolean;
-  history: History[];
+  history: ChatMessage[];
   botIndex: number | null;
 
   creditUsed: number;
@@ -46,7 +40,7 @@ export const askBot = createAsyncThunk(
     const response = await openAiRequest.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [...history, { content: userContent, role: "user" }],
-      max_tokens: 25,
+      max_tokens: 10,
     });
 
     return response;
@@ -59,7 +53,6 @@ const initialState: InitialState = {
     bot: [],
   },
   requestStatus: "idle",
-  userLastQuestion: null,
   questionAsked: false,
   isLoading: false,
   history: [],
@@ -102,9 +95,8 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     addUserQuestion(state, action: PayloadAction<ChatMessage>) {
-      //injecting user question to the state
-
-      const newUserBlock: ChatChoices = {
+      // create a new user Obj.
+      const newUserObj: ChatChoices = {
         finishReason: "stop",
         index: state.log.user.length,
         message: {
@@ -113,11 +105,24 @@ const chatSlice = createSlice({
         },
       };
 
-      state.history = [...state.history, newUserBlock.message];
+      //saving user question to the history
+      state.history = [...state.history, newUserObj.message];
 
-      state.log.user = [...state.log.user, newUserBlock];
-      state.userLastQuestion = action.payload.content;
-      state.questionAsked = true;
+      //saving user question to the log
+      state.log.user = [...state.log.user, newUserObj];
+
+      console.log(state.history);
+
+      //saving user output to localStorage
+      localStorage.setItem("chat", JSON.stringify(state.history));
+    },
+
+    resetChatHistory(state) {
+      return { ...state, history: [] };
+    },
+
+    addOldHistory(state, action: PayloadAction<ChatMessage[]>) {
+      state.history = action.payload;
     },
   },
   //get user log from db
@@ -160,14 +165,10 @@ const chatSlice = createSlice({
           },
         ];
 
-        state.history = [
-          ...state.history,
-          {
-            content: choices[0].message.content,
-            role: choices[0].message.role,
-          },
-        ];
+        state.history = [...state.history, choices[0].message];
         state.botIndex = newBotIndex;
+
+        localStorage.setItem("chat", JSON.stringify(state.history));
       })
       .addCase(askBot.rejected, (state) => {
         state.isLoading = false;
@@ -176,6 +177,7 @@ const chatSlice = createSlice({
   },
 });
 
-export const { addUserQuestion } = chatSlice.actions;
+export const { addUserQuestion, resetChatHistory, addOldHistory } =
+  chatSlice.actions;
 
 export default chatSlice.reducer;

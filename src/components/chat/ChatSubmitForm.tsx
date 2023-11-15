@@ -17,7 +17,7 @@ const ChatSubmitForm = () => {
   });
 
   const dispatch = useAppDispatch();
-  const { log, questionAsked } = useAppSelector((state) => state.chat);
+  const { log, questionAsked, history } = useAppSelector((state) => state.chat);
   const darkMode = useAppSelector((state) => state.global.darkMode);
 
   const onSubmit: SubmitHandler<ChatValue> = ({ userInput }) => {
