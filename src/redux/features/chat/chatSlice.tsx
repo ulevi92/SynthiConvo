@@ -19,7 +19,6 @@ interface InitialState {
   isLoading: boolean;
   history: ChatMessage[];
   botIndex: number | null;
-
   creditUsed: number;
   totalCredit: number;
 }
@@ -59,7 +58,7 @@ const initialState: InitialState = {
   botIndex: null,
 
   creditUsed: 0,
-  totalCredit: 1000,
+  totalCredit: 60,
 };
 
 export const fetchChatLog = createAsyncThunk("chat/fetchChatLog", async () => {
@@ -111,10 +110,9 @@ const chatSlice = createSlice({
       //saving user question to the log
       state.log.user = [...state.log.user, newUserObj];
 
-      console.log(state.history);
-
       //saving user output to localStorage
       localStorage.setItem("chat", JSON.stringify(state.history));
+      localStorage.setItem("credit", JSON.stringify(state.totalCredit));
     },
 
     resetChatHistory(state) {
@@ -123,6 +121,10 @@ const chatSlice = createSlice({
 
     addOldHistory(state, action: PayloadAction<ChatMessage[]>) {
       state.history = action.payload;
+    },
+
+    addOldCreditRecord(state, action: PayloadAction<number>) {
+      state.totalCredit = action.payload;
     },
   },
   //get user log from db
@@ -154,7 +156,10 @@ const chatSlice = createSlice({
         state.isLoading = false;
         state.questionAsked = false;
         state.creditUsed += usage?.total_tokens || 0;
-        state.totalCredit -= usage?.total_tokens || 0;
+        state.totalCredit = Math.max(
+          0,
+          state.totalCredit - (usage?.total_tokens || 0)
+        );
 
         state.log.bot = [
           ...state.log.bot,
@@ -169,6 +174,7 @@ const chatSlice = createSlice({
         state.botIndex = newBotIndex;
 
         localStorage.setItem("chat", JSON.stringify(state.history));
+        localStorage.setItem("credit", JSON.stringify(state.totalCredit));
       })
       .addCase(askBot.rejected, (state) => {
         state.isLoading = false;
@@ -177,7 +183,11 @@ const chatSlice = createSlice({
   },
 });
 
-export const { addUserQuestion, resetChatHistory, addOldHistory } =
-  chatSlice.actions;
+export const {
+  addUserQuestion,
+  resetChatHistory,
+  addOldHistory,
+  addOldCreditRecord,
+} = chatSlice.actions;
 
 export default chatSlice.reducer;
