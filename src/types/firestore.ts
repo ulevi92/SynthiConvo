@@ -1,8 +1,8 @@
-import type { ChatLog } from "./openAI";
+import type { ChatLog, ChatMessage } from "./openAI";
 
 export type RequestStatus = "" | "" | "" | "";
 
-export type FirestoreUserDb = {
+export type FirestoreUsersDb = {
   user: FirestoreUser;
 };
 
@@ -11,7 +11,7 @@ export type FirestoreDbChatLog = {
   botLog: ChatLog[];
 };
 
-type FirestoreUser = {
+export type FirestoreUser = {
   id: string;
   credit: number;
   email: string;
@@ -21,4 +21,5 @@ type FirestoreUser = {
     ip: string | null;
     previewsLoggedIps: string[];
   };
+  chatHistory: ChatMessage[];
 };

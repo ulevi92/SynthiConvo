@@ -25,7 +25,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { FirestoreUserDb } from "../../../types/firestore";
+import { FirestoreUsersDb } from "../../../types/firestore";
 
 const key = import.meta.env.VITE_IP_REGISTRY_API_KEY;
 
@@ -92,7 +92,7 @@ export const fetchSignIn = createAsyncThunk(
     const docRef = doc(db, "users", uid);
     const docSnap = await getDoc(docRef);
 
-    const firestoreUser = docSnap.data() as FirestoreUserDb;
+    const firestoreUser = docSnap.data() as FirestoreUsersDb;
 
     //post user new ip if it's not === to stored ip
     if (
@@ -101,7 +101,7 @@ export const fetchSignIn = createAsyncThunk(
       )
     ) {
       //creating a new payload for the current ip, and saving it
-      const newIpPayload: FirestoreUserDb = {
+      const newIpPayload: FirestoreUsersDb = {
         user: {
           ...firestoreUser.user,
           ipInfo: {
@@ -152,7 +152,7 @@ export const fetchSignUp = createAsyncThunk(
 
     const user = userCreditials.user;
 
-    const firestorePayload: FirestoreUserDb = {
+    const firestorePayload: FirestoreUsersDb = {
       user: {
         id: uid,
         credit: 1000,
@@ -163,6 +163,7 @@ export const fetchSignUp = createAsyncThunk(
           ip,
           previewsLoggedIps: [...[], ip],
         },
+        chatHistory: [],
       },
     };
 
