@@ -2,6 +2,7 @@ import { useState } from "react";
 import { resetChatHistory } from "../../redux/features/chat/chatSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import { Alert, Button } from "react-bootstrap";
+import { resetUserHistory } from "../../api/firestoreFetches";
 
 const UserUI = () => {
   const dispatch = useAppDispatch();
@@ -15,14 +16,14 @@ const UserUI = () => {
 
   const { userId, email } = user;
 
-  const handleResetHistory = async () => {
+  const handleResetHistory = () => {
     setProgress(() => true);
     setShowAlert(() => true);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       localStorage.removeItem("chat");
       dispatch(resetChatHistory());
-
+      await resetUserHistory();
       setShowAlert(() => false);
       setProgress(() => false);
     }, 500);

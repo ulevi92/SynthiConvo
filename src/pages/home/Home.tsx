@@ -6,11 +6,12 @@ import {
   addOldCreditRecord,
   addOldHistory,
 } from "../../redux/features/chat/chatSlice";
+
+import { setLoading } from "../../redux/features/global/globalSlice";
 import {
   getUserCreditAndHistory,
   postUserCreditAndHistory,
-} from "../../firebase/firestoreFetches";
-import { setLoading } from "../../redux/features/global/globalSlice";
+} from "../../api/firestoreFetches";
 
 export const Home = () => {
   const didMount = useRef<boolean>(false);

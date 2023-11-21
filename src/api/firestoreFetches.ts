@@ -1,5 +1,12 @@
-import { DocumentReference, doc, getDoc, setDoc } from "firebase/firestore";
-import { auth, db } from "./firebase";
+import {
+  DocumentReference,
+  DocumentSnapshot,
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
+import { auth, db } from "../firebase/firebase";
+
 import { FirestoreUser, FirestoreUsersDb } from "../types/firestore";
 import { ChatMessage } from "../types/openAI";
 
@@ -37,4 +44,21 @@ export const getUserCreditAndHistory = async () => {
   const docSnap = await getDoc(docRef);
   const data = docSnap.data();
   return data;
+};
+
+export const resetUserHistory = async () => {
+  const docRef = doc(db, "users", auth.currentUser?.uid!);
+
+  const docSnap = (await getDoc(docRef)) as DocumentSnapshot<FirestoreUsersDb>;
+
+  const resetHistoryObj: FirestoreUser = {
+    ...docSnap.data()!.user,
+    chatHistory: [],
+  };
+
+  const postCleanHistoryObj: FirestoreUsersDb = {
+    user: resetHistoryObj,
+  };
+
+  return await setDoc(docRef, postCleanHistoryObj);
 };
