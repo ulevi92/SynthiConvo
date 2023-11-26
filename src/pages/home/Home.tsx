@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import NotVerifiedError from "./NotVerifiedError";
 import ChatWindow from "../../components/chat/ChatWindow";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   addOldCreditRecord,
   addOldHistory,
@@ -18,6 +18,8 @@ import UserDetails from "../../components/layouts/side navbar/UserDetails";
 import MobileSidebar from "../../components/layouts/side navbar/MobileSidebar";
 
 export const Home = () => {
+  const [openSidebar, setOpenSidebar] = useState<boolean>(false);
+
   const didMount = useRef<boolean>(false);
 
   const dispatch = useAppDispatch();
@@ -76,11 +78,22 @@ export const Home = () => {
           <UserDetails userEmail />
         </Col>
 
-        <Col className='d-flex flex-grow-1 d-md-none' xs={1} md={0}>
-          <MobileSidebar />
+        <Col
+          className='d-flex flex-grow-1 d-md-none p-0'
+          xs={`${openSidebar ? 12 : 1}`}
+          md={0}
+        >
+          <MobileSidebar
+            openSidebar={openSidebar}
+            setOpenSidebar={setOpenSidebar}
+          />
         </Col>
 
-        <Col className='h-100' xs={11} md={9}>
+        <Col
+          className={`h-100 ${openSidebar ? "d-none" : "d-block"}`}
+          xs={openSidebar ? 0 : 11}
+          md={9}
+        >
           <ChatWindow />
         </Col>
       </Row>
