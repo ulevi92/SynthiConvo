@@ -27,9 +27,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <BrowserRouter>
-          <AppNavbar />
-          <ReactQueryDevtools />
-          <App />
+          <div className='d-flex vh-100 flex-column'>
+            <AppNavbar />
+            <div className='flex-grow-1'>
+              <ReactQueryDevtools />
+              <App />
+            </div>
+          </div>
         </BrowserRouter>
       </Provider>
     </QueryClientProvider>

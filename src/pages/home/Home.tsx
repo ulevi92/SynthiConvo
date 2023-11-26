@@ -12,8 +12,10 @@ import {
   getUserCreditAndHistory,
   postUserCreditAndHistory,
 } from "../../api/firestoreFetches";
-import SideNavbar from "../../components/layouts/side navbar/SideNavbar";
+
 import { Col, Container, Row } from "react-bootstrap";
+import UserDetails from "../../components/layouts/side navbar/UserDetails";
+import MobileSidebar from "../../components/layouts/side navbar/MobileSidebar";
 
 export const Home = () => {
   const didMount = useRef<boolean>(false);
@@ -67,21 +69,22 @@ export const Home = () => {
 
   if (!notVerified) return <NotVerifiedError />;
 
-  // return <ChatWindow />;
   return (
-    <>
-      <Container fluid className='h-100'>
-        <Row className='h-100'>
-          <Col md={4} lg={2} className='d-none d-md-block'>
-            <SideNavbar />
-          </Col>
+    <Container fluid className='d-flex flex-column h-100'>
+      <Row className='h-100'>
+        <Col className='h-100 flex-column d-none d-md-flex' md={3}>
+          <UserDetails userEmail />
+        </Col>
 
-          <Col sm={12} md={8} lg={10}>
-            <ChatWindow />
-          </Col>
-        </Row>
-      </Container>
-    </>
+        <Col className='d-flex flex-grow-1 d-md-none' xs={1} md={0}>
+          <MobileSidebar />
+        </Col>
+
+        <Col className='h-100' xs={11} md={9}>
+          <ChatWindow />
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
