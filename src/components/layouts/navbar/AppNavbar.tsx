@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/reduxHooks";
 import Icon from "../../Icon";
 import { setDarkMode } from "../../../redux/features/global/globalSlice";
 import { fetchSignOut } from "../../../redux/features/authUser/authUserSlice";
+import MobileNavbar from "../side navbar/MobileNavbar";
 
 const AppNavbar = () => {
   const isUserAuthenticated = useAppSelector(
@@ -38,49 +39,54 @@ const AppNavbar = () => {
     : "d-none";
 
   return (
-    <Navbar
-      bg={`${darkMode ? "secondary" : "primary"}`}
-      variant='dark'
-      expand='md'
-    >
-      <Container className='px-2'>
-        <Navbar.Brand href='/' className='text-capitalize'>
-          chat with <span className='text-uppercase'>ai</span>
-        </Navbar.Brand>
+    <>
+      <Navbar
+        bg={`${darkMode ? "secondary" : "primary"}`}
+        className='d-none d-md-block'
+        variant='dark'
+        expand='md'
+      >
+        <Container className='px-2'>
+          <Navbar.Brand href='/' className='text-capitalize'>
+            chat with <span className='text-uppercase'>ai</span>
+          </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls='navbar-collapse' />
+          <Navbar.Toggle aria-controls='navbar-collapse' />
 
-        <Navbar.Collapse id='navbar-collapse'>
-          <Nav className='flex-grow-1'>
-            <div className='d-flex flex-column flex-md-row flex-grow-1'>
-              {RenderLinks()}
+          <Navbar.Collapse id='navbar-collapse'>
+            <Nav className='flex-grow-1'>
+              <div className='d-flex flex-column flex-md-row flex-grow-1'>
+                {RenderLinks()}
 
-              <div className='d-flex flex-column flex-md-row flex-grow-1 align-items-start justify-content-md-end align-items-md-center'>
-                <NavLink
-                  to='/'
-                  className='d-flex justify-content-start mb-1 mb-md-0'
-                >
-                  <Button
-                    className={signoutClass}
-                    onClick={() => dispatch(fetchSignOut())}
-                    variant={darkMode ? "outline-light" : "outline-warning"}
+                <div className='d-flex flex-column flex-md-row flex-grow-1 align-items-start justify-content-md-end align-items-md-center'>
+                  <NavLink
+                    to='/'
+                    className='d-flex justify-content-start mb-1 mb-md-0'
                   >
-                    signout
-                  </Button>
-                </NavLink>
+                    <Button
+                      className={signoutClass}
+                      onClick={() => dispatch(fetchSignOut())}
+                      variant={darkMode ? "outline-light" : "outline-warning"}
+                    >
+                      signout
+                    </Button>
+                  </NavLink>
 
-                <Icon
-                  color={`${!darkMode ? "#FFFF99" : "#FFFFE0"}`}
-                  iconName={`${!darkMode ? "SunFill" : "MoonFill"}`}
-                  size='25'
-                  onClick={() => dispatch(setDarkMode(!darkMode))}
-                />
+                  <Icon
+                    color={`${!darkMode ? "#FFFF99" : "#FFFFE0"}`}
+                    iconName={`${!darkMode ? "SunFill" : "MoonFill"}`}
+                    size='25'
+                    onClick={() => dispatch(setDarkMode(!darkMode))}
+                  />
+                </div>
               </div>
-            </div>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
+      <MobileNavbar />
+    </>
   );
 };
 

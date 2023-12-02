@@ -15,11 +15,10 @@ import {
 
 import { Col, Container, Row } from "react-bootstrap";
 import UserDetails from "../../components/layouts/side navbar/UserDetails";
-import MobileSidebar from "../../components/layouts/side navbar/MobileSidebar";
+
+import MobileNavbar from "../../components/layouts/side navbar/MobileNavbar";
 
 export const Home = () => {
-  const [openSidebar, setOpenSidebar] = useState<boolean>(false);
-
   const didMount = useRef<boolean>(false);
 
   const dispatch = useAppDispatch();
@@ -72,28 +71,17 @@ export const Home = () => {
   if (!notVerified) return <NotVerifiedError />;
 
   return (
-    <Container fluid className='d-flex flex-column h-100'>
+    <Container
+      fluid
+      className='d-flex flex-column h-100'
+      style={{ transition: "all 2s ease-in-out" }}
+    >
       <Row className='h-100'>
-        <Col className='h-100 flex-column d-none d-md-flex' md={3}>
+        <Col className='h-100 flex-column d-none d-md-flex' md={3} lg={2}>
           <UserDetails userEmail />
         </Col>
 
-        <Col
-          className='d-flex flex-grow-1 d-md-none p-0'
-          xs={`${openSidebar ? 12 : 1}`}
-          md={0}
-        >
-          <MobileSidebar
-            openSidebar={openSidebar}
-            setOpenSidebar={setOpenSidebar}
-          />
-        </Col>
-
-        <Col
-          className={`h-100 ${openSidebar ? "d-none" : "d-block"}`}
-          xs={openSidebar ? 0 : 11}
-          md={9}
-        >
+        <Col xs={12} md={9} lg={10}>
           <ChatWindow />
         </Col>
       </Row>
