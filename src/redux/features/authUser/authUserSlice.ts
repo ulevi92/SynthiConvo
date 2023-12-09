@@ -38,7 +38,6 @@ type InitialState = {
   };
 
   user: {
-    credit: number | null;
     userId: string | null;
     displayName: string | null;
     email: string | null;
@@ -58,7 +57,6 @@ const initialState: InitialState = {
   },
 
   user: {
-    credit: null,
     displayName: null,
     email: null,
     emailVerified: false,
@@ -234,10 +232,6 @@ const authUserSlice = createSlice({
       };
     },
 
-    updateUserCredit(state, action: PayloadAction<number>) {
-      state.user.credit = action.payload;
-    },
-
     setAuthLoading(state, action: PayloadAction<boolean>) {
       state.auth.authLoading = action.payload;
     },
@@ -258,7 +252,6 @@ const authUserSlice = createSlice({
         state.auth.requestStatus = "fulfilled";
         state.auth.isAuth = true;
 
-        state.user.credit = credit;
         state.user.displayName = displayName;
         state.user.email = email;
         state.user.emailVerified = emailVerified;
@@ -307,7 +300,6 @@ const authUserSlice = createSlice({
         state.user.displayName = displayName;
         state.user.emailVerified = emailVerified;
         state.user.userId = uid;
-        state.user.credit = 1000;
       })
 
       .addCase(fetchSignUp.rejected, (state, action) => {
@@ -354,6 +346,6 @@ const authUserSlice = createSlice({
   },
 });
 
-export const { setAuth, clearAuthErrors, updateUserCredit, setAuthLoading } =
+export const { setAuth, clearAuthErrors, setAuthLoading } =
   authUserSlice.actions;
 export default authUserSlice.reducer;

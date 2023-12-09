@@ -18,6 +18,8 @@ import UserDetails from "../../components/layouts/side navbar/UserDetails";
 
 import MobileNavbar from "../../components/layouts/side navbar/MobileNavbar";
 
+import Dashboard from "../../components/layouts/sidebar/Dashboard";
+
 export const Home = () => {
   const didMount = useRef<boolean>(false);
 
@@ -77,8 +79,8 @@ export const Home = () => {
       style={{ transition: "all 2s ease-in-out" }}
     >
       <Row className='h-100'>
-        <Col className='h-100 flex-column d-none d-md-flex' md={3} lg={2}>
-          <UserDetails userEmail />
+        <Col className='h-100 flex-column d-none d-md-flex p-0' md={3} lg={2}>
+          <Dashboard />
         </Col>
 
         <Col xs={12} md={9} lg={10}>
