@@ -1,6 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export type ModalType = "login" | "sign up" | "passwordReminder" | null;
+export type ModalType =
+  | "login"
+  | "sign up"
+  | "passwordReminder"
+  | "about"
+  | "account"
+  | "clear conversation"
+  | "conversation"
+  | null;
 
 type InitialState = {
   darkMode: boolean;

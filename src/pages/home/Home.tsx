@@ -14,11 +14,9 @@ import {
 } from "../../api/firestoreFetches";
 
 import { Col, Container, Row } from "react-bootstrap";
-import UserDetails from "../../components/layouts/side navbar/UserDetails";
-
-import MobileNavbar from "../../components/layouts/side navbar/MobileNavbar";
 
 import Dashboard from "../../components/layouts/sidebar/Dashboard";
+import AppModal from "../../components/modal/AppModal";
 
 export const Home = () => {
   const didMount = useRef<boolean>(false);
@@ -73,21 +71,25 @@ export const Home = () => {
   if (!notVerified) return <NotVerifiedError />;
 
   return (
-    <Container
-      fluid
-      className='d-flex flex-column h-100'
-      style={{ transition: "all 2s ease-in-out" }}
-    >
-      <Row className='h-100'>
-        <Col className='h-100 flex-column d-none d-md-flex p-0' md={3} lg={2}>
-          <Dashboard />
-        </Col>
+    <>
+      <Container
+        fluid
+        className='d-flex flex-column h-100'
+        style={{ transition: "all 2s ease-in-out" }}
+      >
+        <Row className='h-100'>
+          <Col className='h-100 flex-column d-none d-md-flex p-0' md={3} lg={2}>
+            <Dashboard />
+          </Col>
 
-        <Col xs={12} md={9} lg={10}>
-          <ChatWindow />
-        </Col>
-      </Row>
-    </Container>
+          <Col xs={12} md={9} lg={10}>
+            <ChatWindow />
+          </Col>
+        </Row>
+      </Container>
+
+      <AppModal />
+    </>
   );
 };
 

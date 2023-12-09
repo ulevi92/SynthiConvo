@@ -1,15 +1,11 @@
 import { Button, Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
-import {
-  clearModal,
-  setModalType,
-  setShowModal,
-} from "../../redux/features/global/globalSlice";
+import { clearModal } from "../../redux/features/global/globalSlice";
 import AuthForm from "../form/AuthForm";
-import { Provider } from "react-redux";
 import { clearAuthErrors } from "../../redux/features/authUser/authUserSlice";
+import UserModal from "./UserModal";
 
-const AuthModal = () => {
+const AppModal = () => {
   const showModal = useAppSelector((state) => state.global.showModal);
 
   const modalType = useAppSelector((state) => state.global.modalType);
@@ -19,6 +15,17 @@ const AuthModal = () => {
   const handleClose = () => {
     dispatch(clearModal());
     dispatch(clearAuthErrors());
+  };
+
+  const ModalBody = () => {
+    if (
+      modalType === "login" ||
+      modalType === "sign up" ||
+      modalType === "passwordReminder"
+    )
+      return <AuthForm />;
+
+    return <UserModal />;
   };
 
   return (
@@ -33,10 +40,10 @@ const AuthModal = () => {
         <Modal.Title className='text-capitalize'>{modalType}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AuthForm />
+        <ModalBody />
       </Modal.Body>
     </Modal>
   );
 };
 
-export default AuthModal;
+export default AppModal;

@@ -5,7 +5,7 @@ import {
   setModalType,
   setShowModal,
 } from "../redux/features/global/globalSlice";
-import AuthModal from "../components/modal/AuthModal";
+import AppModal from "../components/modal/AppModal";
 
 const PublicPage = () => {
   const modalType = useAppSelector((state) => state.global.modalType);
@@ -42,7 +42,7 @@ const PublicPage = () => {
         </Row>
       </Container>
 
-      <AuthModal />
+      <AppModal />
     </>
   );
 };

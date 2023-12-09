@@ -4,7 +4,11 @@ import Icon from "../../Icon";
 import * as icons from "react-bootstrap-icons";
 import { useAppDispatch, useAppSelector } from "../../../redux/reduxHooks";
 import { fetchSignOut } from "../../../redux/features/authUser/authUserSlice";
-import { setDarkMode } from "../../../redux/features/global/globalSlice";
+import {
+  setDarkMode,
+  setModalType,
+  setShowModal,
+} from "../../../redux/features/global/globalSlice";
 
 interface Props {
   cardName:
@@ -24,7 +28,7 @@ interface Props {
 
 interface State {
   openModal: boolean;
-  modalType: "about" | "account" | "clear conversation" | null;
+  modalType: "about" | "account" | "clear conversation" | "conversation" | null;
 }
 
 const defaultState: State = {
@@ -103,8 +107,10 @@ const DashboardCard: FC<Props> = ({
     switch (cardName) {
       case "about":
       case "account":
+      case "conversation":
       case "clear conversation":
-        setState({ openModal: true, modalType: cardName });
+        dispatch(setModalType(cardName));
+        dispatch(setShowModal(true));
         break;
 
       case "dark mode":
@@ -122,10 +128,18 @@ const DashboardCard: FC<Props> = ({
 
   const RenderCard = (
     <Card className={cardClass()} onClick={handleCardClick}>
-      <Card.Body className='p-0 d-flex align-items-center'>
-        <Icon iconName={cardIcon()} />
+      <Card.Body className='p-0 d-flex align-items-center justify-content-between'>
+        <div>
+          <Icon iconName={cardIcon()} />
 
-        {cardText}
+          {cardText}
+        </div>
+
+        <div>
+          {cardName === "conversation" && (
+            <Icon iconName='Trash' className='btn' onClick={handleCardClick} />
+          )}
+        </div>
       </Card.Body>
     </Card>
   );
