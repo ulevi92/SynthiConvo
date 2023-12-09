@@ -14,7 +14,6 @@ import {
 } from "../../api/firestoreFetches";
 
 import { Col, Container, Row } from "react-bootstrap";
-
 import Dashboard from "../../components/layouts/sidebar/Dashboard";
 import AppModal from "../../components/modal/AppModal";
 
@@ -26,10 +25,12 @@ export const Home = () => {
     notVerified,
     history,
     totalCredit: credit,
+    darkMode,
   } = useAppSelector((state) => ({
     notVerified: state.authUser.user.emailVerified,
     history: state.chat.history,
     totalCredit: state.chat.totalCredit,
+    darkMode: state.global.darkMode,
   }));
 
   useLayoutEffect(() => {
@@ -70,6 +71,10 @@ export const Home = () => {
 
   if (!notVerified) return <NotVerifiedError />;
 
+  const sidebarStyle = `h-100 flex-column d-none d-md-flex p-0 border-end border-opacity-50 ${
+    darkMode ? "border-grey" : "border-grey"
+  }`;
+
   return (
     <>
       <Container
@@ -78,7 +83,7 @@ export const Home = () => {
         style={{ transition: "all 2s ease-in-out" }}
       >
         <Row className='h-100'>
-          <Col className='h-100 flex-column d-none d-md-flex p-0' md={3} lg={2}>
+          <Col className={sidebarStyle} md={3} lg={2}>
             <Dashboard />
           </Col>
 
@@ -87,7 +92,6 @@ export const Home = () => {
           </Col>
         </Row>
       </Container>
-
       <AppModal />
     </>
   );

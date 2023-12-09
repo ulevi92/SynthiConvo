@@ -88,7 +88,7 @@ const DashboardCard: FC<Props> = ({
   };
 
   const cardClass: () => string = () => {
-    const baseClass = "p-2";
+    const baseClass = "p-2 w-100";
     const marginClass = cardMarginY
       ? `my-${cardMarginY}`
       : `mb-${cardMarginB} mt-${cardMarginT}`;

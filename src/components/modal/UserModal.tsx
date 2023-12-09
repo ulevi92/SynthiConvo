@@ -1,11 +1,34 @@
 import { Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
+import {
+  AboutModalText,
+  AccountModalText,
+  ClearConversationModalText,
+} from "./UserModal.helper";
 
 const UserModal = () => {
   const dispatch = useAppDispatch();
-  const {} = useAppSelector((state) => ({}));
+  const { modalType } = useAppSelector((state) => ({
+    modalType: state.global.modalType,
+  }));
 
-  return <></>;
+  const Text: () => JSX.Element | null = () => {
+    switch (modalType) {
+      case "about":
+        return <AboutModalText />;
+      case "clear conversation":
+      case "conversation":
+        return <ClearConversationModalText />;
+
+      case "account":
+        return <AccountModalText />;
+
+      default:
+        return null;
+    }
+  };
+
+  return <Text />;
 };
 
 export default UserModal;
