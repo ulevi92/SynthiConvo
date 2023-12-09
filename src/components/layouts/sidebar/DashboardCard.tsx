@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Card } from "react-bootstrap";
 import Icon from "../../Icon";
 import * as icons from "react-bootstrap-icons";
@@ -26,16 +26,6 @@ interface Props {
   clickable?: boolean;
 }
 
-interface State {
-  openModal: boolean;
-  modalType: "about" | "account" | "clear conversation" | "conversation" | null;
-}
-
-const defaultState: State = {
-  openModal: false,
-  modalType: null,
-};
-
 const DashboardCard: FC<Props> = ({
   cardName,
   conversationKeyWords,
@@ -44,8 +34,6 @@ const DashboardCard: FC<Props> = ({
   cardMarginT,
   clickable,
 }) => {
-  const [state, setState] = useState<State>(defaultState);
-
   const dispatch = useAppDispatch();
   const darkMode = useAppSelector((state) => state.global.darkMode);
 

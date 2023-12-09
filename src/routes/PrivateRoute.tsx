@@ -19,17 +19,18 @@ const PrivateRoute = () => {
   useLayoutEffect(() => {
     const postToFireStore = async () => {};
 
-    if (modalType === "sign up") {
-    }
-
-    if (modalType === "login") {
-    }
-
-    if (showModal && isAuth && !didMounted.current) {
+    if (
+      modalType === "login" ||
+      modalType === "sign up" ||
+      (modalType === "passwordReminder" &&
+        showModal &&
+        isAuth &&
+        !didMounted.current)
+    ) {
       dispatch(clearModal());
       didMounted.current = true;
     }
-  }, [isAuth, showModal]);
+  }, [isAuth, showModal, modalType]);
 
   return isAuth ? <Outlet /> : <Navigate to='/login' />;
 };

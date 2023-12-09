@@ -14,7 +14,9 @@ const AppModal = () => {
 
   const handleClose = () => {
     dispatch(clearModal());
-    dispatch(clearAuthErrors());
+    modalType === "login" ||
+      modalType === "sign up" ||
+      (modalType === "passwordReminder" && dispatch(clearAuthErrors()));
   };
 
   const ModalBody = () => {
