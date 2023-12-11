@@ -1,4 +1,4 @@
-import { Col, Container, Form, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import ChatLog from "./ChatLog";
 import ChatForm from "./ChatForm";
 

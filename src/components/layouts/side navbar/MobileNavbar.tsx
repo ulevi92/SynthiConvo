@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
-import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
-import UserDetails from "./UserDetails";
+import { Container, Nav, Navbar, Row } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../../redux/reduxHooks";
 import Icon from "../../Icon";
 import { setDarkMode } from "../../../redux/features/global/globalSlice";
@@ -10,8 +9,8 @@ const MobileNavbar: FC = () => {
 
   const { darkMode, email, credit } = useAppSelector((state) => ({
     darkMode: state.global.darkMode,
-    email: state.authUser.user.email,
-    credit: state.chat.totalCredit,
+    email: state.user.user.email,
+    credit: state.user.chat.credit.total,
   }));
   const dispatch = useAppDispatch();
 

@@ -1,19 +1,18 @@
 import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
 import { useAppSelector } from "../../../redux/reduxHooks";
 import DashboardCard from "./DashboardCard";
-import Icon from "../../Icon";
 
 const Dashboard = () => {
   const { conversationScript, modalType, showModal } = useAppSelector(
     (state) => ({
-      conversationScript: state.chat.history,
+      conversationScript: state.user.chat.history,
       modalType: state.global.modalType,
       showModal: state.global.showModal,
     })
   );
 
   const firstMessage = conversationScript.find(
-    (message) => message.role === "user"
+    (message) => message.message.role === "user"
   );
 
   console.log(showModal, modalType);
@@ -25,7 +24,10 @@ const Dashboard = () => {
           {firstMessage && (
             <DashboardCard
               cardName='conversation'
-              conversationKeyWords={`${firstMessage.content?.slice(0, 14)}...`}
+              conversationKeyWords={`${firstMessage.message.content?.slice(
+                0,
+                14
+              )}...`}
               cardMarginB={3}
               cardMarginT={0}
             />

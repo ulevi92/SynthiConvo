@@ -24,6 +24,7 @@ import {
 import { FirestoreUsersDb } from "../../../types/firestore";
 import OpenAI from "openai";
 import { RootState } from "../../store";
+import { ChatCompletionMessageParam } from "openai/resources";
 
 // Define types for chat log, used credit, and credit
 
@@ -107,12 +108,6 @@ const initialState: InitialState = {
   errorFrom: null,
   userNotAllowed: false,
 };
-
-const docRef = doc(
-  db,
-  "users",
-  auth.currentUser?.uid!
-) as DocumentReference<FirestoreUsersDb>;
 
 // Fetch the IP registry key from environment variables
 const ipRegistryKey = import.meta.env.VITE_IP_REGISTRY_API_KEY;
@@ -315,9 +310,15 @@ export const askBot = createAsyncThunk(
   "askingBot",
   async (userContent: string | null, { getState }) => {
     // 1. Extract the chat history from the current state using Redux state management
-    const {
-      chat: { history },
-    } = getState() as RootState;
+
+    const state = getState() as RootState;
+
+    const history: ChatCompletionMessageParam[] = state.user.chat.history.map(
+      ({ message: { content, role } }) => ({
+        content,
+        role,
+      })
+    );
 
     // 2. Make an asynchronous request to the OpenAI API to generate a response from the chat model
     const response = await openAiRequest.chat.completions.create({
@@ -337,6 +338,12 @@ export const askBot = createAsyncThunk(
 export const fetchChatLog = createAsyncThunk(
   "userChat/fetchChatLog",
   async () => {
+    const docRef = doc(
+      db,
+      "users",
+      auth.currentUser?.uid!
+    ) as DocumentReference<FirestoreUsersDb>;
+
     // 1. Retrieve the Firestore document data using the user's document reference
     const data = (await getDoc(docRef)).data()!;
 
@@ -348,6 +355,12 @@ export const fetchChatLog = createAsyncThunk(
 export const updateUserLog = createAsyncThunk(
   "userChat/updateUserLog",
   async (userLog: ChatChoices) => {
+    const docRef = doc(
+      db,
+      "users",
+      auth.currentUser?.uid!
+    ) as DocumentReference<FirestoreUsersDb>;
+
     // 1. Retrieve the Firestore document data using the user's document reference
     const data = (await getDoc(docRef)).data()!;
 
@@ -364,6 +377,12 @@ export const updateUserLog = createAsyncThunk(
 export const updateBotLog = createAsyncThunk(
   "userChat/updateBotLog",
   async (botLog: ChatChoices) => {
+    const docRef = doc(
+      db,
+      "users",
+      auth.currentUser?.uid!
+    ) as DocumentReference<FirestoreUsersDb>;
+
     // 1. Retrieve the Firestore document data using the user's document reference
     const data = (await getDoc(docRef)).data()!;
 

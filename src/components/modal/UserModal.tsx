@@ -1,4 +1,3 @@
-import { Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import {
   AboutModalText,

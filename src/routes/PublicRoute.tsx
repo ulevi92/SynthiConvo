@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../redux/reduxHooks";
 
 const PublicRoute = () => {
-  const isAuth = useAppSelector((state) => state.authUser.auth.isAuth);
+  const isAuth = useAppSelector((state) => state.user.auth.isAuth);
 
   return !isAuth ? <Outlet /> : <Navigate to='/' />;
 };

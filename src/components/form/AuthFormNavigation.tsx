@@ -1,11 +1,11 @@
-import { memo, useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import {
   ModalType,
   setModalType,
 } from "../../redux/features/global/globalSlice";
-import { clearAuthErrors } from "../../redux/features/authUser/authUserSlice";
+import { clearAuthErrors } from "../../redux/features/user/userSlice";
 
 type NavMessage =
   | "login to your account"

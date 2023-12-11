@@ -9,12 +9,12 @@ import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "./redux/reduxHooks";
 
 import { auth } from "./firebase/firebase";
-import { setAuth } from "./redux/features/authUser/authUserSlice";
 
 import { Loader } from "./components/loader/Loader";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 import { setLoading } from "./redux/features/global/globalSlice";
+import { setAuth } from "./redux/features/user/userSlice";
 
 function App() {
   const dispatch = useAppDispatch();

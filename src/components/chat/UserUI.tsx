@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { resetChatHistory } from "../../redux/features/chat/chatSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import { Alert, Button } from "react-bootstrap";
-import { resetUserHistory } from "../../api/firestoreFetches";
+import {
+  resetChatHistory,
+  resetUserHistory,
+} from "../../redux/features/user/userSlice";
 
 const UserUI = () => {
   const dispatch = useAppDispatch();
   const { totalCredit, user } = useAppSelector((state) => ({
-    totalCredit: state.chat.totalCredit,
-    user: state.authUser.user,
+    totalCredit: state.user.chat.credit.total,
+    user: state.user.user,
   }));
 
   const [progress, setProgress] = useState<boolean>(false);
@@ -23,7 +25,7 @@ const UserUI = () => {
     setTimeout(async () => {
       localStorage.removeItem("chat");
       dispatch(resetChatHistory());
-      await resetUserHistory();
+      dispatch(resetUserHistory());
       setShowAlert(() => false);
       setProgress(() => false);
     }, 500);

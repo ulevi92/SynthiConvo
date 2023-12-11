@@ -1,9 +1,4 @@
-import { useForm } from "react-hook-form";
-
-import type { SubmitHandler } from "react-hook-form";
-import type { FormInputs } from "./types";
 import { Button } from "react-bootstrap";
-import { handleClose } from "./AuthForm.helper";
 
 interface Props {
   btnTask: "close" | "submit";

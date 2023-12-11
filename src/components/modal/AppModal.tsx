@@ -1,9 +1,9 @@
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
-import { ModalType, clearModal } from "../../redux/features/global/globalSlice";
+import { clearModal } from "../../redux/features/global/globalSlice";
 import AuthForm from "../form/AuthForm";
-import { clearAuthErrors } from "../../redux/features/authUser/authUserSlice";
 import UserModal from "./UserModal";
+import { clearAuthErrors } from "../../redux/features/user/userSlice";
 
 const AppModal = () => {
   const showModal = useAppSelector((state) => state.global.showModal);

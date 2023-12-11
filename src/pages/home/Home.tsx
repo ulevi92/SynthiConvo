@@ -1,11 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import NotVerifiedError from "./NotVerifiedError";
 import ChatWindow from "../../components/chat/ChatWindow";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import {
-  addOldCreditRecord,
-  addOldHistory,
-} from "../../redux/features/chat/chatSlice";
+import { useRef } from "react";
 
 import { setLoading } from "../../redux/features/global/globalSlice";
 
@@ -23,9 +19,9 @@ export const Home = () => {
     totalCredit: credit,
     darkMode,
   } = useAppSelector((state) => ({
-    notVerified: state.authUser.user.emailVerified,
-    history: state.chat.history,
-    totalCredit: state.chat.totalCredit,
+    notVerified: state.user.user.emailVerified,
+    history: state.user.chat.history,
+    totalCredit: state.user.chat.credit,
     darkMode: state.global.darkMode,
   }));
 

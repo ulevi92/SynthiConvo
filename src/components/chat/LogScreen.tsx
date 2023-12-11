@@ -1,4 +1,4 @@
-import { PropsWithChildren, memo, useMemo, useState } from "react";
+import { PropsWithChildren, memo, useMemo } from "react";
 import { useAppSelector } from "../../redux/reduxHooks";
 import { Card } from "react-bootstrap";
 
@@ -9,9 +9,9 @@ interface Props extends PropsWithChildren {
 const LogScreen = ({ children, bot }: Props) => {
   const { darkMode } = useAppSelector((state) => state.global);
   const { displayName, userId, email } = useAppSelector((state) => ({
-    displayName: state.authUser.user.displayName,
-    userId: state.authUser.user.userId,
-    email: state.authUser.user.email,
+    displayName: state.user.user.displayName,
+    userId: state.user.user.userId,
+    email: state.user.user.email,
   }));
 
   return useMemo(() => {

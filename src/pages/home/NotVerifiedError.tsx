@@ -1,19 +1,20 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
+
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import Timer from "./Timer";
 import {
   clearAuthErrors,
   fetchEmailVerification,
-} from "../../redux/features/authUser/authUserSlice";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import Timer from "./Timer";
+} from "../../redux/features/user/userSlice";
 
 const NotVerifiedError = () => {
   const dispatch = useAppDispatch();
 
   const { email, darkMode, requestStatus } = useAppSelector((state) => ({
-    email: state.authUser.user.email,
+    email: state.user.user.email,
     darkMode: state.global.darkMode,
-    requestStatus: state.authUser.auth.requestStatus,
+    requestStatus: state.user.errorFrom,
   }));
 
   const startTimer = useRef<boolean>(false);
@@ -28,7 +29,7 @@ const NotVerifiedError = () => {
   const defaultSpanStyle = `text-lowercase ms-1 text-decoration-underline text-primary`;
 
   useEffect(() => {
-    if (requestStatus === "error") {
+    if (requestStatus === "auth") {
       setTimer((prevTimer) => 60);
     }
   }, [requestStatus]);

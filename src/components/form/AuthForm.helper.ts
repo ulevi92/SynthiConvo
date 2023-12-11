@@ -1,19 +1,7 @@
-import {
-  clearModal,
-  setModalType,
-  setShowModal,
-} from "../../redux/features/global/globalSlice";
-import { SubmitHandler } from "react-hook-form";
-
-import {
-  clearAuthErrors,
-  fetchResetPassword,
-  fetchSignUp,
-} from "../../redux/features/authUser/authUserSlice";
-
-import { fetchSignIn } from "../../redux/features/authUser/authUserSlice";
 import store from "../../redux/store";
-import { FormInputs } from "./types";
+
+import { clearAuthErrors } from "../../redux/features/user/userSlice";
+import { clearModal } from "../../redux/features/global/globalSlice";
 const dispatch = store.dispatch;
 const modalType = store.getState().global.modalType;
 

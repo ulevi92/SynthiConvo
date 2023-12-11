@@ -2,9 +2,10 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ChatFormController from "./ChatFormController";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
-import { addUserQuestion, askBot } from "../../redux/features/chat/chatSlice";
+
 import { ChatMessage } from "../../types/openAI";
 import UserUI from "./UserUI";
+import { addUserQuestion, askBot } from "../../redux/features/user/userSlice";
 
 export interface ChatValue {
   userInput: string;
@@ -20,8 +21,8 @@ const ChatForm = () => {
   const dispatch = useAppDispatch();
   const { darkMode, questionAsked, totalCredit } = useAppSelector((state) => ({
     darkMode: state.global.darkMode,
-    questionAsked: state.chat.questionAsked,
-    totalCredit: state.chat.totalCredit,
+    questionAsked: state.user.chat.questionAsked,
+    totalCredit: state.user.chat.credit.total,
   }));
 
   const onSubmit: SubmitHandler<ChatValue> = ({ userInput }) => {

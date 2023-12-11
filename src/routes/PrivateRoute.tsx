@@ -6,10 +6,10 @@ import { clearModal } from "../redux/features/global/globalSlice";
 
 const PrivateRoute = () => {
   const { isAuth, showModal, modalType, user } = useAppSelector((state) => ({
-    isAuth: state.authUser.auth.isAuth,
+    isAuth: state.user.auth.isAuth,
     showModal: state.global.showModal,
     modalType: state.global.modalType,
-    user: state.authUser.user,
+    user: state.user.user,
   }));
 
   const dispatch = useAppDispatch();

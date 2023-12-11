@@ -5,17 +5,17 @@ import FormController from "./FormController";
 import { FormInputs } from "./types";
 import { FormButton } from "./FormButton";
 import { FormErrors } from "./FormErrors";
+import RejectedErrors from "./RejectedErrors";
+import { useCallback } from "react";
+import { handleClose } from "./AuthForm.helper";
+import AuthFormNavigation from "./AuthFormNavigation";
+import { setLoading } from "../../redux/features/global/globalSlice";
 import {
   fetchResetPassword,
   fetchSignIn,
   fetchSignUp,
   setAuthLoading,
-} from "../../redux/features/authUser/authUserSlice";
-import RejectedErrors from "./RejectedErrors";
-import { useCallback, useEffect } from "react";
-import { handleClose } from "./AuthForm.helper";
-import AuthFormNavigation from "./AuthFormNavigation";
-import { setLoading } from "../../redux/features/global/globalSlice";
+} from "../../redux/features/user/userSlice";
 
 const AuthForm = () => {
   const modalType = useAppSelector((state) => state.global.modalType);

@@ -1,8 +1,9 @@
 import { Button } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
-import { resetChatHistory } from "../../redux/features/chat/chatSlice";
+
 import { clearModal } from "../../redux/features/global/globalSlice";
 import { useEffect } from "react";
+import { resetChatHistory } from "../../redux/features/user/userSlice";
 
 export const AboutModalText = () => (
   <>
@@ -74,7 +75,7 @@ export const AboutModalText = () => (
 
 export const ClearConversationModalText = () => {
   const dispatch = useAppDispatch();
-  const history = useAppSelector((state) => state.chat.history);
+  const history = useAppSelector((state) => state.user.chat.history);
 
   const handleClearHistory = () => {
     dispatch(resetChatHistory());

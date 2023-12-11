@@ -1,4 +1,4 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../../redux/reduxHooks";
 import { FC } from "react";
 
@@ -16,9 +16,9 @@ const UserDetails: FC<Props> = ({
   userEmail,
 }) => {
   const { displayName, email, credit } = useAppSelector((state) => ({
-    displayName: state.authUser.user.displayName,
-    email: state.authUser.user.email,
-    credit: state.chat.totalCredit,
+    displayName: state.user.user.displayName,
+    email: state.user.user.email,
+    credit: state.user.chat.credit.total,
   }));
 
   const dispatch = useAppDispatch();

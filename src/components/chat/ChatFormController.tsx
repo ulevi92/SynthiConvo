@@ -10,7 +10,10 @@ interface Props {
 }
 
 const ChatFormController = ({ control }: Props) => {
-  const { questionAsked, totalCredit } = useAppSelector((state) => state.chat);
+  const { questionAsked, totalCredit } = useAppSelector((state) => ({
+    questionAsked: state.user.chat.questionAsked,
+    totalCredit: state.user.chat.credit.total,
+  }));
 
   const placeholder = questionAsked
     ? "Please wait until the AI finishes answering"

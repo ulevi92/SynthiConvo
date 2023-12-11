@@ -3,9 +3,7 @@ import { useAppSelector } from "../../redux/reduxHooks";
 import FormErrorText from "./FormErrorText";
 
 const RejectedMessages = () => {
-  const errorMessage = useAppSelector(
-    (state) => state.authUser.auth.errorMessage
-  );
+  const errorMessage = useAppSelector((state) => state.user.errorMessage);
 
   const content = useMemo(() => {
     if (errorMessage === undefined) return <></>;
