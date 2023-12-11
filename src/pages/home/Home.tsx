@@ -8,10 +8,6 @@ import {
 } from "../../redux/features/chat/chatSlice";
 
 import { setLoading } from "../../redux/features/global/globalSlice";
-import {
-  getUserCreditAndHistory,
-  postUserCreditAndHistory,
-} from "../../api/firestoreFetches";
 
 import { Col, Container, Row } from "react-bootstrap";
 import Dashboard from "../../components/layouts/sidebar/Dashboard";
@@ -32,42 +28,6 @@ export const Home = () => {
     totalCredit: state.chat.totalCredit,
     darkMode: state.global.darkMode,
   }));
-
-  useLayoutEffect(() => {
-    const postUserData = async () => {
-      await postUserCreditAndHistory(history, credit);
-    };
-    postUserData();
-  }, [history, credit]);
-
-  useLayoutEffect(() => {
-    const pageStarted = async () => {
-      const data = await getUserCreditAndHistory();
-
-      if (data) {
-        dispatch(addOldHistory(data.user.chatHistory));
-        dispatch(addOldCreditRecord(data.user.credit));
-      }
-
-      if (!data) {
-        if (localStorage.getItem("chat")) {
-          dispatch(addOldHistory(JSON.parse(localStorage.getItem("chat")!)));
-        }
-
-        // Check for existing credit records in localStorage
-        if (localStorage.getItem("credit")) {
-          // Dispatch an action to add old credit records
-          dispatch(
-            addOldCreditRecord(JSON.parse(localStorage.getItem("credit")!))
-          );
-        }
-      }
-
-      didMount.current = true;
-    };
-
-    if (!didMount.current) pageStarted();
-  }, []);
 
   if (!notVerified) return <NotVerifiedError />;
 

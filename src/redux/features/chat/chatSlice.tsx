@@ -58,7 +58,7 @@ const initialState: InitialState = {
   botIndex: null,
 
   creditUsed: 0,
-  totalCredit: 60,
+  totalCredit: 1000,
 };
 
 export const fetchChatLog = createAsyncThunk("chat/fetchChatLog", async () => {
@@ -120,6 +120,7 @@ const chatSlice = createSlice({
     },
 
     addOldHistory(state, action: PayloadAction<ChatMessage[]>) {
+      // Replace the current chat history with the provided old history
       state.history = action.payload;
     },
 

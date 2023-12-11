@@ -1,4 +1,4 @@
-import type { ChatLog, ChatMessage } from "./openAI";
+import type { ChatChoices, ChatLog, ChatMessage } from "./openAI";
 
 export type RequestStatus = "" | "" | "" | "";
 
@@ -21,5 +21,5 @@ export type FirestoreUser = {
     ip: string | null;
     previewsLoggedIps: string[];
   };
-  chatHistory: ChatMessage[];
+  chatHistory: ChatChoices[];
 };

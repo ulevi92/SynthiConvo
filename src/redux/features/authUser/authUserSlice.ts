@@ -90,22 +90,27 @@ export const fetchSignIn = createAsyncThunk(
     const docRef = doc(db, "users", uid);
     const docSnap = await getDoc(docRef);
 
-    const firestoreUser = docSnap.data() as FirestoreUsersDb;
+    const data = docSnap.data() as FirestoreUsersDb;
+
+    let isEmailVerified = data.user.emailVerified;
+
+    if (auth.currentUser?.emailVerified) isEmailVerified = true;
 
     //post user new ip if it's not === to stored ip
     if (
-      !firestoreUser.user.ipInfo.previewsLoggedIps.find(
-        (ip) => ip === firestoreUser.user.ipInfo.ip
+      !data.user.ipInfo.previewsLoggedIps.find(
+        (ip) => ip === data.user.ipInfo.ip
       )
     ) {
       //creating a new payload for the current ip, and saving it
       const newIpPayload: FirestoreUsersDb = {
         user: {
-          ...firestoreUser.user,
+          ...data.user,
+          emailVerified: isEmailVerified,
           ipInfo: {
             ip: clientIp.ip,
             previewsLoggedIps: [
-              ...firestoreUser.user.ipInfo.previewsLoggedIps,
+              ...data.user.ipInfo.previewsLoggedIps,
               clientIp.ip,
             ],
           },
@@ -115,7 +120,7 @@ export const fetchSignIn = createAsyncThunk(
       await updateDoc(docRef, newIpPayload);
     }
 
-    const { credit, displayName, emailVerified } = firestoreUser.user;
+    const { credit, displayName, emailVerified } = data.user;
 
     const user: SignInAndUpPayload = {
       credit,
@@ -181,25 +186,12 @@ export const fetchSignOut = createAsyncThunk(
   async () => await signOut(auth)
 );
 
-//verifyEmail
-export const verifyEmail = async () => {
-  const user = auth.currentUser;
-
-  try {
-    user && sendEmailVerification(user);
-  } catch (error) {
-    const { message } = error as Error;
-
-    throw new Error(message);
-  }
-};
-
 export const fetchEmailVerification = createAsyncThunk(
   "auth/fetchEmailVerification",
   async () => {
     const user = auth.currentUser;
 
-    const response = user && sendEmailVerification(user);
+    const response = user && (await sendEmailVerification(user));
 
     return response;
   }
