@@ -16,8 +16,11 @@ import {
   fetchSignUp,
   setAuthLoading,
 } from "../../redux/features/user/userSlice";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const AuthForm = () => {
+  const navigate = useNavigate();
+
   const modalType = useAppSelector((state) => state.global.modalType);
   const dispatch = useAppDispatch();
 
@@ -61,6 +64,10 @@ const AuthForm = () => {
 
       dispatch(setAuthLoading(false));
       dispatch(setLoading(true));
+      navigate("/");
+      window.location.reload();
+
+      // Add any additional logic or navigation as needed
     },
     [modalType, dispatch]
   );

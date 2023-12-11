@@ -9,9 +9,7 @@ interface Props {
 }
 
 const Timer = ({ emailSent, onClick, timer }: Props) => {
-  const requestStatus = useAppSelector(
-    (state) => state.authUser.auth.requestStatus
-  );
+  const error = useAppSelector((state) => state.user.errorFrom);
 
   return useMemo(() => {
     if (emailSent) {
@@ -23,7 +21,7 @@ const Timer = ({ emailSent, onClick, timer }: Props) => {
             </div>
           </div>
 
-          {requestStatus === "error" && (
+          {error === "auth" && (
             <Card.Text className='text-capitalize text-danger fw-bolder d-flex align-self-center'>
               to many requests, please try again latter
             </Card.Text>

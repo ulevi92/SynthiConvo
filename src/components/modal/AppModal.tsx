@@ -79,6 +79,7 @@ const AppModal = () => {
       keyboard={true}
       fullscreen={fullscreen}
       size={modalSize()}
+      centered
     >
       <Modal.Header closeButton closeLabel='close'>
         <Modal.Title className='text-capitalize'>{modalTitle()}</Modal.Title>

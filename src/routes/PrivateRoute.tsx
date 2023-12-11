@@ -1,11 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../redux/reduxHooks";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { clearModal } from "../redux/features/global/globalSlice";
 
 const PrivateRoute = () => {
-  const { isAuth, showModal, modalType, user } = useAppSelector((state) => ({
+  const { isAuth, showModal, modalType } = useAppSelector((state) => ({
     isAuth: state.user.auth.isAuth,
     showModal: state.global.showModal,
     modalType: state.global.modalType,
