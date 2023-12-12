@@ -8,15 +8,16 @@ interface Props extends PropsWithChildren {
 
 const LogScreen = ({ children, bot }: Props) => {
   const { darkMode } = useAppSelector((state) => state.global);
-  const { displayName, userId, email } = useAppSelector((state) => ({
-    displayName: state.userData.userProfile.displayName,
-    userId: state.userData.userProfile.userId,
-    email: state.userData.userProfile.email,
-  }));
+
+  const displayName = useAppSelector(
+    ({ userData }) => userData.userProfile.displayName
+  );
+  const userId = useAppSelector(({ userData }) => userData.userProfile.userId);
+  const email = useAppSelector(({ userData }) => userData.userProfile.email);
 
   return useMemo(() => {
     const defaultDisplayName = !bot
-      ? displayName || `user-${userId!.slice(0, 5)}`
+      ? displayName || `user-${userId!.slice(0, 6)}`
       : "AI bot";
 
     const cardClassName =
