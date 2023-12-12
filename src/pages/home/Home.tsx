@@ -1,13 +1,15 @@
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import NotVerifiedError from "./NotVerifiedError";
 import ChatWindow from "../../components/chat/ChatWindow";
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 import { setLoading } from "../../redux/features/global/globalSlice";
 
 import { Col, Container, Row } from "react-bootstrap";
 import Dashboard from "../../components/layouts/sidebar/Dashboard";
 import AppModal from "../../components/modal/AppModal";
+import { StoredChatData } from "../../types/userData";
+import { updateChatData } from "../../redux/features/userData/userDataSlice";
 
 export const Home = () => {
   const didMount = useRef<boolean>(false);
@@ -22,10 +24,23 @@ export const Home = () => {
   } = useAppSelector((state) => ({
     notVerified: state.userData.userProfile.emailVerified,
     history: state.userData.chat.history,
-    totalCredit: state.userData.chat.credit.total,
+    totalCredit: state.userData.chat.credit,
     darkMode: state.global.darkMode,
     userNotAllowed: state.userData.userNotAllowed,
   }));
+
+  useLayoutEffect(() => {
+    if (!didMount.current) {
+      const chatDataRef = localStorage.getItem("chat");
+
+      if (chatDataRef) {
+        const storedChatData: StoredChatData = JSON.parse(chatDataRef);
+        dispatch(updateChatData(storedChatData));
+      }
+
+      didMount.current = true;
+    }
+  }, [credit, history]);
 
   if (!notVerified) return <NotVerifiedError />;
   // if (userNotAllowed) return <></>;

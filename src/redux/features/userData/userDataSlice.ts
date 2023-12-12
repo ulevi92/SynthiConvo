@@ -4,7 +4,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   SignInAndUpArguments,
   SignInAndUpPayload,
-} from "./userDataSlice.helper";
+  StoredChatData,
+} from "../../../types/userData";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -25,23 +26,9 @@ import { FirestoreUsersDb } from "../../../types/firestore";
 import OpenAI from "openai";
 import { RootState } from "../../store";
 import { ChatCompletionMessageParam } from "openai/resources";
+import { chatLog } from "../../../types/userData";
 
 // Define types for chat log, used credit, and credit
-
-type Log = {
-  user: ChatChoices[];
-  bot: ChatChoices[];
-};
-
-type UsedCredit = {
-  id: number;
-  creditUsed: number;
-};
-
-type Credit = {
-  usedCredit: UsedCredit[];
-  total: number | null;
-};
 
 // Define the initial state for the Redux slice
 interface InitialState {
@@ -59,12 +46,12 @@ interface InitialState {
   };
 
   chat: {
-    log: Log;
+    log: chatLog;
     questionAsked: boolean;
     isLoading: boolean;
     history: ChatChoices[];
     botIndex: number | null;
-    credit: Credit;
+    credit: number | null;
   };
 
   errorMessage: string | undefined;
@@ -97,10 +84,7 @@ const initialState: InitialState = {
     isLoading: false,
     history: [],
     botIndex: null,
-    credit: {
-      usedCredit: [],
-      total: null,
-    },
+    credit: null,
   },
 
   error: false,
@@ -473,7 +457,12 @@ const userDataSlice = createSlice({
 
       // Save the user output to localStorage
       localStorage.setItem("chat", JSON.stringify(state.chat.history));
-      localStorage.setItem("credit", JSON.stringify(state.chat.credit.total));
+      localStorage.setItem("credit", JSON.stringify(state.chat.credit));
+    },
+
+    updateChatData(state, action: PayloadAction<StoredChatData>) {
+      state.chat.credit = action.payload.credit;
+      state.chat.history = action.payload.history;
     },
 
     resetChatHistory(state) {
@@ -488,7 +477,7 @@ const userDataSlice = createSlice({
 
     addOldCreditRecord(state, action: PayloadAction<number>) {
       // Replace the current total credit with the provided old credit record
-      state.chat.credit.total = action.payload;
+      state.chat.credit = action.payload;
     },
   },
   extraReducers(builder) {
@@ -510,15 +499,6 @@ const userDataSlice = createSlice({
         state.userProfile.emailVerified = emailVerified;
         state.userProfile.email = email;
 
-        // Initialize credit state with received credit information
-        const creditInjection: Credit = {
-          total: credit,
-          usedCredit: [],
-        };
-        state.chat.credit = creditInjection;
-
-        state.chat.history = history;
-
         // Check if any security flags are true and update state accordingly
         const isSecurityTrue = Object.values(security).some((value) => value);
         if (isSecurityTrue) {
@@ -527,6 +507,24 @@ const userDataSlice = createSlice({
         }
 
         state.auth.authLoading = false;
+
+        const storedChatData = localStorage.getItem("chat");
+
+        if (storedChatData) {
+          const { credit, history } = JSON.parse(storedChatData)!;
+          state.chat.credit = credit;
+          state.chat.history = history;
+        } else {
+          state.chat.credit = credit;
+          state.chat.history = history;
+
+          const storeChatData: StoredChatData = {
+            credit,
+            history: history,
+          };
+
+          localStorage.setItem("chat", JSON.stringify(storeChatData));
+        }
       })
       // Handle the rejected state of the asynchronous thunk
       .addCase(fetchSignIn.rejected, (state, action) => {
@@ -549,15 +547,13 @@ const userDataSlice = createSlice({
         state.userProfile.userId = uid;
         state.userProfile.emailVerified = emailVerified;
         state.userProfile.email = email;
-        state.chat.credit.total = 1000;
+        state.chat.credit = 1000;
 
         const isSecurityTrue = Object.values(security).some((value) => value);
         if (isSecurityTrue) {
           state.error = true;
           state.userNotAllowed = true;
         }
-
-        state.auth.authLoading = false;
       })
 
       .addCase(fetchSignUp.rejected, (state, action) => {
@@ -692,5 +688,6 @@ export const {
   addOldHistory,
   addUserQuestion,
   resetChatHistory,
+  updateChatData,
 } = userDataSlice.actions;
 export default userDataSlice.reducer;

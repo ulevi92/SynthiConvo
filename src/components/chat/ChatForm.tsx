@@ -4,7 +4,7 @@ import ChatFormController from "./ChatFormController";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 
 import { ChatMessage } from "../../types/openAI";
-import UserUI from "./UserUI";
+
 import {
   addUserQuestion,
   askBot,
@@ -25,7 +25,7 @@ const ChatForm = () => {
   const { darkMode, questionAsked, totalCredit } = useAppSelector((state) => ({
     darkMode: state.global.darkMode,
     questionAsked: state.userData.chat.questionAsked,
-    totalCredit: state.userData.chat.credit.total,
+    totalCredit: state.userData.chat.credit,
   }));
 
   const onSubmit: SubmitHandler<ChatValue> = ({ userInput }) => {
@@ -41,12 +41,6 @@ const ChatForm = () => {
 
   return (
     <Container className='h-25  d-flex flex-column'>
-      <Row>
-        <Col>
-          <UserUI />
-        </Col>
-      </Row>
-
       <Row>
         <Col>
           <Form

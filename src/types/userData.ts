@@ -1,4 +1,4 @@
-import { ChatChoices } from "../../../types/openAI";
+import { ChatChoices } from "./openAI";
 
 type InputTextType = string;
 
@@ -18,4 +18,14 @@ export type SignInAndUpPayload = {
   displayName: string | null;
   emailVerified: boolean;
   history: ChatChoices[];
+};
+
+export type chatLog = {
+  user: ChatChoices[];
+  bot: ChatChoices[];
+};
+
+export type StoredChatData = {
+  history: ChatChoices[];
+  credit: number | null;
 };

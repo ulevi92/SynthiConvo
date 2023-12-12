@@ -9,7 +9,7 @@ import {
 const UserUI = () => {
   const dispatch = useAppDispatch();
   const { totalCredit, user } = useAppSelector((state) => ({
-    totalCredit: state.userData.chat.credit.total,
+    totalCredit: state.userData.chat.credit,
     user: state.userData.userProfile,
   }));
 
