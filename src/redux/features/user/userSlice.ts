@@ -114,7 +114,6 @@ export const fetchSignIn = createAsyncThunk(
   "userAuth/fetchSignIn",
   async ({ email, password }: SignInAndUpArguments) => {
     // Initialize variables to be used in the function
-    let isEmailVerified: boolean = false;
     let displayName: string = "";
 
     // 1. Fetch user credentials from Firebase
@@ -144,7 +143,6 @@ export const fetchSignIn = createAsyncThunk(
     const data = docSnap.data() as FirestoreUsersDb;
 
     // 6. Check if the user's email is verified
-    if (data.user.emailVerified) isEmailVerified = true;
 
     // 7. Set a default display name if it's empty or not provided
     if (data.user.displayName.length === 0 || !userDisplayName) {
@@ -159,7 +157,7 @@ export const fetchSignIn = createAsyncThunk(
       const newPayload: FirestoreUsersDb = {
         user: {
           ...data.user,
-          emailVerified: isEmailVerified,
+          emailVerified,
           displayName: displayName,
         },
       };
@@ -197,7 +195,7 @@ export const fetchSignIn = createAsyncThunk(
       credit,
       displayName,
       email,
-      emailVerified: isEmailVerified,
+      emailVerified,
       uid,
       history,
     };

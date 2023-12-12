@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import NotVerifiedError from "./NotVerifiedError";
 import ChatWindow from "../../components/chat/ChatWindow";
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 import { setLoading } from "../../redux/features/global/globalSlice";
 
