@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import { clearModal } from "../../redux/features/global/globalSlice";
 import AuthForm from "../form/AuthForm";
 import UserModal from "./UserModal";
-import { clearAuthErrors } from "../../redux/features/user/userDataSlice";
+import { clearAuthErrors } from "../../redux/features/userData/userDataSlice";
 
 const AppModal = () => {
   const showModal = useAppSelector((state) => state.global.showModal);

@@ -1,6 +1,6 @@
 import store from "../../redux/store";
 
-import { clearAuthErrors } from "../../redux/features/user/userDataSlice";
+import { clearAuthErrors } from "../../redux/features/userData/userDataSlice";
 import { clearModal } from "../../redux/features/global/globalSlice";
 const dispatch = store.dispatch;
 const modalType = store.getState().global.modalType;

@@ -6,7 +6,7 @@ import Timer from "./Timer";
 import {
   clearAuthErrors,
   fetchEmailVerification,
-} from "../../redux/features/user/userDataSlice";
+} from "../../redux/features/userData/userDataSlice";
 
 const NotVerifiedError = () => {
   const dispatch = useAppDispatch();

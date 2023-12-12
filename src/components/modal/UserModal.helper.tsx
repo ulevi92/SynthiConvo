@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 
 import { clearModal } from "../../redux/features/global/globalSlice";
 import { useEffect } from "react";
-import { resetChatHistory } from "../../redux/features/user/userDataSlice";
+import { resetChatHistory } from "../../redux/features/userData/userDataSlice";
 
 export const AboutModalText = () => (
   <>

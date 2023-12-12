@@ -8,7 +8,7 @@ import {
   setModalType,
   setShowModal,
 } from "../../../redux/features/global/globalSlice";
-import { fetchSignOut } from "../../../redux/features/user/userDataSlice";
+import { fetchSignOut } from "../../../redux/features/userData/userDataSlice";
 
 interface Props {
   cardName:

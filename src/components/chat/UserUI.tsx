@@ -4,7 +4,7 @@ import { Alert, Button } from "react-bootstrap";
 import {
   resetChatHistory,
   resetUserHistory,
-} from "../../redux/features/user/userDataSlice";
+} from "../../redux/features/userData/userDataSlice";
 
 const UserUI = () => {
   const dispatch = useAppDispatch();

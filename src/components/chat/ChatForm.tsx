@@ -8,7 +8,7 @@ import UserUI from "./UserUI";
 import {
   addUserQuestion,
   askBot,
-} from "../../redux/features/user/userDataSlice";
+} from "../../redux/features/userData/userDataSlice";
 
 export interface ChatValue {
   userInput: string;

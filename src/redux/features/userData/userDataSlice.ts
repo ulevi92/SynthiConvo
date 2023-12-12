@@ -549,6 +549,7 @@ const userDataSlice = createSlice({
         state.userProfile.userId = uid;
         state.userProfile.emailVerified = emailVerified;
         state.userProfile.email = email;
+        state.chat.credit.total = 1000;
 
         const isSecurityTrue = Object.values(security).some((value) => value);
         if (isSecurityTrue) {
