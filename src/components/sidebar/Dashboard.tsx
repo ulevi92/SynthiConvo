@@ -1,15 +1,13 @@
 import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
-import { useAppSelector } from "../../../redux/reduxHooks";
+import { useAppSelector } from "../../redux/reduxHooks";
 import DashboardCard from "./DashboardCard";
 
 const Dashboard = () => {
-  const { conversationScript, modalType, showModal } = useAppSelector(
-    (state) => ({
-      conversationScript: state.userData.chat.history,
-      modalType: state.global.modalType,
-      showModal: state.global.showModal,
-    })
+  const conversationScript = useAppSelector(
+    ({ userData }) => userData.chat.history
   );
+  const modalType = useAppSelector(({ global }) => global.modalType);
+  const showModal = useAppSelector(({ global }) => global.showModal);
 
   const firstMessage = conversationScript.find(
     (message) => message.message.role === "user"

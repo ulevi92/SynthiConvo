@@ -1,14 +1,14 @@
 import { FC } from "react";
 import { Card } from "react-bootstrap";
-import Icon from "../../Icon";
+import Icon from "../Icon";
 import * as icons from "react-bootstrap-icons";
-import { useAppDispatch, useAppSelector } from "../../../redux/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import {
   setDarkMode,
   setModalType,
   setShowModal,
-} from "../../../redux/features/global/globalSlice";
-import { fetchSignOut } from "../../../redux/features/userData/userDataSlice";
+} from "../../redux/features/global/globalSlice";
+import { fetchSignOut } from "../../redux/features/userData/userDataSlice";
 
 interface Props {
   cardName:

@@ -22,11 +22,12 @@ const ChatForm = () => {
   });
 
   const dispatch = useAppDispatch();
-  const { darkMode, questionAsked, totalCredit } = useAppSelector((state) => ({
-    darkMode: state.global.darkMode,
-    questionAsked: state.userData.chat.questionAsked,
-    totalCredit: state.userData.chat.credit,
-  }));
+
+  const darkMode = useAppSelector(({ global }) => global.darkMode);
+  const questionAsked = useAppSelector(
+    ({ userData }) => userData.chat.questionAsked
+  );
+  const totalCredit = useAppSelector(({ userData }) => userData.chat.credit);
 
   const onSubmit: SubmitHandler<ChatValue> = ({ userInput }) => {
     const questionToDispatch: ChatMessage = {

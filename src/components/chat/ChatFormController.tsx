@@ -10,10 +10,10 @@ interface Props {
 }
 
 const ChatFormController = ({ control }: Props) => {
-  const { questionAsked, totalCredit } = useAppSelector((state) => ({
-    questionAsked: state.userData.chat.questionAsked,
-    totalCredit: state.userData.chat.credit,
-  }));
+  const questionAsked = useAppSelector(
+    ({ userData }) => userData.chat.questionAsked
+  );
+  const credit = useAppSelector(({ userData }) => userData.chat.credit);
 
   const placeholder = questionAsked
     ? "Please wait until the AI finishes answering"
@@ -25,7 +25,7 @@ const ChatFormController = ({ control }: Props) => {
       control={control}
       render={({ field }) => (
         <Form.Control
-          disabled={questionAsked || totalCredit === 0}
+          disabled={questionAsked || credit === 0}
           placeholder={placeholder}
           {...field}
           size='lg'

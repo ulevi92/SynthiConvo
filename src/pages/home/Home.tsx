@@ -6,7 +6,7 @@ import { useLayoutEffect, useRef } from "react";
 import { setLoading } from "../../redux/features/global/globalSlice";
 
 import { Col, Container, Row } from "react-bootstrap";
-import Dashboard from "../../components/layouts/sidebar/Dashboard";
+import Dashboard from "../../components/sidebar/Dashboard";
 import AppModal from "../../components/modal/AppModal";
 import { StoredChatData } from "../../types/userData";
 import { updateChatData } from "../../redux/features/userData/userDataSlice";
@@ -15,19 +15,17 @@ export const Home = () => {
   const didMount = useRef<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const {
-    notVerified,
-    history,
-    totalCredit: credit,
-    darkMode,
-    userNotAllowed,
-  } = useAppSelector((state) => ({
-    notVerified: state.userData.userProfile.emailVerified,
-    history: state.userData.chat.history,
-    totalCredit: state.userData.chat.credit,
-    darkMode: state.global.darkMode,
-    userNotAllowed: state.userData.userNotAllowed,
-  }));
+
+  const notVerified = useAppSelector(
+    ({ userData }) => userData.userProfile.emailVerified
+  );
+  const history = useAppSelector(({ userData }) => userData.chat.history);
+  const credit = useAppSelector(({ userData }) => userData.chat.credit);
+  const userNotAllowed = useAppSelector(
+    ({ userData }) => userData.userNotAllowed
+  );
+
+  const darkMode = useAppSelector(({ global }) => global.darkMode);
 
   useLayoutEffect(() => {
     if (!didMount.current) {

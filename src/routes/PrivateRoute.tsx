@@ -5,12 +5,9 @@ import { useLayoutEffect, useRef } from "react";
 import { clearModal } from "../redux/features/global/globalSlice";
 
 const PrivateRoute = () => {
-  const { isAuth, showModal, modalType } = useAppSelector((state) => ({
-    isAuth: state.userData.auth.isAuth,
-    showModal: state.global.showModal,
-    modalType: state.global.modalType,
-    user: state.userData.userProfile,
-  }));
+  const isAuth = useAppSelector(({ userData }) => userData.auth.isAuth);
+  const showModal = useAppSelector(({ global }) => global.showModal);
+  const modalType = useAppSelector(({ global }) => global.modalType);
 
   const dispatch = useAppDispatch();
 
