@@ -11,12 +11,13 @@ import { handleClose } from "./AuthForm.helper";
 import AuthFormNavigation from "./AuthFormNavigation";
 import { setLoading } from "../../redux/features/global/globalSlice";
 import {
+  fetchEmailVerification,
   fetchResetPassword,
   fetchSignIn,
   fetchSignUp,
   setAuthLoading,
 } from "../../redux/features/user/userDataSlice";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AuthForm = () => {
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ const AuthForm = () => {
 
       if (modalType === "sign up") {
         await dispatch(fetchSignUp(credentials));
+        await dispatch(fetchEmailVerification());
         return;
       }
 

@@ -1,14 +1,13 @@
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import NotVerifiedError from "./NotVerifiedError";
 import ChatWindow from "../../components/chat/ChatWindow";
-import { useLayoutEffect, useRef } from "react";
+import { useRef } from "react";
 
 import { setLoading } from "../../redux/features/global/globalSlice";
 
 import { Col, Container, Row } from "react-bootstrap";
 import Dashboard from "../../components/layouts/sidebar/Dashboard";
 import AppModal from "../../components/modal/AppModal";
-import { updateUserCreditAndHistory } from "../../redux/features/user/userDataSlice";
 
 export const Home = () => {
   const didMount = useRef<boolean>(false);
@@ -19,18 +18,17 @@ export const Home = () => {
     history,
     totalCredit: credit,
     darkMode,
+    userNotAllowed,
   } = useAppSelector((state) => ({
     notVerified: state.userData.userProfile.emailVerified,
     history: state.userData.chat.history,
     totalCredit: state.userData.chat.credit.total,
     darkMode: state.global.darkMode,
+    userNotAllowed: state.userData.userNotAllowed,
   }));
 
-  useLayoutEffect(() => {
-    dispatch(updateUserCreditAndHistory({ credit, history }));
-  }, [history, credit]);
-
   if (!notVerified) return <NotVerifiedError />;
+  // if (userNotAllowed) return <></>;
 
   const sidebarStyle = `h-100 flex-column d-none d-md-flex p-0 border-end border-opacity-50 ${
     darkMode ? "border-grey" : "border-grey"
