@@ -26,7 +26,7 @@ interface Props {
   clickable?: boolean;
 }
 
-const DashboardCard: FC<Props> = ({
+const SidebarCard: FC<Props> = ({
   cardName,
   conversationKeyWords,
   cardMarginY,
@@ -135,4 +135,4 @@ const DashboardCard: FC<Props> = ({
   return RenderCard;
 };
 
-export default DashboardCard;
+export default SidebarCard;

@@ -6,7 +6,7 @@ import { useLayoutEffect, useRef } from "react";
 import { setLoading } from "../../redux/features/global/globalSlice";
 
 import { Col, Container, Row } from "react-bootstrap";
-import Dashboard from "../../components/sidebar/Dashboard";
+import Sidebar from "../../components/sidebar/Sidebar";
 import AppModal from "../../components/modal/AppModal";
 import { StoredChatData } from "../../types/userData";
 import { updateChatData } from "../../redux/features/userData/userDataSlice";
@@ -56,7 +56,7 @@ export const Home = () => {
       >
         <Row className='h-100'>
           <Col className={sidebarStyle} md={3} lg={2}>
-            <Dashboard />
+            <Sidebar />
           </Col>
 
           <Col xs={12} md={9} lg={10}>

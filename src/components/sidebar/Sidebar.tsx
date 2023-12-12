@@ -1,8 +1,8 @@
 import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
 import { useAppSelector } from "../../redux/reduxHooks";
-import DashboardCard from "./DashboardCard";
+import SidebarCard from "./SidebarCard";
 
-const Dashboard = () => {
+const Sidebar = () => {
   const conversationScript = useAppSelector(
     ({ userData }) => userData.chat.history
   );
@@ -20,7 +20,7 @@ const Dashboard = () => {
       <Row className='flex-column flex-grow-1'>
         <Col className='d-flex flex-grow-1 mt-5 align-items-start' md='12'>
           {firstMessage && (
-            <DashboardCard
+            <SidebarCard
               cardName='conversation'
               conversationKeyWords={`${firstMessage.message.content?.slice(
                 0,
@@ -42,24 +42,24 @@ const Dashboard = () => {
           className='d-flex flex-column justify-content-end border-top border-grey'
           md='12'
         >
-          <DashboardCard
+          <SidebarCard
             cardName='about'
             cardMarginT={5}
             cardMarginB={1}
             clickable
           />
 
-          <DashboardCard cardName='account' cardMarginY={1} clickable />
+          <SidebarCard cardName='account' cardMarginY={1} clickable />
 
-          <DashboardCard
+          <SidebarCard
             cardName='clear conversation'
             cardMarginY={1}
             clickable
           />
 
-          <DashboardCard cardName='dark mode' cardMarginY={1} clickable />
+          <SidebarCard cardName='dark mode' cardMarginY={1} clickable />
 
-          <DashboardCard
+          <SidebarCard
             cardName='logout'
             cardMarginB={5}
             cardMarginT={1}
@@ -71,4 +71,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Sidebar;
