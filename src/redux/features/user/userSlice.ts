@@ -1,10 +1,7 @@
 // Import necessary dependencies and types
-import { ChatChoices, ChatLog, ChatMessage } from "../../../types/openAI";
+import { ChatChoices, ChatMessage } from "../../../types/openAI";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  SignInAndUpArguments,
-  SignInAndUpPayload,
-} from "../authUser/authUserSlice.helper";
+import { SignInAndUpArguments, SignInAndUpPayload } from "./userSlice.helper";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -192,8 +189,8 @@ export const fetchSignIn = createAsyncThunk(
       await updateDoc(docRef, newIpPayload);
     }
 
-    // 10. Extract user credit from Firestore
-    const { credit } = data.user;
+    // 10. Extract user credit and history from Firestore
+    const { credit, chatHistory: history } = data.user;
 
     // 11. Build the user object with relevant information
     const user: SignInAndUpPayload = {
@@ -202,6 +199,7 @@ export const fetchSignIn = createAsyncThunk(
       email,
       emailVerified: isEmailVerified,
       uid,
+      history,
     };
 
     // 12. Return an object containing user-related data along with the client's IP
@@ -519,7 +517,7 @@ const userSlice = createSlice({
       })
       // Handle the fulfilled state of the asynchronous thunk
       .addCase(fetchSignIn.fulfilled, (state, action) => {
-        const { uid, credit, displayName, email, emailVerified } =
+        const { uid, credit, displayName, email, emailVerified, history } =
           action.payload.user;
         const { security } = action.payload.clientIp;
 
@@ -536,6 +534,8 @@ const userSlice = createSlice({
           usedCredit: [],
         };
         state.chat.credit = creditInjection;
+
+        state.chat.history = history;
 
         // Check if any security flags are true and update state accordingly
         const isSecurityTrue = Object.values(security).some((value) => value);

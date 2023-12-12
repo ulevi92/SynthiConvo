@@ -1,4 +1,4 @@
-export type Status = "idle" | "fulfilled" | "error" | "pending";
+import { ChatChoices } from "../../../types/openAI";
 
 type InputTextType = string;
 
@@ -6,10 +6,6 @@ export type InputType = {
   email: InputTextType;
   password: InputTextType;
 };
-
-export type CredentialError = string | undefined;
-
-export type EmailVerificationMessage = string | null;
 
 export type SignInAndUpArguments = {
   [key in keyof Pick<InputType, "email" | "password">]: InputType[key];
@@ -21,10 +17,5 @@ export type SignInAndUpPayload = {
   email: string | null;
   displayName: string | null;
   emailVerified: boolean;
+  history: ChatChoices[];
 };
-
-export type ChangePasswordPayload = Pick<InputType, "password">;
-
-export type ResetPasswordPayload = Pick<InputType, "email">;
-
-export type UpdateProfilePayload = string;
