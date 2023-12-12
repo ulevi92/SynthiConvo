@@ -12,7 +12,7 @@ export type SignInAndUpArguments = {
 };
 
 export type SignInAndUpPayload = {
-  credit: number;
+  credit: number | null;
   uid: string;
   email: string | null;
   displayName: string | null;

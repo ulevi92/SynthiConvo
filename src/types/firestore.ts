@@ -3,7 +3,16 @@ import type { ChatChoices, ChatLog, ChatMessage } from "./openAI";
 export type RequestStatus = "" | "" | "" | "";
 
 export type FirestoreUsersDb = {
-  user: FirestoreUser;
+  id: string;
+  credit: number | null;
+  email: string;
+  displayName: string;
+  emailVerified: boolean;
+  ipInfo: {
+    ip: string | null;
+    previewsLoggedIps: string[];
+  };
+  chatHistory: ChatChoices[];
 };
 
 export type FirestoreDbChatLog = {
@@ -13,7 +22,7 @@ export type FirestoreDbChatLog = {
 
 export type FirestoreUser = {
   id: string;
-  credit: number;
+  credit: number | null;
   email: string;
   displayName: string;
   emailVerified: boolean;

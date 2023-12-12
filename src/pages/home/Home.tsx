@@ -8,6 +8,7 @@ import { setLoading } from "../../redux/features/global/globalSlice";
 import { Col, Container, Row } from "react-bootstrap";
 import Dashboard from "../../components/layouts/sidebar/Dashboard";
 import AppModal from "../../components/modal/AppModal";
+import { updateUserCreditAndHistory } from "../../redux/features/user/userSlice";
 
 export const Home = () => {
   const didMount = useRef<boolean>(false);
@@ -21,9 +22,13 @@ export const Home = () => {
   } = useAppSelector((state) => ({
     notVerified: state.user.user.emailVerified,
     history: state.user.chat.history,
-    totalCredit: state.user.chat.credit,
+    totalCredit: state.user.chat.credit.total,
     darkMode: state.global.darkMode,
   }));
+
+  useLayoutEffect(() => {
+    dispatch(updateUserCreditAndHistory({ credit, history }));
+  }, [history, credit]);
 
   if (!notVerified) return <NotVerifiedError />;
 

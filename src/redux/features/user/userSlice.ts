@@ -145,42 +145,31 @@ export const fetchSignIn = createAsyncThunk(
     // 6. Check if the user's email is verified
 
     // 7. Set a default display name if it's empty or not provided
-    if (data.user.displayName.length === 0 || !userDisplayName) {
+    if (data.displayName.length === 0 || !userDisplayName) {
       displayName = `user_${uid.slice(0, 6)}`;
     }
 
     // 8. Check if there are changes in user data (display name or email verification status) and update Firestore accordingly
     if (
-      data.user.displayName !== userDisplayName ||
-      data.user.emailVerified !== emailVerified
+      data.displayName !== userDisplayName ||
+      data.emailVerified !== emailVerified
     ) {
       const newPayload: FirestoreUsersDb = {
-        user: {
-          ...data.user,
-          emailVerified,
-          displayName: displayName,
-        },
+        ...data,
+        emailVerified,
+        displayName,
       };
 
       await updateDoc(docRef, newPayload);
     }
 
     // 9. Check if the current user's IP is not in the list of previously logged IPs and update it in Firestore
-    if (
-      !data.user.ipInfo.previewsLoggedIps.find(
-        (ip) => ip === data.user.ipInfo.ip
-      )
-    ) {
+    if (!data.ipInfo.previewsLoggedIps.find((ip) => ip === data.ipInfo.ip)) {
       const newIpPayload: FirestoreUsersDb = {
-        user: {
-          ...data.user,
-          ipInfo: {
-            ip: clientIp.ip,
-            previewsLoggedIps: [
-              ...data.user.ipInfo.previewsLoggedIps,
-              clientIp.ip,
-            ],
-          },
+        ...data,
+        ipInfo: {
+          ip: clientIp.ip,
+          previewsLoggedIps: [...data.ipInfo.previewsLoggedIps, clientIp.ip],
         },
       };
 
@@ -188,7 +177,7 @@ export const fetchSignIn = createAsyncThunk(
     }
 
     // 10. Extract user credit and history from Firestore
-    const { credit, chatHistory: history } = data.user;
+    const { credit, chatHistory: history } = data;
 
     // 11. Build the user object with relevant information
     const user: SignInAndUpPayload = {
@@ -223,7 +212,7 @@ export const fetchSignUp = createAsyncThunk(
       .then((data) => data);
 
     // 3. Extract user ID (UID) from the created user credentials
-    const { uid } = userCredentials.user;
+    const { uid, emailVerified } = userCredentials.user;
 
     // 4. Extract IP address from the clientIp object
     const { ip } = clientIp;
@@ -233,18 +222,16 @@ export const fetchSignUp = createAsyncThunk(
 
     // 6. Prepare Firestore payload for the new user
     const firestorePayload: FirestoreUsersDb = {
-      user: {
-        id: uid,
-        credit: 1000,
-        emailVerified: false,
-        email,
-        displayName: "user_" + uid.slice(0, 6),
-        ipInfo: {
-          ip,
-          previewsLoggedIps: [...[], ip],
-        },
-        chatHistory: [],
+      id: uid,
+      credit: 1000,
+      emailVerified,
+      email,
+      displayName: "user_" + uid.slice(0, 6),
+      ipInfo: {
+        ip,
+        previewsLoggedIps: [...[], ip],
       },
+      chatHistory: [],
     };
 
     // 7. Set Firestore document for the new user with the prepared payload
@@ -344,7 +331,7 @@ export const fetchChatLog = createAsyncThunk(
     const data = (await getDoc(docRef)).data()!;
 
     // 2. Extract the chat history from the Firestore document data
-    return data.user.chatHistory;
+    return data.chatHistory;
   }
 );
 
@@ -362,10 +349,8 @@ export const updateUserLog = createAsyncThunk(
 
     // 2. Update the Firestore document with the new user log added to the chat history
     return await updateDoc(docRef, {
-      user: {
-        ...data.user,
-        chatHistory: [...data.user.chatHistory, userLog],
-      },
+      ...data,
+      chatHistory: [...data.chatHistory, userLog],
     });
   }
 );
@@ -384,17 +369,15 @@ export const updateBotLog = createAsyncThunk(
 
     // 2. Update the Firestore document with the new bot log added to the chat history
     return await updateDoc(docRef, {
-      user: {
-        ...data.user,
-        chatHistory: [...data.user.chatHistory, botLog],
-      },
+      ...data,
+      chatHistory: [...data.chatHistory, botLog],
     });
   }
 );
 
 export const updateUserCreditAndHistory = createAsyncThunk(
   "userChat/updateUserCreditAndHistory",
-  async (args: { credit: number; history: ChatChoices[] }) => {
+  async (args: { credit: number | null; history: ChatChoices[] }) => {
     // 1. Retrieve the Firestore document reference for the current user
     const docRef = doc(
       db,
@@ -402,12 +385,13 @@ export const updateUserCreditAndHistory = createAsyncThunk(
       auth.currentUser?.uid!
     ) as DocumentReference<FirestoreUsersDb>;
 
+    const data = (await getDoc(docRef)).data();
+
     // 2. Update the Firestore document with the new credit and chat history
     return await updateDoc(docRef, {
-      user: {
-        chatHistory: args.history,
-        credit: args.credit,
-      },
+      ...data,
+      chatHistory: args.history,
+      credit: args.credit,
     });
   }
 );
@@ -424,9 +408,8 @@ export const resetUserHistory = createAsyncThunk(
 
     // 2. Reset the user's chat history in Firestore by updating the document
     return await updateDoc(docRef, {
-      user: {
-        chatHistory: [],
-      },
+      ...{},
+      chatHistory: [],
     });
   }
 );
