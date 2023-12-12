@@ -5,7 +5,7 @@ import DashboardCard from "./DashboardCard";
 const Dashboard = () => {
   const { conversationScript, modalType, showModal } = useAppSelector(
     (state) => ({
-      conversationScript: state.user.chat.history,
+      conversationScript: state.userData.chat.history,
       modalType: state.global.modalType,
       showModal: state.global.showModal,
     })

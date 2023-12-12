@@ -9,8 +9,8 @@ const MobileNavbar: FC = () => {
 
   const { darkMode, email, credit } = useAppSelector((state) => ({
     darkMode: state.global.darkMode,
-    email: state.user.user.email,
-    credit: state.user.chat.credit.total,
+    email: state.userData.userProfile.email,
+    credit: state.userData.chat.credit.total,
   }));
   const dispatch = useAppDispatch();
 

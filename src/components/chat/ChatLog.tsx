@@ -3,7 +3,7 @@ import { useAppSelector } from "../../redux/reduxHooks";
 import LogScreen from "./LogScreen";
 
 const ChatLog = () => {
-  const { log, history } = useAppSelector((state) => state.user.chat);
+  const { log, history } = useAppSelector((state) => state.userData.chat);
 
   return useMemo(() => {
     return (

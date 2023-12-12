@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import globalReducer from "./features/global/globalSlice";
-import userReducer from "./features/user/userSlice";
+import userReducer from "./features/user/userDataSlice";
 
 const store = configureStore({
   reducer: {
     global: globalReducer,
-    user: userReducer,
+    userData: userReducer,
   },
 });
 

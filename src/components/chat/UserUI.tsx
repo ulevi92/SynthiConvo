@@ -4,13 +4,13 @@ import { Alert, Button } from "react-bootstrap";
 import {
   resetChatHistory,
   resetUserHistory,
-} from "../../redux/features/user/userSlice";
+} from "../../redux/features/user/userDataSlice";
 
 const UserUI = () => {
   const dispatch = useAppDispatch();
   const { totalCredit, user } = useAppSelector((state) => ({
-    totalCredit: state.user.chat.credit.total,
-    user: state.user.user,
+    totalCredit: state.userData.chat.credit.total,
+    user: state.userData.userProfile,
   }));
 
   const [progress, setProgress] = useState<boolean>(false);

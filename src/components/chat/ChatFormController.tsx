@@ -11,8 +11,8 @@ interface Props {
 
 const ChatFormController = ({ control }: Props) => {
   const { questionAsked, totalCredit } = useAppSelector((state) => ({
-    questionAsked: state.user.chat.questionAsked,
-    totalCredit: state.user.chat.credit.total,
+    questionAsked: state.userData.chat.questionAsked,
+    totalCredit: state.userData.chat.credit.total,
   }));
 
   const placeholder = questionAsked

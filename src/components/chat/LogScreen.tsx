@@ -9,9 +9,9 @@ interface Props extends PropsWithChildren {
 const LogScreen = ({ children, bot }: Props) => {
   const { darkMode } = useAppSelector((state) => state.global);
   const { displayName, userId, email } = useAppSelector((state) => ({
-    displayName: state.user.user.displayName,
-    userId: state.user.user.userId,
-    email: state.user.user.email,
+    displayName: state.userData.userProfile.displayName,
+    userId: state.userData.userProfile.userId,
+    email: state.userData.userProfile.email,
   }));
 
   return useMemo(() => {

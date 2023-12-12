@@ -5,7 +5,10 @@ import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 
 import { ChatMessage } from "../../types/openAI";
 import UserUI from "./UserUI";
-import { addUserQuestion, askBot } from "../../redux/features/user/userSlice";
+import {
+  addUserQuestion,
+  askBot,
+} from "../../redux/features/user/userDataSlice";
 
 export interface ChatValue {
   userInput: string;
@@ -21,8 +24,8 @@ const ChatForm = () => {
   const dispatch = useAppDispatch();
   const { darkMode, questionAsked, totalCredit } = useAppSelector((state) => ({
     darkMode: state.global.darkMode,
-    questionAsked: state.user.chat.questionAsked,
-    totalCredit: state.user.chat.credit.total,
+    questionAsked: state.userData.chat.questionAsked,
+    totalCredit: state.userData.chat.credit.total,
   }));
 
   const onSubmit: SubmitHandler<ChatValue> = ({ userInput }) => {

@@ -16,9 +16,9 @@ const UserDetails: FC<Props> = ({
   userEmail,
 }) => {
   const { displayName, email, credit } = useAppSelector((state) => ({
-    displayName: state.user.user.displayName,
-    email: state.user.user.email,
-    credit: state.user.chat.credit.total,
+    displayName: state.userData.userProfile.displayName,
+    email: state.userData.userProfile.email,
+    credit: state.userData.chat.credit.total,
   }));
 
   const dispatch = useAppDispatch();

@@ -5,7 +5,7 @@ import {
   ModalType,
   setModalType,
 } from "../../redux/features/global/globalSlice";
-import { clearAuthErrors } from "../../redux/features/user/userSlice";
+import { clearAuthErrors } from "../../redux/features/user/userDataSlice";
 
 type NavMessage =
   | "login to your account"

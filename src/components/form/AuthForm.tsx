@@ -15,7 +15,7 @@ import {
   fetchSignIn,
   fetchSignUp,
   setAuthLoading,
-} from "../../redux/features/user/userSlice";
+} from "../../redux/features/user/userDataSlice";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const AuthForm = () => {

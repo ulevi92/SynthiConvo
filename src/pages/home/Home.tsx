@@ -8,7 +8,7 @@ import { setLoading } from "../../redux/features/global/globalSlice";
 import { Col, Container, Row } from "react-bootstrap";
 import Dashboard from "../../components/layouts/sidebar/Dashboard";
 import AppModal from "../../components/modal/AppModal";
-import { updateUserCreditAndHistory } from "../../redux/features/user/userSlice";
+import { updateUserCreditAndHistory } from "../../redux/features/user/userDataSlice";
 
 export const Home = () => {
   const didMount = useRef<boolean>(false);
@@ -20,9 +20,9 @@ export const Home = () => {
     totalCredit: credit,
     darkMode,
   } = useAppSelector((state) => ({
-    notVerified: state.user.user.emailVerified,
-    history: state.user.chat.history,
-    totalCredit: state.user.chat.credit.total,
+    notVerified: state.userData.userProfile.emailVerified,
+    history: state.userData.chat.history,
+    totalCredit: state.userData.chat.credit.total,
     darkMode: state.global.darkMode,
   }));
 

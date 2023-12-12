@@ -1,7 +1,10 @@
 // Import necessary dependencies and types
 import { ChatChoices, ChatMessage } from "../../../types/openAI";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SignInAndUpArguments, SignInAndUpPayload } from "./userSlice.helper";
+import {
+  SignInAndUpArguments,
+  SignInAndUpPayload,
+} from "./userDataSlice.helper";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -48,7 +51,7 @@ interface InitialState {
     authLoading: boolean;
   };
 
-  user: {
+  userProfile: {
     userId: string | null;
     displayName: string | null;
     email: string | null;
@@ -78,7 +81,7 @@ const initialState: InitialState = {
     authLoading: false,
   },
 
-  user: {
+  userProfile: {
     userId: null,
     displayName: null,
     email: null,
@@ -296,12 +299,11 @@ export const askBot = createAsyncThunk(
 
     const state = getState() as RootState;
 
-    const history: ChatCompletionMessageParam[] = state.user.chat.history.map(
-      ({ message: { content, role } }) => ({
+    const history: ChatCompletionMessageParam[] =
+      state.userData.chat.history.map(({ message: { content, role } }) => ({
         content,
-        role,
-      })
-    );
+        role: "user",
+      }));
 
     // 2. Make an asynchronous request to the OpenAI API to generate a response from the chat model
     const response = await openAiRequest.chat.completions.create({
@@ -415,7 +417,7 @@ export const resetUserHistory = createAsyncThunk(
 );
 
 // Create a Redux slice for user-related state management
-const userSlice = createSlice({
+const userDataSlice = createSlice({
   initialState,
   name: "userSlice",
   reducers: {
@@ -430,10 +432,10 @@ const userSlice = createSlice({
           auth.currentUser;
 
         // 4. Update user-related state in the Redux store
-        state.user.displayName = displayName;
-        state.user.email = email;
-        state.user.emailVerified = emailVerified;
-        state.user.userId = uid;
+        state.userProfile.displayName = displayName;
+        state.userProfile.email = email;
+        state.userProfile.emailVerified = emailVerified;
+        state.userProfile.userId = uid;
       }
     },
 
@@ -441,10 +443,9 @@ const userSlice = createSlice({
       // 1. Create a new state object by spreading the current state
       return {
         ...state,
-        // 2. Update the auth slice with a new object, resetting errorMessage and requestStatus
-        auth: { ...state.auth, errorMessage: undefined, requestStatus: "idle" },
-        // 3. Update the top-level requestStatus to "idle"
-        requestStatus: "idle",
+        error: false,
+        errorFrom: null,
+        errorMessage: "",
       };
     },
 
@@ -504,10 +505,10 @@ const userSlice = createSlice({
 
         // Update user-related state after successful sign-in
         state.auth.isAuth = true;
-        state.user.displayName = displayName;
-        state.user.userId = uid;
-        state.user.emailVerified = emailVerified;
-        state.user.email = email;
+        state.userProfile.displayName = displayName;
+        state.userProfile.userId = uid;
+        state.userProfile.emailVerified = emailVerified;
+        state.userProfile.email = email;
 
         // Initialize credit state with received credit information
         const creditInjection: Credit = {
@@ -544,10 +545,10 @@ const userSlice = createSlice({
         const { security } = action.payload.clientIp;
 
         state.auth.isAuth = true;
-        state.user.displayName = displayName;
-        state.user.userId = uid;
-        state.user.emailVerified = emailVerified;
-        state.user.email = email;
+        state.userProfile.displayName = displayName;
+        state.userProfile.userId = uid;
+        state.userProfile.emailVerified = emailVerified;
+        state.userProfile.email = email;
 
         const isSecurityTrue = Object.values(security).some((value) => value);
         if (isSecurityTrue) {
@@ -690,5 +691,5 @@ export const {
   addOldHistory,
   addUserQuestion,
   resetChatHistory,
-} = userSlice.actions;
-export default userSlice.reducer;
+} = userDataSlice.actions;
+export default userDataSlice.reducer;

@@ -6,15 +6,15 @@ import Timer from "./Timer";
 import {
   clearAuthErrors,
   fetchEmailVerification,
-} from "../../redux/features/user/userSlice";
+} from "../../redux/features/user/userDataSlice";
 
 const NotVerifiedError = () => {
   const dispatch = useAppDispatch();
 
   const { email, darkMode, requestStatus } = useAppSelector((state) => ({
-    email: state.user.user.email,
+    email: state.userData.userProfile.email,
     darkMode: state.global.darkMode,
-    requestStatus: state.user.errorFrom,
+    requestStatus: state.userData.errorFrom,
   }));
 
   const startTimer = useRef<boolean>(false);

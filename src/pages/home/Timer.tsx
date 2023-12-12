@@ -9,7 +9,7 @@ interface Props {
 }
 
 const Timer = ({ emailSent, onClick, timer }: Props) => {
-  const error = useAppSelector((state) => state.user.errorFrom);
+  const error = useAppSelector((state) => state.userData.errorFrom);
 
   return useMemo(() => {
     if (emailSent) {
