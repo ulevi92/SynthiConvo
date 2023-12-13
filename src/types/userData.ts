@@ -1,4 +1,4 @@
-import { ChatCompletionMessageParam } from "openai/resources";
+import { ChatCompletion, ChatCompletionMessageParam } from "openai/resources";
 import { ChatChoices } from "./openAI";
 
 type InputTextType = string;
@@ -23,7 +23,7 @@ export type SignInAndUpPayload = {
 
 export type chatLog = {
   user: ChatChoices[];
-  bot: ChatChoices[];
+  bot: ChatCompletion.Choice[];
 };
 
 export type StoredChatData = {

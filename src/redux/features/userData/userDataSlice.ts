@@ -25,7 +25,7 @@ import {
 import { FirestoreUsersDb } from "../../../types/firestore";
 import OpenAI from "openai";
 import { RootState } from "../../store";
-import { ChatCompletionMessageParam } from "openai/resources";
+import { ChatCompletion, ChatCompletionMessageParam } from "openai/resources";
 import { chatLog } from "../../../types/userData";
 
 // Define types for chat log, used credit, and credit
@@ -681,6 +681,46 @@ const userDataSlice = createSlice({
         state.chat.isLoading = false;
       })
       .addCase(resetUserHistory.rejected, (state, action) => {
+        state.chat.isLoading = false;
+        state.error = true;
+        state.errorFrom = "chat";
+        state.errorMessage = action.error.message;
+      })
+      .addCase(askBot.pending, (state) => {
+        state.chat.isLoading = true;
+      })
+      .addCase(askBot.fulfilled, (state, action) => {
+        const { usage, choices } = action.payload;
+
+        state.chat.isLoading = false;
+        state.chat.botIndex = !state.chat.botIndex
+          ? 0
+          : state.chat.botIndex + 1;
+
+        const newBotChoice: ChatCompletion.Choice = {
+          finish_reason: choices[0].finish_reason,
+          index: !state.chat.botIndex ? 0 : state.chat.botIndex + 1,
+          message: choices[0].message,
+        };
+
+        state.chat.log.bot = [...state.chat.log.bot, newBotChoice];
+        state.chat.credit = state.chat.credit! - usage?.total_tokens!;
+
+        const botAnswer: ChatCompletionMessageParam = {
+          content: choices[0].message.content,
+          role: choices[0].message.role,
+        };
+
+        state.chat.history = [...state.chat.history, botAnswer];
+
+        const storeToStorage: StoredChatData = {
+          history: state.chat.history,
+          credit: state.chat.credit,
+        };
+
+        localStorage.setItem("chat", JSON.stringify(storeToStorage));
+      })
+      .addCase(askBot.rejected, (state, action) => {
         state.chat.isLoading = false;
         state.error = true;
         state.errorFrom = "chat";
