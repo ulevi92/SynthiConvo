@@ -1,3 +1,5 @@
+import { ChatCompletionContentPart } from "openai/resources";
+
 export type ChatLog = {
   id: number;
   message: string;
@@ -8,7 +10,7 @@ export type ChatLog = {
 type FinishReason = "stop" | "length" | "content_filter" | "function_call";
 
 export type ChatMessage = {
-  content: string | null;
+  content: string | ChatCompletionContentPart[] | null;
   role: "function" | "system" | "user" | "assistant";
 };
 

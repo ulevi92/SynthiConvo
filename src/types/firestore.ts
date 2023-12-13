@@ -1,3 +1,4 @@
+import { ChatCompletionMessageParam } from "openai/resources";
 import type { ChatChoices, ChatLog, ChatMessage } from "./openAI";
 
 export type RequestStatus = "" | "" | "" | "";
@@ -12,7 +13,7 @@ export type FirestoreUsersDb = {
     ip: string | null;
     previewsLoggedIps: string[];
   };
-  chatHistory: ChatChoices[];
+  chatHistory: ChatCompletionMessageParam[];
 };
 
 export type FirestoreDbChatLog = {

@@ -49,7 +49,7 @@ interface InitialState {
     log: chatLog;
     questionAsked: boolean;
     isLoading: boolean;
-    history: ChatChoices[];
+    history: ChatCompletionMessageParam[];
     botIndex: number | null;
     credit: number | null;
   };
@@ -283,18 +283,15 @@ export const askBot = createAsyncThunk(
 
     const state = getState() as RootState;
 
-    const history: ChatCompletionMessageParam[] =
-      state.userData.chat.history.map(({ message: { content, role } }) => ({
-        content,
-        role: "user",
-      }));
-
     // 2. Make an asynchronous request to the OpenAI API to generate a response from the chat model
     const response = await openAiRequest.chat.completions.create({
       // 3. Specify the model to be used for generating the completion (GPT-3.5-turbo)
       model: "gpt-3.5-turbo",
       // 4. Combine the existing chat history with the new user message to form the input messages
-      messages: [...history, { content: userContent, role: "user" }],
+      messages: [
+        ...state.userData.chat.history,
+        { content: userContent, role: "user" },
+      ],
       // 5. Set a limit on the number of tokens in the generated completion
     });
 
@@ -362,7 +359,10 @@ export const updateBotLog = createAsyncThunk(
 
 export const updateUserCreditAndHistory = createAsyncThunk(
   "userChat/updateUserCreditAndHistory",
-  async (args: { credit: number | null; history: ChatChoices[] }) => {
+  async (args: {
+    credit: number | null;
+    history: ChatCompletionMessageParam[];
+  }) => {
     // 1. Retrieve the Firestore document reference for the current user
     const docRef = doc(
       db,
@@ -437,11 +437,11 @@ const userDataSlice = createSlice({
       state.auth.authLoading = action.payload;
     },
 
-    addUserQuestion(state, action: PayloadAction<ChatMessage>) {
+    addUserQuestion(state, action: PayloadAction<ChatCompletionMessageParam>) {
       // Create a new user object with the provided user content
       const newUserObj: ChatChoices = {
         finishReason: "stop",
-        index: state.chat.log.user.length,
+        index: state.chat.log.user.length + 1,
         message: {
           role: "user",
           content: action.payload.content,
@@ -449,7 +449,7 @@ const userDataSlice = createSlice({
       };
 
       // Save the user question to the chat history
-      state.chat.history = [...state.chat.history, newUserObj];
+      state.chat.history = [...state.chat.history, action.payload];
 
       // Save the user question to the user log
       state.chat.log.user = [...state.chat.log.user, newUserObj];
@@ -473,7 +473,7 @@ const userDataSlice = createSlice({
       return { ...state, history: [] };
     },
 
-    addOldHistory(state, action: PayloadAction<ChatChoices[]>) {
+    addOldHistory(state, action: PayloadAction<ChatCompletionMessageParam[]>) {
       // Replace the current chat history with the provided old history
       state.chat.history = action.payload;
     },

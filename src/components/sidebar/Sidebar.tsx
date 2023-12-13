@@ -9,9 +9,7 @@ const Sidebar = () => {
   const modalType = useAppSelector(({ global }) => global.modalType);
   const showModal = useAppSelector(({ global }) => global.showModal);
 
-  const firstMessage = conversationScript.find(
-    (message) => message.message.role === "user"
-  );
+  const firstMessage = conversationScript.find(({ role }) => role === "user");
 
   console.log(showModal, modalType);
 
@@ -22,10 +20,7 @@ const Sidebar = () => {
           {firstMessage && (
             <SidebarCard
               cardName='conversation'
-              conversationKeyWords={`${firstMessage.message.content?.slice(
-                0,
-                14
-              )}...`}
+              conversationKeyWords={`${firstMessage.content?.slice(0, 14)}...`}
               cardMarginB={3}
               cardMarginT={0}
             />

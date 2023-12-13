@@ -1,3 +1,4 @@
+import { ChatCompletionMessageParam } from "openai/resources";
 import { ChatChoices } from "./openAI";
 
 type InputTextType = string;
@@ -17,7 +18,7 @@ export type SignInAndUpPayload = {
   email: string | null;
   displayName: string | null;
   emailVerified: boolean;
-  history: ChatChoices[];
+  history: ChatCompletionMessageParam[];
 };
 
 export type chatLog = {
@@ -26,6 +27,6 @@ export type chatLog = {
 };
 
 export type StoredChatData = {
-  history: ChatChoices[];
+  history: ChatCompletionMessageParam[];
   credit: number | null;
 };
