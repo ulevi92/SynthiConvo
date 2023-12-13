@@ -470,6 +470,13 @@ const userDataSlice = createSlice({
 
     resetChatHistory(state) {
       // Reset the chat history to an empty array
+
+      const newStoredChatData: StoredChatData = {
+        credit: state.chat.credit,
+        history: [],
+      };
+
+      localStorage.setItem("chat", JSON.stringify(newStoredChatData));
       return { ...state, history: [] };
     },
 
