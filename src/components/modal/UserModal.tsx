@@ -7,9 +7,7 @@ import {
 
 const UserModal = () => {
   const dispatch = useAppDispatch();
-  const { modalType } = useAppSelector((state) => ({
-    modalType: state.global.modalType,
-  }));
+  const modalType = useAppSelector((state) => state.global.modalType);
 
   const Text: () => JSX.Element | null = () => {
     switch (modalType) {

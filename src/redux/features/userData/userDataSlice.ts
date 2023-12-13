@@ -296,7 +296,6 @@ export const askBot = createAsyncThunk(
       // 4. Combine the existing chat history with the new user message to form the input messages
       messages: [...history, { content: userContent, role: "user" }],
       // 5. Set a limit on the number of tokens in the generated completion
-      max_tokens: 10,
     });
 
     // 6. Return the response from the OpenAI API
@@ -455,9 +454,13 @@ const userDataSlice = createSlice({
       // Save the user question to the user log
       state.chat.log.user = [...state.chat.log.user, newUserObj];
 
+      const storeChatData: StoredChatData = {
+        credit: state.chat.credit,
+        history: state.chat.history,
+      };
+
       // Save the user output to localStorage
-      localStorage.setItem("chat", JSON.stringify(state.chat.history));
-      localStorage.setItem("credit", JSON.stringify(state.chat.credit));
+      localStorage.setItem("chat", JSON.stringify(storeChatData));
     },
 
     updateChatData(state, action: PayloadAction<StoredChatData>) {
