@@ -15,18 +15,25 @@ const ChatFormController = ({ control }: Props) => {
   );
   const credit = useAppSelector(({ userData }) => userData.chat.credit);
 
-  const placeholder = questionAsked
-    ? "Please wait until the AI finishes answering"
-    : "Ask any question";
+  const placeholder = () => {
+    if (questionAsked) return "Please wait until the AI finishes answering";
+
+    if (credit === 0) return "you have no credit";
+
+    return "Ask any question";
+  };
+
+  const disabled = credit === 0;
 
   return (
     <Controller
+      disabled={disabled}
       name='userInput'
       control={control}
       render={({ field }) => (
         <Form.Control
           disabled={questionAsked || credit === 0}
-          placeholder={placeholder}
+          placeholder={placeholder()}
           {...field}
           size='lg'
         />

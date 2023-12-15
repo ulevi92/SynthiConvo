@@ -1,4 +1,4 @@
-import { memo, useLayoutEffect, useMemo, useRef } from "react";
+import { memo, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import LogScreen from "./LogScreen";
 import { updateUserCreditAndHistory } from "../../redux/features/userData/userDataSlice";
@@ -17,7 +17,7 @@ const ChatLog = () => {
 
   const dispatch = useAppDispatch();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (endOfMessageRef.current)
       endOfMessageRef.current.scrollIntoView({ behavior: "smooth" });
   }, [history]);

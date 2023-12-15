@@ -48,7 +48,6 @@ interface InitialState {
     botAnswered: boolean;
     isLoading: boolean;
     history: ChatCompletionMessageParam[];
-    botIndex: number | null;
     credit: number | null;
   };
 
@@ -78,7 +77,6 @@ const initialState: InitialState = {
     botAnswered: false,
     isLoading: false,
     history: [],
-    botIndex: null,
     credit: null,
   },
 
@@ -687,17 +685,11 @@ const userDataSlice = createSlice({
         state.chat.isLoading = false;
         state.chat.botAnswered = true;
         state.chat.questionAsked = false;
-        state.chat.botIndex = !state.chat.botIndex
-          ? 0
-          : state.chat.botIndex + 1;
 
-        const newBotChoice: ChatCompletion.Choice = {
-          finish_reason: choices[0].finish_reason,
-          index: !state.chat.botIndex ? 0 : state.chat.botIndex + 1,
-          message: choices[0].message,
-        };
-
-        state.chat.credit = state.chat.credit! - usage?.total_tokens!;
+        state.chat.credit = Math.max(
+          0,
+          state.chat.credit! - (usage?.total_tokens ?? 0)
+        );
 
         const botAnswer: ChatCompletionMessageParam = {
           content: choices[0].message.content,

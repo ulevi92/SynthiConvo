@@ -1,4 +1,4 @@
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ChatFormController from "./ChatFormController";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
@@ -28,9 +28,11 @@ const ChatForm = () => {
   const questionAsked = useAppSelector(
     ({ userData }) => userData.chat.questionAsked
   );
-  const totalCredit = useAppSelector(({ userData }) => userData.chat.credit);
+  const credit = useAppSelector(({ userData }) => userData.chat.credit);
 
   const onSubmit: SubmitHandler<ChatValue> = ({ userInput }) => {
+    if (userInput.length === 0) return;
+
     const questionToDispatch: ChatCompletionMessageParam = {
       content: userInput,
       role: "user",
@@ -42,16 +44,17 @@ const ChatForm = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} className='px-5 my-5'>
+    <Form onSubmit={handleSubmit(onSubmit)} className='d-flex px-5 my-5'>
       <ChatFormController control={control} />
 
-      {/* <Button
-              onClick={handleSubmit(onSubmit)}
-              variant={darkMode ? "outline-light" : "outline-dark"}
-              disabled={questionAsked || totalCredit === 0}
-            >
-              {">"}
-            </Button> */}
+      <Button
+        className='position-relative'
+        onClick={handleSubmit(onSubmit)}
+        variant={darkMode ? "outline-light" : "outline-dark"}
+        disabled={questionAsked || credit === 0}
+      >
+        {">"}
+      </Button>
     </Form>
   );
 };
