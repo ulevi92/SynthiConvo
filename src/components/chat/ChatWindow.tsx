@@ -6,16 +6,14 @@ const ChatWindow = () => {
   const gridColClassName = "p-0";
 
   return (
-    <div className='h-100 overflow-hidden'>
-      <Container className='h-75'>
-        <Row className='h-100 flex-grow-1 flex-column justify-content-between overflow-auto'>
-          <Col className={gridColClassName}>
-            <ChatLog />
-          </Col>
-        </Row>
-      </Container>
+    <div className='d-flex flex-column position-relative justify-content-between h-100'>
+      <div style={{ maxHeight: "85vh" }} className='overflow-y-auto'>
+        <ChatLog />
+      </div>
 
-      <ChatForm />
+      <div>
+        <ChatForm />
+      </div>
     </div>
   );
 };

@@ -1,13 +1,14 @@
-import { PropsWithChildren, memo, useMemo } from "react";
+import { PropsWithChildren, memo, useLayoutEffect, useMemo } from "react";
 import { useAppSelector } from "../../redux/reduxHooks";
 import { Card } from "react-bootstrap";
 
 interface Props extends PropsWithChildren {
   bot?: boolean;
+  endOfMessageRef: React.RefObject<HTMLDivElement> | null;
 }
 
-const LogScreen = ({ children, bot }: Props) => {
-  const { darkMode } = useAppSelector((state) => state.global);
+const LogScreen = ({ children, bot, endOfMessageRef }: Props) => {
+  const darkMode = useAppSelector((state) => state.global.darkMode);
 
   const displayName = useAppSelector(
     ({ userData }) => userData.userProfile.displayName
@@ -33,7 +34,7 @@ const LogScreen = ({ children, bot }: Props) => {
       <Card
         className={`${cardClassName} mt-2`}
         text='white'
-        style={{ borderRadius: 0 }}
+        ref={endOfMessageRef}
       >
         <Card.Header className='d-flex flex-grow-1'>
           <div className='chat-image'>{!bot ? email?.slice(0, 1) : "Bot"}</div>

@@ -52,15 +52,21 @@ export const Home = () => {
     <>
       <Container
         fluid
-        className='d-flex flex-column h-100'
-        style={{ transition: "all 2s ease-in-out" }}
+        className='d-flex flex-column'
+        style={{ transition: "all 700ms ease-in-out", height: "100vh" }}
       >
-        <Row className='h-100'>
+        <Row className='position-relative flex-grow-1'>
           <Col className={sidebarStyle} md={3} lg={2}>
             <Sidebar />
           </Col>
 
-          <Col xs={12} md={9} lg={10}>
+          <Col
+            xs={12}
+            md={9}
+            lg={10}
+            className='position-relative d-flex flex-column overflow-hidden'
+            style={{ maxHeight: "100vh" }} // Example maximum height
+          >
             <ChatWindow />
           </Col>
         </Row>

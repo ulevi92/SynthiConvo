@@ -9,6 +9,7 @@ import {
   addUserQuestion,
   askBot,
 } from "../../redux/features/userData/userDataSlice";
+import { ChatCompletionMessageParam } from "openai/resources";
 
 export interface ChatValue {
   userInput: string;
@@ -30,7 +31,7 @@ const ChatForm = () => {
   const totalCredit = useAppSelector(({ userData }) => userData.chat.credit);
 
   const onSubmit: SubmitHandler<ChatValue> = ({ userInput }) => {
-    const questionToDispatch: ChatMessage = {
+    const questionToDispatch: ChatCompletionMessageParam = {
       content: userInput,
       role: "user",
     };
@@ -41,26 +42,17 @@ const ChatForm = () => {
   };
 
   return (
-    <Container className='h-25  d-flex flex-column'>
-      <Row>
-        <Col>
-          <Form
-            onSubmit={handleSubmit(onSubmit)}
-            className='d-flex flex-grow-1'
-          >
-            <ChatFormController control={control} />
+    <Form onSubmit={handleSubmit(onSubmit)} className='px-5 my-5'>
+      <ChatFormController control={control} />
 
-            <Button
+      {/* <Button
               onClick={handleSubmit(onSubmit)}
               variant={darkMode ? "outline-light" : "outline-dark"}
               disabled={questionAsked || totalCredit === 0}
             >
               {">"}
-            </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+            </Button> */}
+    </Form>
   );
 };
 

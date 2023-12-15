@@ -1,9 +1,11 @@
-import { memo, useLayoutEffect, useMemo } from "react";
+import { memo, useLayoutEffect, useMemo, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import LogScreen from "./LogScreen";
 import { updateUserCreditAndHistory } from "../../redux/features/userData/userDataSlice";
 
 const ChatLog = () => {
+  const endOfMessageRef = useRef<HTMLDivElement>(null);
+
   const history = useAppSelector((state) => state.userData.chat.history);
   const credit = useAppSelector((state) => state.userData.chat.credit);
   const questionAsked = useAppSelector(
@@ -16,6 +18,11 @@ const ChatLog = () => {
   const dispatch = useAppDispatch();
 
   useLayoutEffect(() => {
+    if (endOfMessageRef.current)
+      endOfMessageRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [history]);
+
+  useLayoutEffect(() => {
     if (questionAsked)
       dispatch(updateUserCreditAndHistory({ credit, history }));
 
@@ -26,7 +33,13 @@ const ChatLog = () => {
     return (
       <>
         {history.map(({ content, role }, index) => (
-          <LogScreen bot={role === "assistant"} key={index}>
+          <LogScreen
+            bot={role === "assistant"}
+            key={index}
+            endOfMessageRef={
+              index === history.length - 1 ? endOfMessageRef : null
+            }
+          >
             {content?.toString()}
           </LogScreen>
         ))}
