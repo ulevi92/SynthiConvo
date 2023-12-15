@@ -44,7 +44,6 @@ interface InitialState {
   };
 
   chat: {
-    log: chatLog;
     questionAsked: boolean;
     botAnswered: boolean;
     isLoading: boolean;
@@ -75,10 +74,6 @@ const initialState: InitialState = {
   },
 
   chat: {
-    log: {
-      bot: [],
-      user: [],
-    },
     questionAsked: false,
     botAnswered: false,
     isLoading: false,
@@ -440,21 +435,10 @@ const userDataSlice = createSlice({
     addUserQuestion(state, action: PayloadAction<ChatCompletionMessageParam>) {
       state.chat.questionAsked = true;
 
-      // Create a new user object with the provided user content
-      const newUserObj: ChatChoices = {
-        finishReason: "stop",
-        index: state.chat.log.user.length + 1,
-        message: {
-          role: "user",
-          content: action.payload.content,
-        },
-      };
-
       // Save the user question to the chat history
       state.chat.history = [...state.chat.history, action.payload];
 
       // Save the user question to the user log
-      state.chat.log.user = [...state.chat.log.user, newUserObj];
 
       const storeChatData: StoredChatData = {
         credit: state.chat.credit,
@@ -713,7 +697,6 @@ const userDataSlice = createSlice({
           message: choices[0].message,
         };
 
-        state.chat.log.bot = [...state.chat.log.bot, newBotChoice];
         state.chat.credit = state.chat.credit! - usage?.total_tokens!;
 
         const botAnswer: ChatCompletionMessageParam = {
