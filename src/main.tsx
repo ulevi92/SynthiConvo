@@ -23,15 +23,13 @@ const queryClient = new QueryClient({
 });
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <div className='d-flex vh-100 flex-column'>
-          <div className='flex-grow-1'>
-            <App />
-          </div>
+  <Provider store={store}>
+    <BrowserRouter>
+      <div className='d-flex vh-100 flex-column'>
+        <div className='flex-grow-1'>
+          <App />
         </div>
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>
+      </div>
+    </BrowserRouter>
+  </Provider>
 );

@@ -21,6 +21,7 @@ export const Home = () => {
   );
   const history = useAppSelector(({ userData }) => userData.chat.history);
   const credit = useAppSelector(({ userData }) => userData.chat.credit);
+
   const userNotAllowed = useAppSelector(
     ({ userData }) => userData.userNotAllowed
   );

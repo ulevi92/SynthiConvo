@@ -28,8 +28,6 @@ import { RootState } from "../../store";
 import { ChatCompletion, ChatCompletionMessageParam } from "openai/resources";
 import { chatLog } from "../../../types/userData";
 
-// Define types for chat log, used credit, and credit
-
 // Define the initial state for the Redux slice
 interface InitialState {
   auth: {
@@ -48,6 +46,7 @@ interface InitialState {
   chat: {
     log: chatLog;
     questionAsked: boolean;
+    botAnswered: boolean;
     isLoading: boolean;
     history: ChatCompletionMessageParam[];
     botIndex: number | null;
@@ -81,6 +80,7 @@ const initialState: InitialState = {
       user: [],
     },
     questionAsked: false,
+    botAnswered: false,
     isLoading: false,
     history: [],
     botIndex: null,
@@ -438,6 +438,8 @@ const userDataSlice = createSlice({
     },
 
     addUserQuestion(state, action: PayloadAction<ChatCompletionMessageParam>) {
+      state.chat.questionAsked = true;
+
       // Create a new user object with the provided user content
       const newUserObj: ChatChoices = {
         finishReason: "stop",
@@ -477,7 +479,13 @@ const userDataSlice = createSlice({
       };
 
       localStorage.setItem("chat", JSON.stringify(newStoredChatData));
-      return { ...state, history: [] };
+      return {
+        ...state,
+        chat: {
+          ...state.chat,
+          history: [],
+        },
+      };
     },
 
     addOldHistory(state, action: PayloadAction<ChatCompletionMessageParam[]>) {
@@ -693,6 +701,8 @@ const userDataSlice = createSlice({
         const { usage, choices } = action.payload;
 
         state.chat.isLoading = false;
+        state.chat.botAnswered = true;
+        state.chat.questionAsked = false;
         state.chat.botIndex = !state.chat.botIndex
           ? 0
           : state.chat.botIndex + 1;
@@ -721,6 +731,7 @@ const userDataSlice = createSlice({
         localStorage.setItem("chat", JSON.stringify(storeToStorage));
       })
       .addCase(askBot.rejected, (state, action) => {
+        state.chat.questionAsked = false;
         state.chat.isLoading = false;
         state.error = true;
         state.errorFrom = "chat";
