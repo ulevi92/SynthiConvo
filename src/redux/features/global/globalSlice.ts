@@ -52,8 +52,8 @@ const globalSlice = createSlice({
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
-    clearModal() {
-      return { ...initialState, loading: false };
+    clearModal(state) {
+      return { ...initialState, darkMode: state.darkMode, loading: false };
     },
   },
 });
