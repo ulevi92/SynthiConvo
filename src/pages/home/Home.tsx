@@ -57,7 +57,7 @@ export const Home = () => {
         style={{ transition: "all 700ms ease-in-out", height: "100vh" }}
       >
         <Row className='position-relative flex-grow-1'>
-          <Col className={sidebarStyle} md={3} xl={2}>
+          <Col className={sidebarStyle} md={4} lg={3} xxl={2}>
             <Sidebar />
           </Col>
 
@@ -67,8 +67,9 @@ export const Home = () => {
 
           <Col
             xs={12}
-            md={9}
-            lg={10}
+            md={8}
+            lg={9}
+            xxl={10}
             className='position-relative d-flex flex-column overflow-hidden'
             style={{ maxHeight: "100vh" }} // Example maximum height
           >
