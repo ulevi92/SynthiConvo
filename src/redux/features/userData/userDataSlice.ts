@@ -490,6 +490,9 @@ const userDataSlice = createSlice({
       .addCase(fetchSignIn.fulfilled, (state, action) => {
         const { uid, credit, displayName, email, emailVerified, history } =
           action.payload.user;
+
+        console.log(credit);
+
         const { security } = action.payload.clientIp;
 
         // Update user-related state after successful sign-in
@@ -508,16 +511,12 @@ const userDataSlice = createSlice({
 
         state.auth.authLoading = false;
 
+        state.chat.credit = credit;
+        state.chat.history = history;
+
         const storedChatData = localStorage.getItem("chat");
 
         if (storedChatData) {
-          const { credit, history } = JSON.parse(storedChatData)!;
-          state.chat.credit = credit;
-          state.chat.history = history;
-        } else {
-          state.chat.credit = credit;
-          state.chat.history = history;
-
           const storeChatData: StoredChatData = {
             credit,
             history: history,
