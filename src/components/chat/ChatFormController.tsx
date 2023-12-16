@@ -33,6 +33,11 @@ const ChatFormController: FC<Props> = ({ control, onSubmit, handleSubmit }) => {
 
   const disabled = credit === 0;
 
+  const InputGroupClassName =
+    credit && credit > 0
+      ? "btn btn-outline-success d-flex align-items-center"
+      : "d-flex align-items-center";
+
   return (
     <Controller
       disabled={disabled}
@@ -47,8 +52,8 @@ const ChatFormController: FC<Props> = ({ control, onSubmit, handleSubmit }) => {
             size='lg'
           />
 
-          <InputGroup.Text className='btn btn-outline-success d-flex align-items-center'>
-            <Icon iconName='Send' onClick={handleSubmit(onSubmit)} />
+          <InputGroup.Text className={InputGroupClassName}>
+            <Icon chat iconName='Send' onClick={handleSubmit(onSubmit)} />
           </InputGroup.Text>
         </InputGroup>
       )}
