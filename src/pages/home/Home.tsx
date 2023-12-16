@@ -5,11 +5,12 @@ import { useLayoutEffect, useRef } from "react";
 
 import { setLoading } from "../../redux/features/global/globalSlice";
 
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import Sidebar from "../../components/sidebar/Sidebar";
 import AppModal from "../../components/modal/AppModal";
 import { StoredChatData } from "../../types/userData";
 import { updateChatData } from "../../redux/features/userData/userDataSlice";
+import MobileBar from "../../components/sidebar/MobileBar";
 
 export const Home = () => {
   const didMount = useRef<boolean>(false);
@@ -52,12 +53,16 @@ export const Home = () => {
     <>
       <Container
         fluid
-        className='d-flex flex-column'
+        className='d-flex flex-column z-2'
         style={{ transition: "all 700ms ease-in-out", height: "100vh" }}
       >
         <Row className='position-relative flex-grow-1'>
-          <Col className={sidebarStyle} md={3} lg={2}>
+          <Col className={sidebarStyle} md={3} xl={2}>
             <Sidebar />
+          </Col>
+
+          <Col className='d-block d-md-none p-0 z-3'>
+            <MobileBar />
           </Col>
 
           <Col

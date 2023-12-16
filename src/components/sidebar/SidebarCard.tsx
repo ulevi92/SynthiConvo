@@ -20,7 +20,7 @@ interface Props {
     | "conversation";
 
   conversationKeyWords?: string;
-  cardMarginY?: 1 | 3;
+  cardMarginY?: 1 | 2 | 3 | 4 | 5;
   cardMarginB?: number;
   cardMarginT?: number;
   clickable?: boolean;
