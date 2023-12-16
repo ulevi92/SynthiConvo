@@ -1,4 +1,12 @@
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Row,
+} from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ChatFormController from "./ChatFormController";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
@@ -10,6 +18,7 @@ import {
   askBot,
 } from "../../redux/features/userData/userDataSlice";
 import { ChatCompletionMessageParam } from "openai/resources";
+import Icon from "../Icon";
 
 export interface ChatValue {
   userInput: string;
@@ -43,13 +52,20 @@ const ChatForm = () => {
     reset();
   };
 
+  const InputGroupClassName =
+    credit && credit > 0
+      ? "btn btn-outline-success d-flex align-items-center"
+      : "d-flex align-items-center";
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className='d-flex px-5 my-5'>
-      <ChatFormController
-        control={control}
-        handleSubmit={handleSubmit}
-        onSubmit={onSubmit}
-      />
+      <InputGroup>
+        <ChatFormController control={control} />
+
+        <InputGroup.Text className={InputGroupClassName}>
+          <Icon chat iconName='Send' />
+        </InputGroup.Text>
+      </InputGroup>
     </Form>
   );
 };
