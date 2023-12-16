@@ -45,16 +45,11 @@ const ChatForm = () => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className='d-flex px-5 my-5'>
-      <ChatFormController control={control} />
-
-      <Button
-        className='position-relative'
-        onClick={handleSubmit(onSubmit)}
-        variant={darkMode ? "outline-light" : "outline-dark"}
-        disabled={questionAsked || credit === 0}
-      >
-        {">"}
-      </Button>
+      <ChatFormController
+        control={control}
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+      />
     </Form>
   );
 };

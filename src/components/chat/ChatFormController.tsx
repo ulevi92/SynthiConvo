@@ -1,15 +1,23 @@
-import { Form } from "react-bootstrap";
+import { Form, InputGroup } from "react-bootstrap";
 import { Controller } from "react-hook-form";
-import type { Control } from "react-hook-form";
+import type {
+  Control,
+  SubmitHandler,
+  UseFormHandleSubmit,
+} from "react-hook-form";
 
 import { ChatValue } from "./ChatForm";
 import { useAppSelector } from "../../redux/reduxHooks";
+import Icon from "../Icon";
+import { FC } from "react";
 
 interface Props {
   control: Control<ChatValue, any>;
+  onSubmit: SubmitHandler<ChatValue>;
+  handleSubmit: UseFormHandleSubmit<ChatValue, undefined>;
 }
 
-const ChatFormController = ({ control }: Props) => {
+const ChatFormController: FC<Props> = ({ control, onSubmit, handleSubmit }) => {
   const questionAsked = useAppSelector(
     ({ userData }) => userData.chat.questionAsked
   );
@@ -31,12 +39,18 @@ const ChatFormController = ({ control }: Props) => {
       name='userInput'
       control={control}
       render={({ field }) => (
-        <Form.Control
-          disabled={questionAsked || credit === 0}
-          placeholder={placeholder()}
-          {...field}
-          size='lg'
-        />
+        <InputGroup>
+          <Form.Control
+            disabled={questionAsked || credit === 0}
+            placeholder={placeholder()}
+            {...field}
+            size='lg'
+          />
+
+          <InputGroup.Text className='btn btn-outline-success d-flex align-items-center'>
+            <Icon iconName='Send' onClick={handleSubmit(onSubmit)} />
+          </InputGroup.Text>
+        </InputGroup>
       )}
     />
   );
