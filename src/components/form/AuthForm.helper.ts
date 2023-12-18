@@ -1,12 +1,11 @@
 import store from "../../redux/store";
 
 import { clearAuthErrors } from "../../redux/features/userData/userDataSlice";
-import { clearModal } from "../../redux/features/global/globalSlice";
+import { closeModal } from "../../redux/features/global/globalSlice";
 const dispatch = store.dispatch;
-const modalType = store.getState().global.modalType;
 
 export const handleClose = () => {
-  dispatch(clearModal());
+  dispatch(closeModal());
   dispatch(clearAuthErrors());
 };
 

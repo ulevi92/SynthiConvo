@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 
-import { clearModal } from "../../redux/features/global/globalSlice";
+import { closeModal } from "../../redux/features/global/globalSlice";
 import { useEffect } from "react";
 import {
   resetChatHistory,
@@ -84,12 +84,12 @@ export const ClearConversationModalText = () => {
   const handleClearHistory = () => {
     dispatch(resetChatHistory());
     dispatch(updateUserCreditAndHistory({ credit, history }));
-    dispatch(clearModal());
+    dispatch(closeModal());
   };
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (history.length === 0) dispatch(clearModal());
+      if (history.length === 0) dispatch(closeModal());
     }, 1500);
 
     return () => clearTimeout(timer);

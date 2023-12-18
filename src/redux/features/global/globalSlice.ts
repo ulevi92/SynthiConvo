@@ -52,8 +52,8 @@ const globalSlice = createSlice({
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
-    clearModal(state) {
-      return { ...initialState, darkMode: state.darkMode, loading: false };
+    closeModal(state) {
+      state.showModal = false;
     },
   },
 });
@@ -63,6 +63,6 @@ export const {
   setModalType,
   setShowModal,
   setLoading,
-  clearModal,
+  closeModal,
 } = globalSlice.actions;
 export default globalSlice.reducer;

@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../redux/reduxHooks";
 import { useLayoutEffect, useRef } from "react";
-import { clearModal } from "../redux/features/global/globalSlice";
+import { closeModal } from "../redux/features/global/globalSlice";
 
 const PrivateRoute = () => {
   const isAuth = useAppSelector(({ userData }) => userData.auth.isAuth);
@@ -24,7 +24,7 @@ const PrivateRoute = () => {
         isAuth &&
         !didMounted.current)
     ) {
-      dispatch(clearModal());
+      dispatch(closeModal());
       didMounted.current = true;
     }
   }, [isAuth, showModal, modalType]);

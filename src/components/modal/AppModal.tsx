@@ -1,6 +1,6 @@
 import { Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
-import { clearModal } from "../../redux/features/global/globalSlice";
+import { closeModal } from "../../redux/features/global/globalSlice";
 import { clearAuthErrors } from "../../redux/features/userData/userDataSlice";
 import AppModalBody from "./AppModalBody";
 import { Loader } from "../loader/Loader";
@@ -13,11 +13,11 @@ const AppModal = () => {
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
-    dispatch(clearModal());
     dispatch(clearAuthErrors());
     modalType === "login" ||
       modalType === "sign up" ||
       (modalType === "passwordReminder" && dispatch(clearAuthErrors()));
+    dispatch(closeModal());
   };
 
   const modalSize: () => "sm" | "xl" = () => {
