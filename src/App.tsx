@@ -62,19 +62,17 @@ function App() {
   }, []);
 
   return (
-    <Loader>
-      <Routes>
-        <Route path='/' element={<PrivateRoute />}>
-          <Route index element={<Home />} />
-        </Route>
+    <Routes>
+      <Route path='/' element={<PrivateRoute />}>
+        <Route index element={<Home />} />
+      </Route>
 
-        <Route path='/login' element={<PublicRoute />}>
-          <Route index element={<PublicPage />} />
-        </Route>
+      <Route path='/login' element={<PublicRoute />}>
+        <Route index element={<PublicPage />} />
+      </Route>
 
-        <Route path='/*' element={<NotFound />} />
-      </Routes>
-    </Loader>
+      <Route path='/*' element={<NotFound />} />
+    </Routes>
   );
 }
 

@@ -5,18 +5,32 @@ import { useAppSelector } from "../../redux/reduxHooks";
 
 export const Loader = ({ children }: PropsWithChildren) => {
   const loading = useAppSelector((state) => state.global.loading);
+  const authLoader = useAppSelector((state) => state.userData.auth.authLoading);
 
-  if (!loading) return <>{children}</>;
+  if (authLoader)
+    return (
+      <div className='modal-loader'>
+        <div className={`bg-light opacity-25`}>{children}</div>
+        <div className='loader'>
+          <div className='dot' />
+          <div className='dot' />
+          <div className='dot' />
+        </div>
+      </div>
+    );
 
-  return (
-    <Container fluid className={`loader-container`}>
-      <Row className='align-items-center h-100 z-3'>
-        <Col className='d-flex justify-content-center'>
-          <div className='dot dot-1'></div>
-          <div className='dot dot-2'></div>
-          <div className='dot dot-3'></div>
-        </Col>
-      </Row>
-    </Container>
-  );
+  if (loading)
+    return (
+      <Container fluid className='loader-container z-3'>
+        <Row className='align-items-center h-100'>
+          <Col className='d-flex justify-content-center'>
+            <div className='dot' />
+            <div className='dot' />
+            <div className='dot' />
+          </Col>
+        </Row>
+      </Container>
+    );
+
+  return <>{children}</>;
 };

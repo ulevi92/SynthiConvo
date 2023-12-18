@@ -1,9 +1,9 @@
 import { Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import { clearModal } from "../../redux/features/global/globalSlice";
-import AuthForm from "../form/AuthForm";
-import UserModal from "./UserModal";
 import { clearAuthErrors } from "../../redux/features/userData/userDataSlice";
+import AppModalBody from "./AppModalBody";
+import { Loader } from "../loader/Loader";
 
 const AppModal = () => {
   const showModal = useAppSelector((state) => state.global.showModal);
@@ -18,17 +18,6 @@ const AppModal = () => {
     modalType === "login" ||
       modalType === "sign up" ||
       (modalType === "passwordReminder" && dispatch(clearAuthErrors()));
-  };
-
-  const ModalBody = () => {
-    if (
-      modalType === "login" ||
-      modalType === "sign up" ||
-      modalType === "passwordReminder"
-    )
-      return <AuthForm />;
-
-    return <UserModal />;
   };
 
   const modalSize: () => "sm" | "xl" = () => {
@@ -82,12 +71,14 @@ const AppModal = () => {
       size={modalSize()}
       centered
     >
-      <Modal.Header closeButton closeLabel='close'>
-        <Modal.Title className='text-capitalize'>{modalTitle()}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <ModalBody />
-      </Modal.Body>
+      <Loader>
+        <Modal.Header closeButton closeLabel='close'>
+          <Modal.Title className='text-capitalize'>{modalTitle()}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <AppModalBody />
+        </Modal.Body>
+      </Loader>
     </Modal>
   );
 };

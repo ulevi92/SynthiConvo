@@ -491,8 +491,6 @@ const userDataSlice = createSlice({
         const { uid, credit, displayName, email, emailVerified, history } =
           action.payload.user;
 
-        console.log(credit);
-
         const { security } = action.payload.clientIp;
 
         // Update user-related state after successful sign-in
@@ -509,8 +507,6 @@ const userDataSlice = createSlice({
           state.userNotAllowed = true;
         }
 
-        state.auth.authLoading = false;
-
         state.chat.credit = credit;
         state.chat.history = history;
 
@@ -524,6 +520,8 @@ const userDataSlice = createSlice({
 
           localStorage.setItem("chat", JSON.stringify(storeChatData));
         }
+
+        state.auth.authLoading = false;
       })
       // Handle the rejected state of the asynchronous thunk
       .addCase(fetchSignIn.rejected, (state, action) => {
