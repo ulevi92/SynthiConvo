@@ -22,8 +22,6 @@ const PublicPage = () => {
         ? "sign up"
         : null;
 
-    console.log(modalType);
-
     dispatch(setShowModal(true));
 
     dispatch(setModalType(modalType));

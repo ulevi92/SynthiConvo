@@ -18,8 +18,6 @@ import {
   setAuthLoading,
 } from "../../redux/features/userData/userDataSlice";
 import { useNavigate } from "react-router-dom";
-import { Loader } from "../loader/Loader";
-import ModalLoader from "../loader/ModalLoader";
 
 const AuthForm = () => {
   const navigate = useNavigate();
@@ -77,13 +75,6 @@ const AuthForm = () => {
       // Add any additional logic or navigation as needed
     },
     [modalType, dispatch]
-  );
-
-  console.log(
-    modalType ===
-      ("login" ||
-        modalType === "sign up" ||
-        modalType === "passwordReminder") && authLoading
   );
 
   return (
