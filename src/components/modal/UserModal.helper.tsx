@@ -118,7 +118,5 @@ export const ClearConversationModalText = () => {
 };
 
 export const AccountModalText = () => {
-  const {} = useAppSelector((state) => ({}));
-
   return <></>;
 };

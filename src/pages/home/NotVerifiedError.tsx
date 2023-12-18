@@ -11,11 +11,9 @@ import {
 const NotVerifiedError = () => {
   const dispatch = useAppDispatch();
 
-  const { email, darkMode, requestStatus } = useAppSelector((state) => ({
-    email: state.userData.userProfile.email,
-    darkMode: state.global.darkMode,
-    requestStatus: state.userData.errorFrom,
-  }));
+  const email = useAppSelector((state) => state.userData.userProfile.email);
+  const darkMode = useAppSelector((state) => state.global.darkMode);
+  const requestStatus = useAppSelector((state) => state.userData.errorFrom);
 
   const startTimer = useRef<boolean>(false);
 

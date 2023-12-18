@@ -8,10 +8,9 @@ import {
 
 const UserUI = () => {
   const dispatch = useAppDispatch();
-  const { totalCredit, user } = useAppSelector((state) => ({
-    totalCredit: state.userData.chat.credit,
-    user: state.userData.userProfile,
-  }));
+
+  const credit = useAppSelector((state) => state.userData.chat.credit);
+  const user = useAppSelector((state) => state.userData.userProfile);
 
   const [progress, setProgress] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -37,7 +36,7 @@ const UserUI = () => {
   return (
     <>
       <div>Hello: {email}</div>
-      <div>total credit: {totalCredit}</div>
+      <div>total credit: {credit}</div>
 
       <Button onClick={handleOpenAlert}>reset history</Button>
 
