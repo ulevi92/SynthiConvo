@@ -71,7 +71,7 @@ const AppModal = () => {
       size={modalSize()}
       centered
     >
-      <Loader>
+      <Loader auth>
         <Modal.Header closeButton closeLabel='close'>
           <Modal.Title className='text-capitalize'>{modalTitle()}</Modal.Title>
         </Modal.Header>

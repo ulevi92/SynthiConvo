@@ -1,23 +1,19 @@
-import { PropsWithChildren, useMemo } from "react";
+import { FC, PropsWithChildren, useMemo } from "react";
 import "./loader.scss";
 import { Col, Container, Row } from "react-bootstrap";
 import { useAppSelector } from "../../redux/reduxHooks";
 
-export const Loader = ({ children }: PropsWithChildren) => {
+interface Props extends PropsWithChildren {
+  auth?: boolean;
+  chat?: boolean;
+}
+
+export const Loader: FC<Props> = ({ children, auth, chat }) => {
   const loading = useAppSelector((state) => state.global.loading);
   const authLoader = useAppSelector((state) => state.userData.auth.authLoading);
-
-  if (authLoader)
-    return (
-      <div className='modal-loader'>
-        <div className={`bg-light opacity-25`}>{children}</div>
-        <div className='loader'>
-          <div className='dot' />
-          <div className='dot' />
-          <div className='dot' />
-        </div>
-      </div>
-    );
+  const questionAsked = useAppSelector(
+    (state) => state.userData.chat.questionAsked
+  );
 
   if (loading)
     return (
@@ -31,6 +27,22 @@ export const Loader = ({ children }: PropsWithChildren) => {
         </Row>
       </Container>
     );
+
+  if (auth && authLoader)
+    return (
+      <div className='modal-loader'>
+        <div className={`bg-light opacity-25`}>{children}</div>
+        <div className='loader'>
+          <div className='dot' />
+          <div className='dot' />
+          <div className='dot' />
+        </div>
+      </div>
+    );
+
+  console.log(chat && questionAsked);
+
+  if (chat && questionAsked) return <div className='loader-circle' />;
 
   return <>{children}</>;
 };

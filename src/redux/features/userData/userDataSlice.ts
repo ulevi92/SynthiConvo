@@ -679,7 +679,6 @@ const userDataSlice = createSlice({
       .addCase(askBot.fulfilled, (state, action) => {
         const { usage, choices } = action.payload;
 
-        state.chat.isLoading = false;
         state.chat.botAnswered = true;
         state.chat.questionAsked = false;
 
@@ -701,6 +700,8 @@ const userDataSlice = createSlice({
         };
 
         localStorage.setItem("chat", JSON.stringify(storeToStorage));
+
+        state.chat.isLoading = false;
       })
       .addCase(askBot.rejected, (state, action) => {
         state.chat.questionAsked = false;

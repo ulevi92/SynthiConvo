@@ -1,17 +1,7 @@
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  InputGroup,
-  Row,
-} from "react-bootstrap";
+import { Form, InputGroup } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ChatFormController from "./ChatFormController";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
-
-import { ChatMessage } from "../../types/openAI";
 
 import {
   addUserQuestion,
@@ -19,6 +9,7 @@ import {
 } from "../../redux/features/userData/userDataSlice";
 import { ChatCompletionMessageParam } from "openai/resources";
 import Icon from "../Icon";
+import { Loader } from "../loader/Loader";
 
 export interface ChatValue {
   userInput: string;
@@ -33,7 +24,6 @@ const ChatForm = () => {
 
   const dispatch = useAppDispatch();
 
-  const darkMode = useAppSelector(({ global }) => global.darkMode);
   const questionAsked = useAppSelector(
     ({ userData }) => userData.chat.questionAsked
   );
@@ -57,13 +47,22 @@ const ChatForm = () => {
       ? "btn btn-outline-success d-flex align-items-center"
       : "d-flex align-items-center";
 
+  const renderInputIcon = questionAsked ? (
+    <Loader chat />
+  ) : (
+    <Icon chat iconName='Send' />
+  );
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className='d-flex px-5 my-5'>
       <InputGroup>
         <ChatFormController control={control} />
 
-        <InputGroup.Text className={InputGroupClassName}>
-          <Icon chat iconName='Send' />
+        <InputGroup.Text
+          className={InputGroupClassName}
+          style={questionAsked ? { width: 60, pointerEvents: "none" } : {}}
+        >
+          {renderInputIcon}
         </InputGroup.Text>
       </InputGroup>
     </Form>
