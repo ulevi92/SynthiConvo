@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useAppSelector } from "../../redux/reduxHooks";
 import SidebarCard from "./SidebarCard";
+
+import "./mobile-bar.scss";
 
 const MobileBar = () => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
@@ -20,13 +22,19 @@ const MobileBar = () => {
       }`
     : `position-absolute h-0 w-0 d-none`;
 
+  const mobileBarMenuClass = darkMode ? "mobile-bar light" : "mobile-bar dark";
+
   return (
     <>
       <div className={menuButtonClassName}>
-        <Button variant='p-2' onClick={handleMenu}>
-          <div className='dot mt-2' />
-          <div className='dot my-2' />
-          <div className='dot mb-2' />
+        <Button
+          variant='none'
+          className='d-flex flex-column'
+          onClick={handleMenu}
+        >
+          <div className={`${mobileBarMenuClass}`} />
+          <div className={`${mobileBarMenuClass} my-2`} />
+          <div className={`${mobileBarMenuClass}`} />
         </Button>
       </div>
 
