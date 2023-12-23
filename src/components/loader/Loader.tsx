@@ -20,9 +20,9 @@ export const Loader: FC<Props> = ({ children, auth, chat }) => {
       <Container fluid className='loader-container z-3'>
         <Row className='align-items-center h-100'>
           <Col className='d-flex justify-content-center'>
-            <div className='dot' />
-            <div className='dot' />
-            <div className='dot' />
+            <div className='dot dot-loader' />
+            <div className='dot dot-loader' />
+            <div className='dot dot-loader' />
           </Col>
         </Row>
       </Container>
@@ -33,9 +33,9 @@ export const Loader: FC<Props> = ({ children, auth, chat }) => {
       <div className='modal-loader'>
         <div className={`bg-light opacity-25`}>{children}</div>
         <div className='loader'>
-          <div className='dot' />
-          <div className='dot' />
-          <div className='dot' />
+          <div className='dot dot-loader' />
+          <div className='dot dot-loader' />
+          <div className='dot dot-loader' />
         </div>
       </div>
     );
