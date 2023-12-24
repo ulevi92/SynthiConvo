@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { useAppSelector } from "../../redux/reduxHooks";
 import SidebarCard from "./SidebarCard";
 
-import "./mobile-bar.scss";
+import "./mobile-menu.scss";
 
 const MobileMenu = () => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
