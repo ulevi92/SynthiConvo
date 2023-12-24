@@ -59,7 +59,9 @@ const MobileMenu = () => {
         <div className='d-flex flex-column justify-content-between flex-grow-1 m-5'>
           <div className='user-profile'>
             <div className={`profile ${darkMode ? "dark" : "light"}`}>
-              <h1>{displayName?.slice(0, 1) || ""}</h1>
+              <h1 className='text-uppercase'>
+                {displayName?.slice(0, 1) || ""}
+              </h1>
             </div>
 
             <div className='align-self-center ms-2 text-capitalize'>

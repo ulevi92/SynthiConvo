@@ -12,6 +12,7 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import { auth, db } from "../../../firebase/firebase";
 import { GetIpRegistry } from "../../../types/ipregistry";
@@ -94,7 +95,6 @@ export const fetchSignIn = createAsyncThunk(
   "userAuth/fetchSignIn",
   async ({ email, password }: SignInAndUpArguments) => {
     // Initialize variables to be used in the function
-    let displayName: string = "";
 
     // 1. Fetch user credentials from Firebase
     const userCredentials = await signInWithEmailAndPassword(
@@ -102,6 +102,13 @@ export const fetchSignIn = createAsyncThunk(
       email!,
       password!
     );
+    const displayName = `user_${userCredentials.user.uid.slice(0, 6)}`;
+
+    if (userCredentials.user.displayName?.length === (0 || null)) {
+      updateProfile(userCredentials.user, {
+        displayName: displayName,
+      });
+    }
 
     // 2. Fetch the client's IP address using the ipregistry API
     const clientIp: GetIpRegistry = await fetch(
@@ -123,11 +130,6 @@ export const fetchSignIn = createAsyncThunk(
     const data = docSnap.data() as FirestoreUsersDb;
 
     // 6. Check if the user's email is verified
-
-    // 7. Set a default display name if it's empty or not provided
-    if (data.displayName.length === 0 || !userDisplayName) {
-      displayName = `user_${uid.slice(0, 6)}`;
-    }
 
     // 8. Check if there are changes in user data (display name or email verification status) and update Firestore accordingly
     if (
@@ -184,6 +186,10 @@ export const fetchSignUp = createAsyncThunk(
       password!
     );
 
+    const displayName = "user_" + userCredentials.user.uid.slice(0, 6);
+
+    updateProfile(userCredentials.user, { displayName: displayName });
+
     // 2. Fetch the client's IP address using the ipregistry API
     const clientIp: GetIpRegistry = await fetch(
       `https://api.ipregistry.co/?key=${ipRegistryKey}`
@@ -206,7 +212,7 @@ export const fetchSignUp = createAsyncThunk(
       credit: 1000,
       emailVerified,
       email,
-      displayName: "user_" + uid.slice(0, 6),
+      displayName: displayName,
       ipInfo: {
         ip,
         previewsLoggedIps: [...[], ip],
