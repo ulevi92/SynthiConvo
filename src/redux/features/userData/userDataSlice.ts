@@ -110,6 +110,11 @@ export const fetchSignIn = createAsyncThunk(
       });
     }
 
+    const getDisplayNameFromStorage = localStorage.getItem("display name");
+
+    if (!getDisplayNameFromStorage)
+      localStorage.setItem("display name", displayName);
+
     // 2. Fetch the client's IP address using the ipregistry API
     const clientIp: GetIpRegistry = await fetch(
       `https://api.ipregistry.co/?key=${ipRegistryKey}`
@@ -189,6 +194,8 @@ export const fetchSignUp = createAsyncThunk(
     const displayName = "user_" + userCredentials.user.uid.slice(0, 6);
 
     updateProfile(userCredentials.user, { displayName: displayName });
+
+    localStorage.setItem("display name", displayName);
 
     // 2. Fetch the client's IP address using the ipregistry API
     const clientIp: GetIpRegistry = await fetch(
@@ -407,11 +414,13 @@ const userDataSlice = createSlice({
       // 1. Update the authentication state based on the action payload
       state.auth.isAuth = action.payload;
 
+      console.log(auth.currentUser);
       // 2. If there is a current user authenticated, update user-related state
       if (auth.currentUser) {
         // 3. Destructure user information from the Firebase currentUser object
-        const { email, emailVerified, displayName, photoURL, uid } =
-          auth.currentUser;
+        const { email, emailVerified, uid } = auth.currentUser;
+
+        const displayName = localStorage.getItem("display name");
 
         // 4. Update user-related state in the Redux store
         state.userProfile.displayName = displayName;
