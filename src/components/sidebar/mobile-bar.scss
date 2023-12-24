@@ -1,3 +1,20 @@
+.menu-container {
+  position: absolute;
+  height: 100%;
+  width: 0%;
+  // transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+
+  transition: all 350ms ease-in-out;
+
+  &.open {
+    width: 100%;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
 .mobile-bar {
   height: 10px;
   width: 10px;
@@ -9,5 +26,32 @@
 
   &.light {
     background-color: white;
+  }
+}
+
+.user-profile {
+  display: flex;
+
+  .profile {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 900;
+
+    // transition: all 350ms ease-in-out;
+
+    &.light {
+      background-color: rgba($color: #fff, $alpha: 0.75);
+      color: black;
+    }
+
+    &.dark {
+      background-color: rgba($color: #000, $alpha: 0.75);
+      color: white;
+    }
   }
 }

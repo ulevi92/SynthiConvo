@@ -10,6 +10,8 @@ import {
 } from "../../redux/features/global/globalSlice";
 import { fetchSignOut } from "../../redux/features/userData/userDataSlice";
 
+type MarginAndPadding = 1 | 2 | 3 | 4 | 5;
+
 interface Props {
   cardName:
     | "about"
@@ -20,10 +22,11 @@ interface Props {
     | "conversation";
 
   conversationKeyWords?: string;
-  cardMarginY?: 1 | 2 | 3 | 4 | 5;
+  cardMarginY?: MarginAndPadding;
   cardMarginB?: number;
   cardMarginT?: number;
   clickable?: boolean;
+  padding?: MarginAndPadding;
 }
 
 const SidebarCard: FC<Props> = ({
@@ -33,6 +36,7 @@ const SidebarCard: FC<Props> = ({
   cardMarginB,
   cardMarginT,
   clickable,
+  padding,
 }) => {
   const dispatch = useAppDispatch();
   const darkMode = useAppSelector((state) => state.global.darkMode);
@@ -76,7 +80,7 @@ const SidebarCard: FC<Props> = ({
   };
 
   const cardClass: () => string = () => {
-    const baseClass = "p-2 w-100";
+    const baseClass = `p-${padding ? padding : 2} w-100`;
     const marginClass = cardMarginY
       ? `my-${cardMarginY}`
       : `mb-${cardMarginB} mt-${cardMarginT}`;
