@@ -40,8 +40,6 @@ export const Loader: FC<Props> = ({ children, auth, chat }) => {
       </div>
     );
 
-  console.log(chat && questionAsked);
-
   if (chat && questionAsked) return <div className='loader-circle' />;
 
   return <>{children}</>;

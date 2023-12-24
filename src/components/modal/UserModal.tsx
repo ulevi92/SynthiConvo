@@ -1,9 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
-import {
-  AboutModalText,
-  AccountModalText,
-  ClearConversationModalText,
-} from "./UserModal.helper";
+import { AboutModalText, ClearConversationModalText } from "./UserModal.helper";
 
 const UserModal = () => {
   const dispatch = useAppDispatch();
@@ -16,9 +12,6 @@ const UserModal = () => {
       case "clear conversation":
       case "conversation":
         return <ClearConversationModalText />;
-
-      case "account":
-        return <AccountModalText />;
 
       default:
         return null;

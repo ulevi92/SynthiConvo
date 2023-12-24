@@ -54,7 +54,7 @@ export const Home = () => {
       <Container
         fluid
         className='d-flex flex-column z-2'
-        style={{ transition: "all 700ms ease-in-out", height: "100vh" }}
+        style={{ transition: "all 350ms ease-in-out", height: "100vh" }}
       >
         <Row className='position-relative flex-grow-1'>
           <Col className={sidebarStyle} md={4} lg={3} xxl={2}>
@@ -70,8 +70,7 @@ export const Home = () => {
             md={8}
             lg={9}
             xxl={10}
-            className='position-relative d-flex flex-column overflow-hidden'
-            style={{ maxHeight: "100vh" }} // Example maximum height
+            className='position-relative d-flex flex-column overflow-hidden mh-100'
           >
             <ChatWindow />
           </Col>

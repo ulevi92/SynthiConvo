@@ -104,19 +104,14 @@ export const ClearConversationModalText = () => {
 
   return (
     <>
-      <h3>
-        Are you sure you want to delete the conversation history? This action is
-        irreversible
-      </h3>
-      <p>Deleting the conversation won't restore your credit</p>
+      <h3>Are you sure you want to delete the conversation history?</h3>
+      <h5 className='text-danger'>This action is irreversible</h5>
+
+      <h4>Be Aware: Deleting the conversation won't restore your credit</h4>
 
       <Button onClick={handleClearHistory} className='text-uppercase'>
         confirm
       </Button>
     </>
   );
-};
-
-export const AccountModalText = () => {
-  return <></>;
 };

@@ -8,13 +8,32 @@ const Sidebar = () => {
   );
   const modalType = useAppSelector(({ global }) => global.modalType);
   const showModal = useAppSelector(({ global }) => global.showModal);
+  const displayName = useAppSelector(
+    (state) => state.userData.userProfile.displayName
+  );
+  const email = useAppSelector((state) => state.userData.userProfile.email);
+  const credit = useAppSelector((state) => state.userData.chat.credit);
 
   const firstMessage = conversationScript.find(({ role }) => role === "user");
+
+  console.log(credit);
 
   return (
     <Container fluid className='d-flex flex-grow-1'>
       <Row className='flex-column flex-grow-1'>
-        <Col className='d-flex flex-grow-1 mt-5 align-items-start' md='12'>
+        <Col
+          className='d-flex flex-column flex-grow-1 align-items-start '
+          md='12'
+        >
+          <h2 className='mb-4 mt-2'>SynthiConvo</h2>
+
+          <div className='mb-5'>
+            <h5>Welcome: {displayName}</h5>
+            <p>{email}</p>
+
+            <h6>credit left: {credit}</h6>
+          </div>
+
           {firstMessage && (
             <SidebarCard
               cardName='conversation'
@@ -41,8 +60,6 @@ const Sidebar = () => {
             cardMarginB={1}
             clickable
           />
-
-          <SidebarCard cardName='account' cardMarginY={1} clickable />
 
           <SidebarCard
             cardName='clear conversation'
