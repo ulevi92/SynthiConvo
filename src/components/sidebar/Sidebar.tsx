@@ -16,8 +16,6 @@ const Sidebar = () => {
 
   const firstMessage = conversationScript.find(({ role }) => role === "user");
 
-  console.log(credit);
-
   return (
     <Container fluid className='d-flex flex-grow-1'>
       <Row className='flex-column flex-grow-1'>

@@ -1,0 +1,36 @@
+.bouncing-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #333;
+  margin: 0 6px;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+
+  &.dark {
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+  &.light {
+    background-color: #000;
+  }
+
+  &:nth-child(1) {
+    animation: bounce 0.35s infinite alternate;
+  }
+
+  &:nth-child(2) {
+    animation: bounce 0.35s infinite alternate;
+    animation-delay: 0.2s;
+  }
+
+  &:nth-child(3) {
+    animation: bounce 0.35s infinite alternate;
+    animation-delay: 0.4s;
+  }
+}
+
+@keyframes bounce {
+  to {
+    transform: translateY(-20px);
+  }
+}

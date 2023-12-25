@@ -414,7 +414,6 @@ const userDataSlice = createSlice({
       // 1. Update the authentication state based on the action payload
       state.auth.isAuth = action.payload;
 
-      console.log(auth.currentUser);
       // 2. If there is a current user authenticated, update user-related state
       if (auth.currentUser) {
         // 3. Destructure user information from the Firebase currentUser object

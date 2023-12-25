@@ -3,8 +3,6 @@ import NotVerifiedError from "./NotVerifiedError";
 import ChatWindow from "../../components/chat/ChatWindow";
 import { useLayoutEffect, useRef } from "react";
 
-import { setLoading } from "../../redux/features/global/globalSlice";
-
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Sidebar from "../../components/sidebar/Sidebar";
 import AppModal from "../../components/modal/AppModal";

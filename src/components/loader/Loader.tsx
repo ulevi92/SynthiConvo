@@ -1,15 +1,18 @@
-import { FC, PropsWithChildren, useMemo } from "react";
+import { FC, PropsWithChildren } from "react";
 import "./loader.scss";
 import { Col, Container, Row } from "react-bootstrap";
 import { useAppSelector } from "../../redux/reduxHooks";
+import BouncingDot from "./BouncingDot";
 
 interface Props extends PropsWithChildren {
   auth?: boolean;
   chat?: boolean;
+  isMounted?: boolean;
 }
 
-export const Loader: FC<Props> = ({ children, auth, chat }) => {
+export const Loader: FC<Props> = ({ children, auth, chat, isMounted }) => {
   const loading = useAppSelector((state) => state.global.loading);
+  const darkMode = useAppSelector((state) => state.global.darkMode);
   const authLoader = useAppSelector((state) => state.userData.auth.authLoading);
   const questionAsked = useAppSelector(
     (state) => state.userData.chat.questionAsked
@@ -17,15 +20,13 @@ export const Loader: FC<Props> = ({ children, auth, chat }) => {
 
   if (loading)
     return (
-      <Container fluid className='loader-container z-3'>
-        <Row className='align-items-center h-100'>
-          <Col className='d-flex justify-content-center'>
-            <div className='dot dot-loader' />
-            <div className='dot dot-loader' />
-            <div className='dot dot-loader' />
-          </Col>
-        </Row>
-      </Container>
+      <div className={`loader-container z-3 ${darkMode ? "dark" : "light"}`}>
+        <div className='align-items-center h-100'>
+          <div className='d-flex justify-content-center loader'>
+            <BouncingDot />
+          </div>
+        </div>
+      </div>
     );
 
   if (auth && authLoader)
@@ -33,14 +34,13 @@ export const Loader: FC<Props> = ({ children, auth, chat }) => {
       <div className='modal-loader'>
         <div className={`bg-light opacity-25`}>{children}</div>
         <div className='loader'>
-          <div className='dot dot-loader' />
-          <div className='dot dot-loader' />
-          <div className='dot dot-loader' />
+          <BouncingDot />
         </div>
       </div>
     );
 
-  if (chat && questionAsked) return <div className='loader-circle' />;
+  if (chat && questionAsked)
+    return <div className={`loader-circle ${darkMode ? "dark" : "light"}`} />;
 
   return <>{children}</>;
 };
