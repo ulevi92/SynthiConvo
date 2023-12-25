@@ -581,6 +581,7 @@ const userDataSlice = createSlice({
       .addCase(fetchSignOut.fulfilled, (state) => {
         state.auth.isAuth = false;
         state.auth.authLoading = false;
+        localStorage.clear();
       })
 
       .addCase(fetchSignOut.rejected, (state, action) => {

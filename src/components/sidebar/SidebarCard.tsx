@@ -5,6 +5,7 @@ import * as icons from "react-bootstrap-icons";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import {
   setDarkMode,
+  setLoading,
   setModalType,
   setShowModal,
 } from "../../redux/features/global/globalSlice";
@@ -111,6 +112,8 @@ const SidebarCard: FC<Props> = ({
 
       case "logout":
         dispatch(fetchSignOut());
+        dispatch(setLoading(true));
+        window.location.reload();
         break;
 
       default:
