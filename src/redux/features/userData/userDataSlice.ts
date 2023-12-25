@@ -176,6 +176,8 @@ export const fetchSignIn = createAsyncThunk(
       history,
     };
 
+    localStorage.setItem("chat", JSON.stringify({ credit, history }));
+
     // 12. Return an object containing user-related data along with the client's IP
     return { user, clientIp };
   }

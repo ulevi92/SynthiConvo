@@ -51,8 +51,8 @@ export const Home = () => {
     <>
       <Container
         fluid
-        className='d-flex flex-column z-2'
-        style={{ transition: "all 350ms ease-in-out", height: "100vh" }}
+        className='d-flex flex-column z-2 h-100'
+        style={{ transition: "all 350ms ease-in-out" }}
       >
         <Row className='position-relative flex-grow-1'>
           <Col className={sidebarStyle} md={4} lg={3} xxl={2}>
