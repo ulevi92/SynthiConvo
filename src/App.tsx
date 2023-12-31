@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
 import NotFound from "./pages/NotFound";
 
-import PublicPage from "./pages/PublicPage";
+import PublicPage from "./pages/PublicPage/PublicPage";
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
