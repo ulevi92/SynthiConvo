@@ -4,7 +4,12 @@ import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 
 import AppModal from "../../components/modal/AppModal";
 import { useLayoutEffect, useState } from "react";
-import { sentences, handleOpenModal } from "./PublicPage.helper";
+import { sentences } from "./PublicPage.helper";
+import {
+  ModalType,
+  setModalType,
+  setShowModal,
+} from "../../redux/features/global/globalSlice";
 
 interface State {
   index: number;
@@ -68,6 +73,14 @@ const PublicPage = () => {
 
     return () => clearTimeout(timeout);
   }, [state.index, state.subIndex, state.reverse]);
+
+  const handleOpenModal = (e: React.MouseEvent) => {
+    const innerText = e.currentTarget.textContent as ModalType;
+
+    dispatch(setShowModal(true));
+
+    dispatch(setModalType(innerText));
+  };
 
   return (
     <>
