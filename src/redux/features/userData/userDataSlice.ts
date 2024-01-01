@@ -495,6 +495,10 @@ const userDataSlice = createSlice({
       // Replace the current total credit with the provided old credit record
       state.chat.credit = action.payload;
     },
+
+    setUserAllowed(state, action: PayloadAction<boolean>) {
+      state.userNotAllowed = action.payload;
+    },
   },
   extraReducers(builder) {
     // Handle the pending state of the asynchronous thunk
@@ -521,6 +525,7 @@ const userDataSlice = createSlice({
         if (isSecurityTrue) {
           state.error = true;
           state.userNotAllowed = true;
+          localStorage.setItem("not-allowed", "true");
         }
 
         state.chat.credit = credit;
@@ -566,6 +571,7 @@ const userDataSlice = createSlice({
         if (isSecurityTrue) {
           state.error = true;
           state.userNotAllowed = true;
+          localStorage.setItem("not-allowed", "true");
         }
       })
 
@@ -740,5 +746,6 @@ export const {
   addUserQuestion,
   resetChatHistory,
   updateChatData,
+  setUserAllowed,
 } = userDataSlice.actions;
 export default userDataSlice.reducer;

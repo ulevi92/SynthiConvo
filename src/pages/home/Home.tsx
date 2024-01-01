@@ -9,6 +9,7 @@ import AppModal from "../../components/modal/AppModal";
 import { StoredChatData } from "../../types/userData";
 import { updateChatData } from "../../redux/features/userData/userDataSlice";
 import MobileMenu from "../../components/sidebar/MobileMenu";
+import ErrorPage from "../Error/ErrorPage";
 
 export const Home = () => {
   const didMount = useRef<boolean>(false);
@@ -39,6 +40,8 @@ export const Home = () => {
       didMount.current = true;
     }
   }, [credit, history]);
+
+  if (userNotAllowed) return <ErrorPage notFound={false} />;
 
   if (!notVerified) return <NotVerifiedError />;
   // if (userNotAllowed) return <></>;

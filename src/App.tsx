@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
-import NotFound from "./pages/NotFound";
+import ErrorPage from "./pages/Error/ErrorPage";
 
 import PublicPage from "./pages/PublicPage/PublicPage";
 
@@ -14,11 +14,17 @@ import { Loader } from "./components/loader/Loader";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 import { setLoading } from "./redux/features/global/globalSlice";
-import { setAuth } from "./redux/features/userData/userDataSlice";
+import {
+  setAuth,
+  setUserAllowed,
+} from "./redux/features/userData/userDataSlice";
 
 function App() {
   const dispatch = useAppDispatch();
   const darkMode = useAppSelector((state) => state.global.darkMode);
+  const userNotAllowed = useAppSelector(
+    (state) => state.userData.userNotAllowed
+  );
   const isInitialAuthStateChange = useRef(true);
 
   const domRef = document.getElementById("html-theme")!;
@@ -41,6 +47,12 @@ function App() {
   }, [darkMode]);
 
   useEffect(() => {
+    if (JSON.parse(localStorage.getItem("not-allowed")!) && !userNotAllowed) {
+      dispatch(
+        setUserAllowed(JSON.parse(localStorage.getItem("not-allowed")!))
+      );
+    }
+
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       const isAuthenticated = user !== null;
 
@@ -72,7 +84,7 @@ function App() {
           <Route index element={<PublicPage />} />
         </Route>
 
-        <Route path='/*' element={<NotFound />} />
+        <Route path='/*' element={<ErrorPage notFound={true} />} />
       </Routes>
     </Loader>
   );
