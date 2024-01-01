@@ -1,4 +1,4 @@
-import { PropsWithChildren, memo, useLayoutEffect, useMemo } from "react";
+import { PropsWithChildren, memo, useMemo } from "react";
 import { useAppSelector } from "../../redux/reduxHooks";
 import { Card } from "react-bootstrap";
 

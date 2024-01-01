@@ -1,4 +1,4 @@
-import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useAppSelector } from "../../redux/reduxHooks";
 import SidebarCard from "./SidebarCard";
 

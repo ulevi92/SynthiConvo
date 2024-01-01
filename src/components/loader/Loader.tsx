@@ -1,8 +1,7 @@
 import { FC, PropsWithChildren } from "react";
-import "./loader.scss";
-import { Col, Container, Row } from "react-bootstrap";
 import { useAppSelector } from "../../redux/reduxHooks";
 import BouncingDot from "./BouncingDot";
+import "./loader.scss";
 
 interface Props extends PropsWithChildren {
   auth?: boolean;

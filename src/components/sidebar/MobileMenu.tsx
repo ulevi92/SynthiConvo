@@ -1,4 +1,4 @@
-import { CSSProperties, useState } from "react";
+import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useAppSelector } from "../../redux/reduxHooks";
 import SidebarCard from "./SidebarCard";

@@ -4,11 +4,6 @@ import type { Control } from "react-hook-form";
 
 import { ChatValue } from "./ChatForm";
 import { useAppSelector } from "../../redux/reduxHooks";
-import {
-  ModalType,
-  setModalType,
-  setShowModal,
-} from "../../redux/features/global/globalSlice";
 
 interface Props {
   control: Control<ChatValue, any>;
@@ -27,8 +22,6 @@ const ChatFormController = ({ control }: Props) => {
 
     return "Ask any question";
   };
-
-  console.log(questionAsked || credit === 0);
 
   return (
     <Controller

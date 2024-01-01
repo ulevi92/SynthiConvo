@@ -3,7 +3,7 @@ import NotVerifiedError from "./NotVerifiedError";
 import ChatWindow from "../../components/chat/ChatWindow";
 import { useLayoutEffect, useRef } from "react";
 
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import Sidebar from "../../components/sidebar/Sidebar";
 import AppModal from "../../components/modal/AppModal";
 import { StoredChatData } from "../../types/userData";
