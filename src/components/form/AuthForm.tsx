@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 const AuthForm = () => {
   const navigate = useNavigate();
 
-  const modalType = useAppSelector((state) => state.global.modalType);
+  const formType = useAppSelector((state) => state.global.formType);
 
   const dispatch = useAppDispatch();
 
@@ -49,18 +49,18 @@ const AuthForm = () => {
 
       const credentials = { email, password };
 
-      if (modalType === "passwordReminder") {
+      if (formType === "reminder") {
         await dispatch(fetchResetPassword(email));
         return;
       }
 
-      if (modalType === "sign up") {
+      if (formType === "sign up") {
         await dispatch(fetchSignUp(credentials));
         await dispatch(fetchEmailVerification());
         return;
       }
 
-      if (modalType === "login") {
+      if (formType === "login") {
         await dispatch(fetchSignIn(credentials));
         return;
       }
@@ -72,7 +72,7 @@ const AuthForm = () => {
 
       // Add any additional logic or navigation as needed
     },
-    [modalType, dispatch]
+    [formType, dispatch]
   );
 
   return (
@@ -87,7 +87,7 @@ const AuthForm = () => {
           </Col>
 
           {/* password */}
-          {(modalType === "login" || modalType === "sign up") && (
+          {(formType === "login" || formType === "sign up") && (
             <FormController name='password' control={control} />
           )}
           <Col>
@@ -95,7 +95,7 @@ const AuthForm = () => {
           </Col>
 
           {/* confirm password */}
-          {modalType === "sign up" && (
+          {formType === "sign up" && (
             <FormController name='confirmPassword' control={control} />
           )}
 

@@ -1,8 +1,5 @@
 import { Form } from "react-bootstrap";
-import {
-  ModalType,
-  setModalType,
-} from "../../redux/features/global/globalSlice";
+import { FormType, setFormType } from "../../redux/features/global/globalSlice";
 import { useAppDispatch } from "../../redux/reduxHooks";
 import { clearAuthErrors } from "../../redux/features/userData/userDataSlice";
 
@@ -10,20 +7,20 @@ interface Props {
   message: string;
   color?: "danger" | "warning" | "primary";
   className?: "add-pointer-cursor" | string;
-  modalType?: ModalType;
+  formType?: FormType;
 }
 
 const FormErrorText = ({
   message,
   color = "danger",
   className,
-  modalType,
+  formType,
 }: Props) => {
   const dispatch = useAppDispatch();
 
-  const changeModalType = () => {
-    if (modalType) {
-      dispatch(setModalType(modalType!));
+  const changeFormType = () => {
+    if (formType) {
+      dispatch(setFormType(formType!));
       dispatch(clearAuthErrors());
     }
   };
@@ -31,7 +28,7 @@ const FormErrorText = ({
   return (
     <Form.Text
       className={`text-capitalize text-${color} ${className}`}
-      onClick={changeModalType}
+      onClick={changeFormType}
     >
       {message}
     </Form.Text>

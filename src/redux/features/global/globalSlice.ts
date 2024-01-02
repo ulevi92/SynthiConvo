@@ -1,20 +1,15 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export type ModalType =
-  | "login"
-  | "sign up"
-  | "passwordReminder"
-  | "about"
-  | "account"
-  | "clear conversation"
-  | "conversation"
-  | null;
+export type ModalType = "about" | "clear conversation" | "conversation" | null;
+
+export type FormType = "login" | "sign up" | "reminder";
 
 type InitialState = {
   darkMode: boolean;
   showModal: boolean;
   modalType: ModalType;
   loading: boolean;
+  formType: FormType;
 };
 
 const initialState: InitialState = {
@@ -27,6 +22,7 @@ const initialState: InitialState = {
     : false,
 
   showModal: false,
+  formType: "login",
   modalType: null,
   loading: true,
 };
@@ -52,8 +48,13 @@ const globalSlice = createSlice({
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
+
     closeModal(state) {
       state.showModal = false;
+    },
+
+    setFormType(state, action: PayloadAction<FormType>) {
+      state.formType = action.payload;
     },
   },
 });
@@ -64,5 +65,6 @@ export const {
   setShowModal,
   setLoading,
   closeModal,
+  setFormType,
 } = globalSlice.actions;
 export default globalSlice.reducer;

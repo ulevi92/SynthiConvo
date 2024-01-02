@@ -7,7 +7,6 @@ import type { FormInputs } from "./types";
 
 import { useAppSelector } from "../../redux/reduxHooks";
 import { memo, useMemo } from "react";
-import { ModalType } from "../../redux/features/global/globalSlice";
 
 interface Props {
   name: "email" | "password" | "confirmPassword";
@@ -15,12 +14,12 @@ interface Props {
 }
 
 const FormController = ({ name, control }: Props) => {
-  const modalType = useAppSelector((state) => state.global.modalType);
+  const formType = useAppSelector((state) => state.global.formType);
 
   const pattern =
     name === "email"
       ? emailValidation
-      : name === "password" && modalType === "sign up"
+      : name === "password" && formType === "sign up"
       ? passwordValidation
       : undefined;
 

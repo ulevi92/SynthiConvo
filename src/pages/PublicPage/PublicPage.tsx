@@ -1,20 +1,17 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 
-import { useAppDispatch } from "../../redux/reduxHooks";
-
-import AppModal from "../../components/modal/AppModal";
 import { useLayoutEffect, useState } from "react";
-import { FormType, State, defaultState, sentences } from "./PublicPage.helper";
+import { State, defaultState, sentences } from "./PublicPage.helper";
 import { Loader } from "../../components/loader/Loader";
 
-import { useNavigate } from "react-router-dom";
 import PublicPageForm from "./PublicPageForm";
+import RejectedErrors from "../../components/form/RejectedErrors";
+import { set } from "react-hook-form";
+import { useAppSelector } from "../../redux/reduxHooks";
 
 const PublicPage = () => {
   const [state, setState] = useState<State>(defaultState);
-  const [formType, setFormType] = useState<FormType>("login");
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const formType = useAppSelector((state) => state.global.formType);
 
   useLayoutEffect(() => {
     // Pause at the end of a sentence before erasing
@@ -63,13 +60,12 @@ const PublicPage = () => {
     return () => clearTimeout(timeout);
   }, [state.index, state.subIndex, state.reverse]);
 
-  const headerText = () => {
-    if (formType === "sign up") return "sign up";
-
-    if (formType === "reminder") return "password reminder";
-
-    return "login";
-  };
+  const headerText =
+    formType === "sign up"
+      ? "sign up"
+      : formType === "reminder"
+      ? "password reminder"
+      : "login";
 
   return (
     <>
@@ -87,6 +83,10 @@ const PublicPage = () => {
                   state.subIndex !== sentences[state.index].length ? "|" : ""
                 }`}</h3>
               </div>
+
+              <div className='d-block d-lg-none mt-5'>
+                <PublicPageForm mobile />
+              </div>
             </Col>
 
             <Col
@@ -96,17 +96,17 @@ const PublicPage = () => {
             >
               <div className='d-flex flex-column flex-grow-1 justify-content-center'>
                 <h1 className='text-capitalize text-light text-center mb-4'>
-                  {headerText()}
+                  {headerText}
                 </h1>
 
-                <PublicPageForm formType={formType} setFormType={setFormType} />
+                <PublicPageForm />
+
+                <RejectedErrors />
               </div>
             </Col>
           </Row>
         </Container>
       </Loader>
-
-      <AppModal />
     </>
   );
 };

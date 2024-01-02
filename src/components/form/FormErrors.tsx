@@ -7,10 +7,16 @@ interface Props {
   errors: FieldErrors<FormInputs>;
   inputType: "email" | "password" | "confirmPassword";
   passwordMatches?: boolean;
+  mobile?: boolean;
 }
 
-export const FormErrors = ({ errors, inputType, passwordMatches }: Props) => {
-  const modalType = useAppSelector((state) => state.global.modalType);
+export const FormErrors = ({
+  errors,
+  inputType,
+  passwordMatches,
+  mobile,
+}: Props) => {
+  const formType = useAppSelector((state) => state.global.formType);
 
   return (
     <>
@@ -20,16 +26,16 @@ export const FormErrors = ({ errors, inputType, passwordMatches }: Props) => {
         <FormErrorText message='Email error: not a valid email' />
       )}
 
-      {modalType === "sign up" &&
+      {formType === "sign up" &&
         inputType === "password" &&
         errors.password?.type === "pattern" && (
           <FormErrorText
-            color='warning'
+            color={mobile ? "danger" : "warning"}
             message='Invalid password. It should contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one digit, and one of the following symbols: -+_!@#$%^&*.,?'
           />
         )}
 
-      {modalType === "sign up" &&
+      {formType === "sign up" &&
         inputType === "confirmPassword" &&
         errors.confirmPassword?.type === "validate" &&
         !passwordMatches && (

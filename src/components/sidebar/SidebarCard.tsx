@@ -99,7 +99,6 @@ const SidebarCard: FC<Props> = ({
   const handleCardClick = () => {
     switch (cardName) {
       case "about":
-      case "account":
       case "conversation":
       case "clear conversation":
         dispatch(setModalType(cardName));

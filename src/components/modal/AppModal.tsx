@@ -14,16 +14,12 @@ const AppModal = () => {
 
   const handleClose = () => {
     dispatch(clearAuthErrors());
-    modalType === "login" ||
-      modalType === "sign up" ||
-      (modalType === "passwordReminder" && dispatch(clearAuthErrors()));
     dispatch(closeModal());
   };
 
   const modalSize: () => "sm" | "xl" = () => {
     switch (modalType) {
       case "about":
-      case "account":
       case "clear conversation":
       case "conversation":
         return "xl";
@@ -40,21 +36,9 @@ const AppModal = () => {
       case "about":
         return "about";
 
-      case "account":
-        return "account";
-
       case "clear conversation":
       case "conversation":
         return "clear conversation";
-
-      case "login":
-        return "login";
-
-      case "passwordReminder":
-        return "reset your password";
-
-      case "sign up":
-        return "sign up";
 
       default:
         return "about"; // You can choose a default value here based on your needs

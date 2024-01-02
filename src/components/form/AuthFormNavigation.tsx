@@ -1,10 +1,7 @@
 import { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import {
-  ModalType,
-  setModalType,
-} from "../../redux/features/global/globalSlice";
+import { FormType, setFormType } from "../../redux/features/global/globalSlice";
 import { clearAuthErrors } from "../../redux/features/userData/userDataSlice";
 
 type NavMessageType =
@@ -14,44 +11,44 @@ type NavMessageType =
 
 const AuthFormNavigation = () => {
   const dispatch = useAppDispatch();
-  const modalType = useAppSelector((state) => state.global.modalType);
+  const formType = useAppSelector((state) => state.global.formType);
 
-  const changeModalType = (changeTo: ModalType) => {
-    dispatch(setModalType(changeTo));
+  const changeFormType = (changeTo: FormType) => {
+    dispatch(setFormType(changeTo));
     dispatch(clearAuthErrors());
   };
 
   const className =
     "add-pointer-cursor fw-bolder py-1 my-2 text-capitalize text-primary add-pointer-cursor";
 
-  const renderLink = (message: NavMessageType, changeTo: ModalType) => (
-    <Form.Text className={className} onClick={() => changeModalType(changeTo)}>
+  const renderLink = (message: NavMessageType, changeTo: FormType) => (
+    <Form.Text className={className} onClick={() => changeFormType(changeTo)}>
       {message}
     </Form.Text>
   );
 
   const content = useMemo(() => {
-    if (modalType === "login")
+    if (formType === "login")
       return (
         <>
           <Col>
             {renderLink("don't have an account? sign up now!", "sign up")}
           </Col>
 
-          <Col>{renderLink("forgot your password?", "passwordReminder")}</Col>
+          <Col>{renderLink("forgot your password?", "reminder")}</Col>
         </>
       );
 
-    if (modalType === "sign up")
+    if (formType === "sign up")
       return (
         <>
           <Col>{renderLink("login to your account", "login")}</Col>
 
-          <Col>{renderLink("forgot your password?", "passwordReminder")}</Col>
+          <Col>{renderLink("forgot your password?", "reminder")}</Col>
         </>
       );
 
-    if (modalType === "passwordReminder")
+    if (formType === "reminder")
       return (
         <>
           <Col>
@@ -63,7 +60,7 @@ const AuthFormNavigation = () => {
       );
 
     return null;
-  }, [modalType]);
+  }, [formType]);
 
   return (
     <Container className='p-0'>

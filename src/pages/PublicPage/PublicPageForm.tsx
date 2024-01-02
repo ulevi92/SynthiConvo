@@ -1,6 +1,5 @@
 import { FC, useCallback } from "react";
 import { Button, Form } from "react-bootstrap";
-import { FormType } from "./PublicPage.helper";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FormInputs } from "../../components/form/types";
 import {
@@ -11,8 +10,12 @@ import {
   fetchSignUp,
   setAuthLoading,
 } from "../../redux/features/userData/userDataSlice";
-import { useAppDispatch } from "../../redux/reduxHooks";
-import { setLoading } from "../../redux/features/global/globalSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
+import {
+  FormType,
+  setFormType,
+  setLoading,
+} from "../../redux/features/global/globalSlice";
 import { useNavigate } from "react-router-dom";
 import FormController from "../../components/form/FormController";
 import { FormErrors } from "../../components/form/FormErrors";
@@ -23,16 +26,20 @@ type NavMessageType =
   | "forgot your password?";
 
 interface Props {
-  formType: "login" | "sign up" | "reminder";
-  setFormType: React.Dispatch<React.SetStateAction<FormType>>;
+  mobile?: boolean;
 }
 
-const formTextClassName =
-  "add-pointer-cursor fw-bolder py-1 my-2 text-capitalize text-light add-pointer-cursor";
+const PublicPageForm: FC<Props> = ({ mobile }) => {
+  const formType = useAppSelector((state) => state.global.formType);
 
-const PublicPageForm: FC<Props> = ({ formType, setFormType }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const formTextClassName = `add-pointer-cursor fw-bolder py-1 my-2 text-capitalize add-pointer-cursor ${
+    mobile ? "text-primary" : "text-light"
+  }`;
+
+  const buttonVarient = mobile ? "outline-success" : "outline-light";
 
   const {
     handleSubmit,
@@ -48,7 +55,7 @@ const PublicPageForm: FC<Props> = ({ formType, setFormType }) => {
   });
 
   const changeFormType = (changeTo: FormType) => {
-    setFormType(changeTo);
+    dispatch(setFormType(changeTo));
     dispatch(clearAuthErrors());
   };
 
@@ -110,7 +117,7 @@ const PublicPageForm: FC<Props> = ({ formType, setFormType }) => {
             <FormController control={control} name='password' />
 
             <div>
-              <FormErrors errors={errors} inputType='password' />
+              <FormErrors errors={errors} inputType='password' mobile />
             </div>
 
             <FormController control={control} name='confirmPassword' />
@@ -125,7 +132,7 @@ const PublicPageForm: FC<Props> = ({ formType, setFormType }) => {
 
             <Button
               className='w-100'
-              variant='outline-light'
+              variant={buttonVarient}
               onClick={handleSubmit(onSubmit)}
             >
               Submit
@@ -150,7 +157,7 @@ const PublicPageForm: FC<Props> = ({ formType, setFormType }) => {
 
             <Button
               className='w-100'
-              variant='outline-light'
+              variant={buttonVarient}
               onClick={handleSubmit(onSubmit)}
             >
               Submit
@@ -181,7 +188,7 @@ const PublicPageForm: FC<Props> = ({ formType, setFormType }) => {
 
             <Button
               className='w-100'
-              variant='outline-light'
+              variant={buttonVarient}
               onClick={handleSubmit(onSubmit)}
             >
               Submit

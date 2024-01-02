@@ -1,4 +1,4 @@
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { useAppSelector } from "../../redux/reduxHooks";
 import SidebarCard from "./SidebarCard";
 
@@ -6,8 +6,7 @@ const Sidebar = () => {
   const conversationScript = useAppSelector(
     ({ userData }) => userData.chat.history
   );
-  const modalType = useAppSelector(({ global }) => global.modalType);
-  const showModal = useAppSelector(({ global }) => global.showModal);
+
   const displayName = useAppSelector(
     (state) => state.userData.userProfile.displayName
   );

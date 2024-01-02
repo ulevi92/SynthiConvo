@@ -1,11 +1,4 @@
-import {
-  ModalType,
-  setModalType,
-  setShowModal,
-} from "../../redux/features/global/globalSlice";
 import store from "../../redux/store";
-
-export type FormType = "login" | "sign up" | "reminder";
 
 export interface State {
   index: number;
@@ -40,13 +33,3 @@ export const sentences = [
   `Empower your decisions with AI that offers insights and guidance.`,
   `Redefine possibilities with an AI that evolves with your aspirations.`,
 ];
-
-export const handleOpenModal = (e: React.MouseEvent) => {
-  const dispatch = store.dispatch;
-
-  const innerText = e.currentTarget.textContent as ModalType;
-
-  dispatch(setShowModal(true));
-
-  dispatch(setModalType(innerText));
-};
