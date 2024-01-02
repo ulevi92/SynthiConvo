@@ -63,6 +63,14 @@ const PublicPage = () => {
     return () => clearTimeout(timeout);
   }, [state.index, state.subIndex, state.reverse]);
 
+  const headerText = () => {
+    if (formType === "sign up") return "sign up";
+
+    if (formType === "reminder") return "password reminder";
+
+    return "login";
+  };
+
   return (
     <>
       <Loader auth>
@@ -84,9 +92,15 @@ const PublicPage = () => {
             <Col
               sm={0}
               lg={4}
-              className='d-none d-lg-flex bg-secondary justify-content-center align-items-center px-xl-5 px-md-3'
+              className='d-none d-lg-flex flex-column bg-secondary px-xll-5 px-xl-4 px-md-3 h-100 '
             >
-              <PublicPageForm formType={formType} setFormType={setFormType} />
+              <div className='d-flex flex-column flex-grow-1 align-items-center'>
+                <h1 className='text-capitalize text-light text-center mb-4'>
+                  {headerText()}
+                </h1>
+
+                <PublicPageForm formType={formType} setFormType={setFormType} />
+              </div>
             </Col>
           </Row>
         </Container>
