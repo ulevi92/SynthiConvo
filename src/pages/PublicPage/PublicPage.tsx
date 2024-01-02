@@ -94,7 +94,7 @@ const PublicPage = () => {
               lg={4}
               className='d-none d-lg-flex flex-column bg-secondary px-xll-5 px-xl-4 px-md-3 h-100 '
             >
-              <div className='d-flex flex-column flex-grow-1 align-items-center'>
+              <div className='d-flex flex-column flex-grow-1 justify-content-center'>
                 <h1 className='text-capitalize text-light text-center mb-4'>
                   {headerText()}
                 </h1>
