@@ -111,7 +111,7 @@ const AuthForm = () => {
             <RejectedErrors />
           </Col>
 
-          <AuthFormNavigation linkType='login' />
+          <AuthFormNavigation />
 
           {/* exit button */}
           <FormButton btnTask='close' handleButton={handleClose} />

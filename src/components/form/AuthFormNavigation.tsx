@@ -7,15 +7,12 @@ import {
 } from "../../redux/features/global/globalSlice";
 import { clearAuthErrors } from "../../redux/features/userData/userDataSlice";
 
-type NavMessage =
+type NavMessageType =
   | "login to your account"
   | "don't have an account? sign up now!"
   | "forgot your password?";
 
-interface AuthFormNavigationProps {
-  linkType: ModalType;
-}
-const AuthFormNavigation = ({ linkType }: AuthFormNavigationProps) => {
+const AuthFormNavigation = () => {
   const dispatch = useAppDispatch();
   const modalType = useAppSelector((state) => state.global.modalType);
 
@@ -27,7 +24,7 @@ const AuthFormNavigation = ({ linkType }: AuthFormNavigationProps) => {
   const className =
     "add-pointer-cursor fw-bolder py-1 my-2 text-capitalize text-primary add-pointer-cursor";
 
-  const renderLink = (message: NavMessage, changeTo: ModalType) => (
+  const renderLink = (message: NavMessageType, changeTo: ModalType) => (
     <Form.Text className={className} onClick={() => changeModalType(changeTo)}>
       {message}
     </Form.Text>

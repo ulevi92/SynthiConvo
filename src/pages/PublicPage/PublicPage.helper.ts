@@ -5,6 +5,20 @@ import {
 } from "../../redux/features/global/globalSlice";
 import store from "../../redux/store";
 
+export type FormType = "login" | "sign up" | "reminder";
+
+export interface State {
+  index: number;
+  subIndex: number;
+  reverse: boolean;
+}
+
+export const defaultState: State = {
+  index: 0,
+  subIndex: 0,
+  reverse: false,
+};
+
 export const sentences = [
   `Need help? I'm just a message away. Let's get started!`,
   `Curious about something? I've got answers. What would you like to know?`,

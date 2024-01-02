@@ -4,22 +4,16 @@ import { useAppDispatch } from "../../redux/reduxHooks";
 
 import AppModal from "../../components/modal/AppModal";
 import { useLayoutEffect, useState } from "react";
-import { handleOpenModal, sentences } from "./PublicPage.helper";
+import { FormType, State, defaultState, sentences } from "./PublicPage.helper";
+import { Loader } from "../../components/loader/Loader";
 
-interface State {
-  index: number;
-  subIndex: number;
-  reverse: boolean;
-}
-const defaultState: State = {
-  index: 0,
-  subIndex: 0,
-  reverse: false,
-};
+import { useNavigate } from "react-router-dom";
+import PublicPageForm from "./PublicPageForm";
 
 const PublicPage = () => {
   const [state, setState] = useState<State>(defaultState);
-
+  const [formType, setFormType] = useState<FormType>("login");
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   useLayoutEffect(() => {
@@ -71,40 +65,32 @@ const PublicPage = () => {
 
   return (
     <>
-      <Container fluid className='vw-100 vh-100 bg-primary-subtle'>
-        <Row className='h-100'>
-          <Col sm={12} lg={8}>
-            <div className='mt-3 ms-3'>
-              <h1 className='text-dark'>SynthiConvo</h1>
+      <Loader auth>
+        <Container fluid className='vw-100 vh-100 bg-primary-subtle'>
+          <Row className='h-100'>
+            <Col sm={12} lg={8}>
+              <div className='mt-3 ms-3'>
+                <h1 className='text-dark'>SynthiConvo</h1>
 
-              <h3 className='ms-5 mt-5'>{`${sentences[state.index].substring(
-                0,
-                state.subIndex
-              )}${
-                state.subIndex !== sentences[state.index].length ? "|" : ""
-              }`}</h3>
-            </div>
-          </Col>
+                <h3 className='ms-5 mt-5'>{`${sentences[state.index].substring(
+                  0,
+                  state.subIndex
+                )}${
+                  state.subIndex !== sentences[state.index].length ? "|" : ""
+                }`}</h3>
+              </div>
+            </Col>
 
-          <Col
-            sm={0}
-            lg={4}
-            className='d-none d-lg-flex bg-secondary justify-content-center align-items-center'
-          >
-            <Button
-              variant='outline-light'
-              className='me-5'
-              onClick={handleOpenModal}
-              size='lg'
+            <Col
+              sm={0}
+              lg={4}
+              className='d-none d-lg-flex bg-secondary justify-content-center align-items-center px-xl-5 px-md-3'
             >
-              login
-            </Button>
-            <Button variant='outline-light' onClick={handleOpenModal} size='lg'>
-              sign up
-            </Button>
-          </Col>
-        </Row>
-      </Container>
+              <PublicPageForm formType={formType} setFormType={setFormType} />
+            </Col>
+          </Row>
+        </Container>
+      </Loader>
 
       <AppModal />
     </>
