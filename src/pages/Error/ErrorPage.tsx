@@ -16,7 +16,7 @@ const ErrorPage: FC<Props> = ({ notFound }) => {
   const notAllowed = useAppSelector((state) => state.userData.userNotAllowed);
 
   useEffect(() => {
-    const timeout: number = 5000;
+    const timeout: number = 10000;
     let timer: NodeJS.Timeout;
 
     if (notFound) {

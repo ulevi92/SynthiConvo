@@ -3,7 +3,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import "./not-allowed.scss";
 
 const NotAllowed = () => {
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(10);
 
   useEffect(() => {
     const timer = setInterval(() => {
