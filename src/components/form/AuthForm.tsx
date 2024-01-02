@@ -23,9 +23,7 @@ const AuthForm = () => {
   const navigate = useNavigate();
 
   const modalType = useAppSelector((state) => state.global.modalType);
-  const authLoading = useAppSelector(
-    (state) => state.userData.auth.authLoading
-  );
+
   const dispatch = useAppDispatch();
 
   const {

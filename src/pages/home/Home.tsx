@@ -44,7 +44,6 @@ export const Home = () => {
   if (userNotAllowed) return <ErrorPage notFound={false} />;
 
   if (!notVerified) return <NotVerifiedError />;
-  // if (userNotAllowed) return <></>;
 
   const sidebarStyle = `h-100 flex-column d-none d-md-flex p-0 border-end border-opacity-50 ${
     darkMode ? "border-grey" : "border-grey"
