@@ -73,7 +73,7 @@ const PublicPage = () => {
         <Container fluid className='vw-100 vh-100 bg-primary-subtle'>
           <Row className='h-100'>
             <Col sm={12} lg={8}>
-              <div className='mt-3 ms-3'>
+              <div className='mt-3 mx-3 h-25'>
                 <h1 className='text-dark'>SynthiConvo</h1>
 
                 <h3 className='ms-5 mt-5'>{`${sentences[state.index].substring(
@@ -84,7 +84,7 @@ const PublicPage = () => {
                 }`}</h3>
               </div>
 
-              <div className='d-block d-lg-none mt-5'>
+              <div className='d-block d-lg-none mt-5 mx-3'>
                 <PublicPageForm mobile />
               </div>
             </Col>

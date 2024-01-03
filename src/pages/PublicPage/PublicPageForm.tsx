@@ -199,7 +199,7 @@ const PublicPageForm: FC<Props> = ({ mobile }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} className='w-100'>
+    <Form onSubmit={handleSubmit(onSubmit)} className='w-100 px-5'>
       {RenderLinks()}
     </Form>
   );
