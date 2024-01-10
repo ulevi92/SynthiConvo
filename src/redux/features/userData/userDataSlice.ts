@@ -399,9 +399,13 @@ export const resetUserHistory = createAsyncThunk(
       auth.currentUser?.uid!
     ) as DocumentReference<FirestoreUsersDb>;
 
+    const data = await getDoc(docRef);
+
+    console.log(data);
+
     // 2. Reset the user's chat history in Firestore by updating the document
     return await updateDoc(docRef, {
-      ...{},
+      ...data,
       chatHistory: [],
     });
   }

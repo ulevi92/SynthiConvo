@@ -12,21 +12,19 @@ const UserUI = () => {
   const credit = useAppSelector((state) => state.userData.chat.credit);
   const user = useAppSelector((state) => state.userData.userProfile);
 
-  const [progress, setProgress] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
   const { userId, email } = user;
 
   const handleResetHistory = () => {
-    setProgress(() => true);
     setShowAlert(() => true);
+
+    dispatch(resetUserHistory());
 
     setTimeout(async () => {
       localStorage.removeItem("chat");
       dispatch(resetChatHistory());
-      dispatch(resetUserHistory());
       setShowAlert(() => false);
-      setProgress(() => false);
     }, 500);
   };
 
