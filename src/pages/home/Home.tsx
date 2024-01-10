@@ -28,6 +28,10 @@ export const Home = () => {
 
   const darkMode = useAppSelector(({ global }) => global.darkMode);
 
+  const sidebarStyle = `h-100 flex-column d-none d-md-flex p-0 border-end border-opacity-50 ${
+    darkMode ? "border-grey" : "border-grey"
+  }`;
+
   useLayoutEffect(() => {
     if (!didMount.current) {
       const chatDataRef = localStorage.getItem("chat");
@@ -41,13 +45,9 @@ export const Home = () => {
     }
   }, [credit, history]);
 
-  if (userNotAllowed) return <ErrorPage notFound={false} />;
+  return <ErrorPage notFound={false} />;
 
   if (!notVerified) return <NotVerifiedError />;
-
-  const sidebarStyle = `h-100 flex-column d-none d-md-flex p-0 border-end border-opacity-50 ${
-    darkMode ? "border-grey" : "border-grey"
-  }`;
 
   return (
     <>

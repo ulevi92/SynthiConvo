@@ -30,7 +30,7 @@ const ErrorPage: FC<Props> = ({ notFound }) => {
     return () => clearTimeout(timer);
   }, [notFound, notAllowed]);
 
-  if (notAllowed) return <NotAllowed />;
+  if (!notFound) return <NotAllowed />;
 
   return <NotFound />;
 };
