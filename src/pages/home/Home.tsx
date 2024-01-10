@@ -45,7 +45,7 @@ export const Home = () => {
     }
   }, [credit, history]);
 
-  return <ErrorPage notFound={false} />;
+  if (userNotAllowed) return <ErrorPage notFound={false} />;
 
   if (!notVerified) return <NotVerifiedError />;
 

@@ -1,28 +1,12 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import "./not-allowed.scss";
+import "./timer.scss";
 import { fetchSignOut } from "../../redux/features/userData/userDataSlice";
 import { useAppDispatch } from "../../redux/reduxHooks";
+import { ErroPagesProps } from "./ErrorPage";
 
-const NotAllowed = () => {
-  const [countdown, setCountdown] = useState(10);
-
+const NotAllowed: FC<ErroPagesProps> = ({ countdown }) => {
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prev) => prev - 1);
-    }, 1000);
-
-    const logoutTimer = setTimeout(() => {
-      dispatch(fetchSignOut());
-    }, 10000);
-
-    return () => {
-      clearInterval(timer);
-      clearTimeout(logoutTimer);
-    };
-  }, []);
 
   return (
     <Container fluid className='vh-100 vw-100 bg-secondary text-light'>

@@ -1,0 +1,23 @@
+.error-number {
+  font-size: 6rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.error-message {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+}
+
+.home-link {
+  margin-top: 2rem;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
