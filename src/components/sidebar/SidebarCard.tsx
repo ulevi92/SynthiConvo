@@ -9,7 +9,10 @@ import {
   setModalType,
   setShowModal,
 } from "../../redux/features/global/globalSlice";
-import { fetchSignOut } from "../../redux/features/userData/userDataSlice";
+import {
+  fetchSignOut,
+  fetchResetChatHistory,
+} from "../../redux/features/userData/userDataSlice";
 
 type MarginAndPadding = 1 | 2 | 3 | 4 | 5;
 
@@ -100,6 +103,11 @@ const SidebarCard: FC<Props> = ({
     switch (cardName) {
       case "about":
       case "conversation":
+        dispatch(setModalType(cardName));
+        dispatch(setShowModal(true));
+        dispatch(fetchResetChatHistory());
+        break;
+
       case "clear conversation":
         dispatch(setModalType(cardName));
         dispatch(setShowModal(true));

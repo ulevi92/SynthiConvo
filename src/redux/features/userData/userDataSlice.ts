@@ -389,21 +389,26 @@ export const updateUserCreditAndHistory = createAsyncThunk(
   }
 );
 
-export const resetUserHistory = createAsyncThunk(
-  "userChat/resetUserHistory",
-  async () => {
-    // 1. Retrieve the Firestore document reference for the current user
+export const fetchResetChatHistory = createAsyncThunk(
+  "userChat/fetchResetChatHistory",
+  async (_, { getState }) => {
+    const state = getState() as RootState;
+    const newStoredChatData: StoredChatData = {
+      credit: state.userData.chat.credit,
+      history: [],
+    };
+
+    localStorage.setItem("chat", JSON.stringify(newStoredChatData));
+
+    const userId = auth.currentUser?.uid;
     const docRef = doc(
       db,
       "users",
-      auth.currentUser?.uid!
+      userId!
     ) as DocumentReference<FirestoreUsersDb>;
 
-    const data = await getDoc(docRef);
+    const data = (await getDoc(docRef)).data();
 
-    console.log(data);
-
-    // 2. Reset the user's chat history in Firestore by updating the document
     return await updateDoc(docRef, {
       ...data,
       chatHistory: [],
@@ -470,24 +475,6 @@ const userDataSlice = createSlice({
     updateChatData(state, action: PayloadAction<StoredChatData>) {
       state.chat.credit = action.payload.credit;
       state.chat.history = action.payload.history;
-    },
-
-    resetChatHistory(state) {
-      // Reset the chat history to an empty array
-
-      const newStoredChatData: StoredChatData = {
-        credit: state.chat.credit,
-        history: [],
-      };
-
-      localStorage.setItem("chat", JSON.stringify(newStoredChatData));
-      return {
-        ...state,
-        chat: {
-          ...state.chat,
-          history: [],
-        },
-      };
     },
 
     addOldHistory(state, action: PayloadAction<ChatCompletionMessageParam[]>) {
@@ -688,13 +675,13 @@ const userDataSlice = createSlice({
         state.errorMessage = action.error.message;
       })
 
-      .addCase(resetUserHistory.pending, (state) => {
+      .addCase(fetchResetChatHistory.pending, (state) => {
         state.chat.isLoading = true;
       })
-      .addCase(resetUserHistory.fulfilled, (state) => {
+      .addCase(fetchResetChatHistory.fulfilled, (state) => {
         state.chat.isLoading = false;
       })
-      .addCase(resetUserHistory.rejected, (state, action) => {
+      .addCase(fetchResetChatHistory.rejected, (state, action) => {
         state.chat.isLoading = false;
         state.error = true;
         state.errorFrom = "chat";
@@ -748,7 +735,6 @@ export const {
   addOldCreditRecord,
   addOldHistory,
   addUserQuestion,
-  resetChatHistory,
   updateChatData,
   setUserAllowed,
 } = userDataSlice.actions;

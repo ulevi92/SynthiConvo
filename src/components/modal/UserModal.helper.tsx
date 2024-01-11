@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 import { closeModal } from "../../redux/features/global/globalSlice";
 import { useEffect } from "react";
 import {
-  resetChatHistory,
+  fetchResetChatHistory,
   updateUserCreditAndHistory,
 } from "../../redux/features/userData/userDataSlice";
 
@@ -82,7 +82,7 @@ export const ClearConversationModalText = () => {
   const credit = useAppSelector((state) => state.userData.chat.credit);
 
   const handleClearHistory = () => {
-    dispatch(resetChatHistory());
+    dispatch(fetchResetChatHistory());
     dispatch(updateUserCreditAndHistory({ credit, history }));
     dispatch(closeModal());
   };
