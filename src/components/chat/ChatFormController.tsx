@@ -27,9 +27,8 @@ const ChatFormController = ({ control }: Props) => {
     <Controller
       name='userInput'
       control={control}
-      disabled={questionAsked || credit === 0}
       render={({ field }) => (
-        <Form.Control placeholder={placeholder()} {...field} size='lg' />
+        <Form.Control {...field} placeholder={placeholder()} size='lg' />
       )}
     />
   );

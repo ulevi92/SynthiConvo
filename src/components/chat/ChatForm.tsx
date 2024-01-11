@@ -29,16 +29,18 @@ const ChatForm = () => {
   );
   const credit = useAppSelector(({ userData }) => userData.chat.credit);
 
-  const onSubmit: SubmitHandler<ChatValue> = ({ userInput }) => {
-    if (userInput.length === 0) return;
+  const onSubmit: SubmitHandler<ChatValue> = (data) => {
+    console.log(data);
+
+    if (data.userInput.length === 0) return;
 
     const questionToDispatch: ChatCompletionMessageParam = {
-      content: userInput,
+      content: data.userInput,
       role: "user",
     };
 
     dispatch(addUserQuestion(questionToDispatch));
-    dispatch(askBot(userInput));
+    dispatch(askBot(data.userInput));
     reset();
   };
 
