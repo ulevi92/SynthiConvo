@@ -25,7 +25,7 @@ const ChatFormController = ({ control }: Props) => {
 
   return (
     <Controller
-      disabled={questionAsked}
+      disabled={questionAsked || credit === 0}
       name='userInput'
       control={control}
       render={({ field }) => (
