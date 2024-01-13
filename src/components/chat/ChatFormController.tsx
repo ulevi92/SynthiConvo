@@ -25,6 +25,7 @@ const ChatFormController = ({ control }: Props) => {
 
   return (
     <Controller
+      disabled={questionAsked}
       name='userInput'
       control={control}
       render={({ field }) => (
