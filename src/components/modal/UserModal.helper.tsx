@@ -3,10 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks";
 
 import { closeModal } from "../../redux/features/global/globalSlice";
 import { useEffect } from "react";
-import {
-  fetchResetChatHistory,
-  updateUserCreditAndHistory,
-} from "../../redux/features/userData/userDataSlice";
+import { fetchResetChatHistory } from "../../redux/features/userData/userDataSlice";
 
 export const AboutModalText = () => (
   <>
@@ -79,11 +76,9 @@ export const AboutModalText = () => (
 export const ClearConversationModalText = () => {
   const dispatch = useAppDispatch();
   const history = useAppSelector((state) => state.userData.chat.history);
-  const credit = useAppSelector((state) => state.userData.chat.credit);
 
   const handleClearHistory = () => {
     dispatch(fetchResetChatHistory());
-    dispatch(updateUserCreditAndHistory({ credit, history }));
     dispatch(closeModal());
   };
 

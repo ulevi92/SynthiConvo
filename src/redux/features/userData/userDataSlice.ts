@@ -680,6 +680,14 @@ const userDataSlice = createSlice({
       })
       .addCase(fetchResetChatHistory.fulfilled, (state) => {
         state.chat.isLoading = false;
+        state.chat.history = [];
+
+        const newChatPayloadToStorage = {
+          credit: state.chat.credit,
+          history: [],
+        };
+
+        localStorage.setItem("chat", JSON.stringify(newChatPayloadToStorage));
       })
       .addCase(fetchResetChatHistory.rejected, (state, action) => {
         state.chat.isLoading = false;

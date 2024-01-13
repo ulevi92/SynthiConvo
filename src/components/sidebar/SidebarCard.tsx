@@ -105,7 +105,6 @@ const SidebarCard: FC<Props> = ({
       case "conversation":
         dispatch(setModalType(cardName));
         dispatch(setShowModal(true));
-        dispatch(fetchResetChatHistory());
         break;
 
       case "clear conversation":
