@@ -39,12 +39,6 @@ const Sidebar = () => {
               cardMarginT={0}
             />
           )}
-
-          {conversationScript.length === 0 && (
-            <Button className='w-100 text-capitalize' variant='outline-success'>
-              + new chat
-            </Button>
-          )}
         </Col>
 
         <Col
