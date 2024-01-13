@@ -15,6 +15,7 @@ import {
   fetchResetPassword,
   fetchSignIn,
   fetchSignUp,
+  setAuth,
   setAuthLoading,
 } from "../../redux/features/userData/userDataSlice";
 import { useNavigate } from "react-router-dom";

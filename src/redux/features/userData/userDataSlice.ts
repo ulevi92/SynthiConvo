@@ -151,7 +151,7 @@ export const fetchSignIn = createAsyncThunk(
     }
 
     // 9. Check if the current user's IP is not in the list of previously logged IPs and update it in Firestore
-    if (!data.ipInfo.previewsLoggedIps.find((ip) => ip !== data.ipInfo.ip)) {
+    if (!data.ipInfo.previewsLoggedIps.includes(clientIp.ip)) {
       const newIpPayload: FirestoreUsersDb = {
         ...data,
         ipInfo: {
