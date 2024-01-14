@@ -21,7 +21,13 @@ const ChatTasks = () => {
     });
 
     return RandomTasks.map((task) => {
-      return <ChatCard key={task.index} content={task.content} />;
+      return (
+        <ChatCard
+          key={task.index}
+          content={task.content}
+          description={task.description}
+        />
+      );
     });
   }, [history, aiTasks]);
 
